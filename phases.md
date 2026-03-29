@@ -43,7 +43,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 ### Checklist — Definition of Done
 
 - [x] Monorepo initialized with `pnpm workspaces` (packages: `contracts`, `engine`, `app`, `shared`)
-- [ ] Rust toolchain installed (`rustup`, `cargo`, `wasm-pack`)
+- [x] Rust toolchain installed (`rustup`, `cargo`, `wasm-pack`)
 - [ ] Solana CLI or Substrate node configured and running locally
 - [ ] Next.js 14 app bootstrapped with TypeScript, ESLint, Prettier
 - [ ] Shared TypeScript types package created (`@tessera/types`)
