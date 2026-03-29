@@ -44,7 +44,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 - [x] Monorepo initialized with `pnpm workspaces` (packages: `contracts`, `engine`, `app`, `shared`)
 - [x] Rust toolchain installed (`rustup`, `cargo`, `wasm-pack`)
-- [ ] Solana CLI or Substrate node configured and running locally
+- [x] Solana CLI or Substrate node configured and running locally
 - [ ] Next.js 14 app bootstrapped with TypeScript, ESLint, Prettier
 - [ ] Shared TypeScript types package created (`@tessera/types`)
 - [ ] CI pipeline set up (GitHub Actions: lint, type-check, test on PR)
