@@ -46,8 +46,8 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Rust toolchain installed (`rustup`, `cargo`, `wasm-pack`)
 - [x] Solana CLI or Substrate node configured and running locally
 - [x] Next.js 14 app bootstrapped with TypeScript, ESLint, Prettier
-- [ ] Shared TypeScript types package created (`@tessera/types`)
-- [ ] CI pipeline set up (GitHub Actions: lint, type-check, test on PR)
+- [x] Shared TypeScript types package created (`@tessera/types`)
+- [x] CI pipeline set up (GitHub Actions: lint, type-check, test on PR)
 - [ ] `.env.example` with all required environment variables documented
 - [ ] `README.md` draft committed
 - [ ] Git branching strategy documented (`main`, `develop`, `feat/*`, `fix/*`)
