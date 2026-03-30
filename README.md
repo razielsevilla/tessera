@@ -286,12 +286,23 @@ Three tiers, strict privacy boundaries:
 
 ---
 
-## ✦ Contributing
+## ✦ Contributing & Git Workflow
 
-Tessera is in active development. Contributions are welcome once the core architecture is stabilized (post Phase 3).
+Tessera is in active development. Contributions are welcome once the core architecture is stabilized (post Phase 3). We use a structured Git branching strategy to keep the production track stable while allowing rapid iteration.
+
+### Branching Strategy
+
+| Branch | Purpose | Base | Default Target |
+|---|---|---|---|
+| `main` | Highly stable production releases. | - | - |
+| `develop` | Active development branch. All integrations happen here. | `main` | `main` |
+| `feat/*` | New functionality or structural changes. | `develop` | `develop` |
+| `fix/*` | Bug fixes for existing features. | `develop` | `develop` |
+
+### Workflow Steps
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/your-feature`
+2. Create an appropriate branch: `git checkout -b feat/your-feature` or `git checkout -b fix/your-fix`
 3. Commit using [Conventional Commits](https://www.conventionalcommits.org/)
 4. Open a Pull Request against `develop`
 

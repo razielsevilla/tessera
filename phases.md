@@ -49,8 +49,8 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Shared TypeScript types package created (`@tessera/types`)
 - [x] CI pipeline set up (GitHub Actions: lint, type-check, test on PR)
 - [x] `.env.example` with all required environment variables documented
-- [ ] `README.md` draft committed
-- [ ] Git branching strategy documented (`main`, `develop`, `feat/*`, `fix/*`)
+- [x] `README.md` draft committed
+- [x] Git branching strategy documented (`main`, `develop`, `feat/*`, `fix/*`)
 - [ ] All team members able to run `pnpm dev` and see the app shell
 
 ---
