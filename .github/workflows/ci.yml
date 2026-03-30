@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./tessera
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: 10
+        
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'pnpm'
+        cache-dependency-path: './tessera/pnpm-lock.yaml'
+        
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      
+    - name: Lint
+      run: pnpm -r lint
+      
+    - name: Type Check
+      run: pnpm -r typecheck
+      
+    - name: Test
+      run: pnpm -r test
