@@ -24,6 +24,11 @@ pnpm-debug.log*
 .env*.local
 .env
 
+# secrets — never commit these
+arweave-wallet.json
+zk/proving_key.bin
+zk/verification_key.bin
+
 # vercel
 .vercel
 
