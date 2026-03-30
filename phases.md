@@ -51,7 +51,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] `.env.example` with all required environment variables documented
 - [x] `README.md` draft committed
 - [x] Git branching strategy documented (`main`, `develop`, `feat/*`, `fix/*`)
-- [ ] All team members able to run `pnpm dev` and see the app shell
+- [x] All team members able to run `pnpm dev` and see the app shell
 
 ---
 
