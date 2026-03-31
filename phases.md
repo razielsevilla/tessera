@@ -63,8 +63,8 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 ### Checklist — Definition of Done
 
-- [ ] Rust crate `tessera-engine` created in `packages/engine/`
-- [ ] AES-256-GCM encryption/decryption of arbitrary JSON blobs implemented
+- [x] Rust crate `tessera-engine` created in `packages/engine/`
+- [x] AES-256-GCM encryption/decryption of arbitrary JSON blobs implemented
 - [ ] HKDF-based key derivation from wallet signing key implemented
 - [ ] Poseidon hash function integrated for ZK-compatible module score commitments
 - [ ] BMP struct defined and serialized to compact binary (< 256 bytes)
