@@ -66,7 +66,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Rust crate `tessera-engine` created in `packages/engine/`
 - [x] AES-256-GCM encryption/decryption of arbitrary JSON blobs implemented
 - [x] HKDF-based key derivation from wallet signing key implemented
-- [ ] Poseidon hash function integrated for ZK-compatible module score commitments
+- [x] Poseidon hash function integrated for ZK-compatible module score commitments
 - [ ] BMP struct defined and serialized to compact binary (< 256 bytes)
 - [ ] Ed25519 signature verification logic implemented
 - [ ] `wasm-pack build` produces working WASM module
