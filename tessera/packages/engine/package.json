@@ -1,23 +1,25 @@
 {
-  "name": "engine",
-  "version": "1.0.0",
-  "description": "",
-  "main": "pkg/tessera_engine.js",
-  "types": "pkg/tessera_engine.d.ts",
-  "exports": {
-    ".": {
-      "import": "./pkg/tessera_engine.js",
-      "types": "./pkg/tessera_engine.d.ts"
-    }
-  },
+  "name": "@tessera/engine",
+  "version": "0.1.0",
+  "description": "TypeScript wrapper for the Tessera WASM encryption engine.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "wasm-pack build --target web --out-dir pkg",
-    "lint": "echo 'No lint configured' && exit 0",
-    "typecheck": "echo 'No typecheck configured' && exit 0",
-    "test": "cargo test && wasm-pack test --node"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.33.0"
+  "dependencies": {
+    "@tessera/engine-core": "workspace:*",
+    "@tessera/types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0",
+    "vitest": "^1.0.0"
+  }
 }

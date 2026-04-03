@@ -1,0 +1,23 @@
+{
+  "name": "@tessera/engine-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pkg/tessera_engine.js",
+  "types": "pkg/tessera_engine.d.ts",
+  "exports": {
+    ".": {
+      "import": "./pkg/tessera_engine.js",
+      "types": "./pkg/tessera_engine.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "wasm-pack build --target web --out-dir pkg",
+    "lint": "echo 'No lint configured' && exit 0",
+    "typecheck": "echo 'No typecheck configured' && exit 0",
+    "test": "cargo test && wasm-pack test --node"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0"
+}

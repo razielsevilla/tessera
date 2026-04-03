@@ -70,7 +70,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] BMP struct defined and serialized to compact binary (< 256 bytes)
 - [x] Ed25519 signature verification logic implemented
 - [x] `wasm-pack build` produces working WASM module
-- [ ] TypeScript wrapper package (`@tessera/engine`) created
+- [x] TypeScript wrapper package (`@tessera/engine`) created
 - [ ] Unit tests: encryption round-trip, BMP serialization, hash determinism
 - [ ] Integration test: encrypt → serialize BMP → verify signature → deserialize
 - [ ] No raw secrets leak to `console.log` in any test output
