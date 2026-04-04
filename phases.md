@@ -91,7 +91,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] CID is deterministically included in BMP before signing
 - [x] Vault blob download + decryption flow implemented (`fetchAndDecryptVault(cid, key)`)
 - [x] Offline-first fallback: encrypted IndexedDB local cache when IPFS unavailable
-- [ ] Integration test: upload blob → get CID → fetch CID → decrypt → original data matches
+- [x] Integration test: upload blob → get CID → fetch CID → decrypt → original data matches
 - [ ] IPFS gateway rate-limit handling and retry logic implemented
 - [ ] No plaintext personal data included in any IPFS upload
 
