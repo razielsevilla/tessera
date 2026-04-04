@@ -75,7 +75,16 @@ impl BmpBuilder {
         self.vault_cid.copy_from_slice(cid_bytes);
         Ok(())
     }
-
+    #[wasm_bindgen(js_name = setVaultCidString)]
+    pub fn set_vault_cid_string(&mut self, cid_str: &str) -> Result<(), JsValue> {
+        let bytes = cid_str.as_bytes();
+        if bytes.len() > 46 {
+            return Err(JsValue::from_str("CID string too long (max 46 bytes)"));
+        }
+        self.vault_cid.fill(0);
+        self.vault_cid[..bytes.len()].copy_from_slice(bytes);
+        Ok(())
+    }
     pub fn set_module_hash(&mut self, hash_bytes: &[u8]) -> Result<(), JsValue> {
         if hash_bytes.len() != 32 {
             return Err(JsValue::from_str("Module hash must be exactly 32 bytes"));

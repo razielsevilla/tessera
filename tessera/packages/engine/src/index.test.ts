@@ -79,6 +79,19 @@ describe("TesseraEngine Wrapper", () => {
       expect(serialized).toBeDefined();
       expect(serialized.length).toBeLessThan(256);
     });
+
+    it("should deterministically pad and serialize a string CID (Arweave/IPFS)", () => {
+      const builder = engine.createBmpBuilder();
+      const ipfsCid = "QmYwAPJzv5CZsnA625s3Xf2nL6bAgk9S6p6Xw6QxYQ5wA1"; // Typical 46 char IPFS v0 CID
+      builder.setVaultCidString(ipfsCid);
+
+      const arweveTx = "j_yCj4uHn488fP3D-Y94Q7vX5_tP_zYjO9rQkO4_gXo"; // Typical 43 char transaction id
+      const builder2 = engine.createBmpBuilder();
+      builder2.setVaultCidString(arweveTx);
+
+      expect(builder.serialize()).toBeDefined();
+      expect(builder2.serialize()).toBeDefined();
+    });
   });
 
   describe("Key Derivation", () => {
