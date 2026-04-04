@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tessera/engine": "workspace:*",
+    "arweave": "^1.15.7",
     "next": "14.2.35",
     "pinata": "^2.5.5",
     "react": "^18",
