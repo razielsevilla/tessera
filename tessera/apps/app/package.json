@@ -11,10 +11,11 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@tessera/engine": "workspace:*",
     "next": "14.2.35",
+    "pinata": "^2.5.5",
     "react": "^18",
-    "react-dom": "^18",
-    "@tessera/engine": "workspace:*"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
