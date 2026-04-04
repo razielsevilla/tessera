@@ -85,8 +85,8 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 ### Checklist — Definition of Done
 
-- [ ] Pinata (or Web3.Storage) SDK integrated in `packages/app/`
-- [ ] `uploadVaultBlob(encryptedData: Uint8Array): Promise<string>` implemented and tested
+- [x] Pinata (or Web3.Storage) SDK integrated in `packages/app/`
+- [x] `uploadVaultBlob(encryptedData: Uint8Array): Promise<string>` implemented and tested
 - [ ] Arweave upload client implemented as a secondary/archive path
 - [ ] CID is deterministically included in BMP before signing
 - [ ] Vault blob download + decryption flow implemented (`fetchAndDecryptVault(cid, key)`)
