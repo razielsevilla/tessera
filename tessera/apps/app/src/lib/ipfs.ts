@@ -24,10 +24,10 @@ export async function uploadVaultBlob(encryptedData: Uint8Array): Promise<string
     try {
         const pinata = getPinata();
         // Convert Uint8Array to File
-        const blob = new Blob([encryptedData], { type: 'application/octet-stream' });
+        const blob = new Blob([encryptedData as unknown as BlobPart], { type: 'application/octet-stream' });
         const file = new File([blob], 'vault.bin', { type: 'application/octet-stream' });
-        
-        const upload = await pinata.upload.file(file);
+
+        const upload = await pinata.upload.public.file(file);
         return upload.cid;
     } catch (error: any) {
         throw new Error(`Failed to upload to IPFS via Pinata: ${error.message}`);

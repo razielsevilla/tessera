@@ -7,9 +7,11 @@ vi.mock('pinata', () => {
     PinataSDK: vi.fn().mockImplementation(() => {
       return {
         upload: {
-          file: vi.fn().mockResolvedValue({
-            cid: 'QmTestHash',
-          }),
+          public: {
+            file: vi.fn().mockResolvedValue({
+              cid: 'QmTestHash',
+            }),
+          },
         },
       };
     }),
