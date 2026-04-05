@@ -31,13 +31,16 @@ vi.mock('@tessera/engine', () => {
     };
 });
 
+/** Instant retry options — disables real delays so tests run fast. */
+const noRetry = { maxAttempts: 1, delayFn: () => Promise.resolve() };
+
 describe('fetchAndDecryptVault', () => {
     beforeEach(() => {
         vi.unstubAllEnvs();
         vi.clearAllMocks();
     });
 
-it('successfully fetches and decrypts data and saves to cache', async () => {
+    it('successfully fetches and decrypts data and saves to cache', async () => {
         // Stub gateway URL
         vi.stubEnv('NEXT_PUBLIC_GATEWAY_URL', 'https://mock.gateway/');
 
@@ -49,7 +52,7 @@ it('successfully fetches and decrypts data and saves to cache', async () => {
 
         // Valid key
         const key = new Uint8Array([1]);
-        const result = await fetchAndDecryptVault('mock-cid', key);
+        const result = await fetchAndDecryptVault('mock-cid', key, noRetry);
 
         // Verification
         expect(fetchSpy).toHaveBeenCalledWith('https://mock.gateway/ipfs/mock-cid');
@@ -62,10 +65,10 @@ it('successfully fetches and decrypts data and saves to cache', async () => {
 
     it('falls back to local cache on network failure and handles decrypt', async () => {
         fetchSpy.mockRejectedValue(new Error('Network error'));
-        vi.mocked(getFromLocalCache).mockResolvedValue(new Uint8Array([9, 9])); 
+        vi.mocked(getFromLocalCache).mockResolvedValue(new Uint8Array([9, 9]));
 
         const key = new Uint8Array([1]);
-        const result = await fetchAndDecryptVault('mock-cid', key);
+        const result = await fetchAndDecryptVault('mock-cid', key, noRetry);
 
         expect(getFromLocalCache).toHaveBeenCalledWith('mock-cid');
         expect(engine.decrypt).toHaveBeenCalledWith(new Uint8Array([9, 9]), key);
@@ -74,11 +77,11 @@ it('successfully fetches and decrypts data and saves to cache', async () => {
 
     it('throws combined error if network fails and cache is empty', async () => {
         fetchSpy.mockRejectedValue(new Error('Network error'));
-        vi.mocked(getFromLocalCache).mockResolvedValue(null); 
+        vi.mocked(getFromLocalCache).mockResolvedValue(null);
 
         const key = new Uint8Array([1]);
 
-        await expect(fetchAndDecryptVault('mock-cid', key))
+        await expect(fetchAndDecryptVault('mock-cid', key, noRetry))
             .rejects.toThrowError('Failed to fetch vault blob from IPFS and no local cache available. Original error: Network error');
     });
 
@@ -86,13 +89,14 @@ it('successfully fetches and decrypts data and saves to cache', async () => {
         // Assume default gateway logic in `vault.ts` kicks in
         fetchSpy.mockResolvedValue({
             ok: false,
-            status: 404
+            status: 404,
+            headers: { get: () => null }
         });
-        vi.mocked(getFromLocalCache).mockResolvedValue(null); 
+        vi.mocked(getFromLocalCache).mockResolvedValue(null);
 
         const key = new Uint8Array([1]);
 
-        await expect(fetchAndDecryptVault('non-existent-cid', key))
+        await expect(fetchAndDecryptVault('non-existent-cid', key, noRetry))
             .rejects.toThrowError('Failed to fetch vault blob from IPFS and no local cache available. Original error: Failed to fetch vault blob from IPFS: HTTP 404');
     });
 
@@ -104,9 +108,9 @@ it('successfully fetches and decrypts data and saves to cache', async () => {
         });
 
         // 0 key triggers the mock failure internally
-        const badKey = new Uint8Array([0]); 
-        
-        await expect(fetchAndDecryptVault('mock-cid', badKey))
+        const badKey = new Uint8Array([0]);
+
+        await expect(fetchAndDecryptVault('mock-cid', badKey, noRetry))
             .rejects.toThrowError('Decryption failed: Invalid Auth Tag/Key');
     });
 });
