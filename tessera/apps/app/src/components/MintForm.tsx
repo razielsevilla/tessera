@@ -10,17 +10,19 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
   const wallet = useWallet();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleMint = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!wallet.publicKey || !wallet.signMessage) {
-      alert('Wallet not connected or does not support message signing');
+      setError('Wallet not connected or does not support message signing');
       return;
     }
 
     setLoading(true);
-    setStatus('Initializing engine...');
-    
+    setError(null);
+    setSuccess(null);
     try {
       await engine.init();
 
@@ -95,11 +97,13 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       })
       .rpc();
 
-      setStatus(`Mint success! Tx: ${tx}`);
+      setStatus('');
+      setSuccess(`Mint success! Tx: ${tx}`);
       if (onMintSuccess) onMintSuccess();
     } catch (err: any) {
       console.error('Minting error:', err);
-      setStatus(`Error: ${err.message}`);
+      setStatus('');
+      setError(`Error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -122,15 +126,36 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex justify-center items-center gap-2"
         >
-          {loading ? 'Processing...' : 'Mint Tile'}
+          {loading ? (
+            <>
+              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Processing...</span>
+            </>
+          ) : 'Mint Tile'}
         </button>
       </form>
+
       {status && (
-        <p className="mt-4 text-xs font-mono text-gray-500 break-words">
+        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 rounded-lg text-sm text-center animate-pulse">
           {status}
-        </p>
+        </div>
+      )}
+
+      {error && (
+        <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 border border-red-200 dark:border-red-800 rounded-lg text-sm text-center">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 text-green-600 border border-green-200 dark:border-green-800 rounded-lg text-sm text-center truncate">
+          {success}
+        </div>
       )}
     </div>
   );

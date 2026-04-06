@@ -13,7 +13,7 @@ const WalletMultiButtonDynamic = dynamic(
 
 export default function Home() {
   const { connected } = useWallet();
-  const { slots, loading } = useTesseraHistory();
+  const { slots, loading, error } = useTesseraHistory();
 
   return (
     <div className="min-h-screen flex flex-col p-8 font-[family-name:var(--font-geist-sans)]">
@@ -33,7 +33,13 @@ export default function Home() {
           </section>
         )}
 
-        {loading && <p className="text-sm text-gray-500 animate-pulse">Loading on-chain tessera history...</p>}
+        {loading && <p className="text-sm text-gray-500 animate-pulse bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg">Loading on-chain tessera history...</p>}
+        
+        {error && (
+          <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg flex items-center justify-between w-full max-w-md">
+            <span>Failed to load history: {error}</span>
+          </div>
+        )}
 
         <section className="w-full max-w-4xl flex justify-center overflow-auto border rounded-xl p-6 dark:border-white/[.145] relative">
           <MosaicCanvas slots={slots} />

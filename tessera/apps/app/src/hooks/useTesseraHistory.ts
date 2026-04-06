@@ -17,17 +17,24 @@ export function useTesseraHistory() {
   const wallet = useWallet();
   const [slots, setSlots] = useState<TesseraSlot[] | undefined>(undefined);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const program = useMemo(() => {
     if (!wallet.publicKey) return null;
-    const provider = new anchor.AnchorProvider(connection, wallet as any, {});
+    const provider = new anchor.AnchorProvider(connection, wallet as any, {});  
     return new anchor.Program(idl as unknown as anchor.Idl, provider);
   }, [connection, wallet]);
 
   useEffect(() => {
+    if (!program || !wallet.publicKey) {
+      setSlots(undefined);
+      setError(null);
+      return;
+    }
 
     const fetchHistory = async () => {
       setLoading(true);
+      setError(null);
       try {
         // Query the program for TesseraAccount structs belonging to this wallet.
         // Using memcmp offset 8 bytes to skip discriminator and match wallet_owner.
@@ -66,8 +73,9 @@ export function useTesseraHistory() {
         });
 
         setSlots(newSlots);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch Tessera history:', err);
+        setError(err.message || String(err));
       } finally {
         setLoading(false);
       }
@@ -76,5 +84,5 @@ export function useTesseraHistory() {
     fetchHistory();
   }, [program, wallet.publicKey]);
 
-  return { slots, loading };
+  return { slots, loading, error };
 }
