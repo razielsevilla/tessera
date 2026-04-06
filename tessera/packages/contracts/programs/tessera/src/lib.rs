@@ -60,6 +60,43 @@ pub mod tessera {
         msg!("Minting Tessera! Total Mints: {}, Streak: {}", profile.total_mints, profile.streak_counter);
         Ok(())
     }
+
+    pub fn record_milestone(ctx: Context<RecordMilestone>, skill_id: u8, tier_unlocked: u8) -> Result<()> {
+        let milestone = &mut ctx.accounts.milestone;
+        let profile = &mut ctx.accounts.user_profile;
+        let clock = Clock::get()?;
+        
+        milestone.wallet_owner = ctx.accounts.owner.key();
+        milestone.skill_id = skill_id;
+        milestone.tier_unlocked = tier_unlocked;
+        milestone.unlock_timestamp = clock.unix_timestamp;
+
+        // Update the global user highest frame tier
+        if tier_unlocked > profile.highest_frame_tier {
+            profile.highest_frame_tier = tier_unlocked;
+        }
+
+        msg!("Milestone Unlocked! Skill: {}, Tier: {}", skill_id, tier_unlocked);
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct Initialize {}
+
+#[derive(Accounts)]
+pub struct InitializeProfile<'info> {
+    #[account(
+        init,
+        payer = owner,
+        space = 8 + 32 + 8 + 4 + 4 + 1 + 3, // discriminator + pubkey + i64 + u32 + u32 + u8 + padding
+        seeds = [b"profile", owner.key().as_ref()],
+        bump
+    )]
+    pub user_profile: Account<'info, UserProfile>,
+    #[account(mut)]
+    pub owner: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -90,18 +127,23 @@ pub struct MintTessera<'info> {
 }
 
 #[derive(Accounts)]
-pub struct Initialize {}
-
-#[derive(Accounts)]
-pub struct InitializeProfile<'info> {
+#[instruction(skill_id: u8, tier_unlocked: u8)]
+pub struct RecordMilestone<'info> {
+    #[account(
+        mut,
+        seeds = [b"profile", owner.key().as_ref()],
+        bump,
+        has_one = owner
+    )]
+    pub user_profile: Account<'info, UserProfile>,
     #[account(
         init,
         payer = owner,
-        space = 8 + 32 + 8 + 4 + 4 + 1 + 3, // discriminator + pubkey + i64 + u32 + u32 + u8 + padding
-        seeds = [b"profile", owner.key().as_ref()],
+        space = 8 + 32 + 1 + 1 + 8, // discriminator + pubkey + u8 + u8 + i64
+        seeds = [b"milestone", owner.key().as_ref(), &[skill_id], &[tier_unlocked]],
         bump
     )]
-    pub user_profile: Account<'info, UserProfile>,
+    pub milestone: Account<'info, MilestoneAccount>,
     #[account(mut)]
     pub owner: Signer<'info>,
     pub system_program: Program<'info, System>,
@@ -121,6 +163,14 @@ pub struct TesseraAccount {
     pub wallet_owner: Pubkey,
     pub minting_timestamp: i64,
     pub bmp: BundledMetadataPayload,
+}
+
+#[account]
+pub struct MilestoneAccount {
+    pub wallet_owner: Pubkey,
+    pub skill_id: u8,
+    pub tier_unlocked: u8,
+    pub unlock_timestamp: i64,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]

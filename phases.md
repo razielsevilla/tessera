@@ -111,7 +111,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Ed25519 payload signature verification within the contract
 - [x] `UserProfile` account: streak counter, total mints, highest frame tier
 - [x] `TesseraAccount` account: full BMP, minting timestamp, wallet owner
-- [ ] `MilestoneAccount`: skill tier unlock records
+- [x] `MilestoneAccount`: skill tier unlock records
 - [ ] `TesseraMinted` event emitted on success
 - [ ] Local devnet deployment script (`scripts/deploy.ts`) working
 - [ ] Unit tests covering: happy path, double-mint rejection, wrong-date rejection, bad signature rejection
