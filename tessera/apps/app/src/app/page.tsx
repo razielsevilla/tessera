@@ -3,6 +3,7 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
 import { MosaicCanvas } from '../components/MosaicCanvas';
+import { useTesseraHistory } from '../hooks/useTesseraHistory';
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -11,6 +12,7 @@ const WalletMultiButtonDynamic = dynamic(
 
 export default function Home() {
   const { connected } = useWallet();
+  const { slots, loading } = useTesseraHistory();
 
   return (
     <div className="min-h-screen flex flex-col p-8 font-[family-name:var(--font-geist-sans)]">
@@ -24,8 +26,10 @@ export default function Home() {
           {connected ? 'Wallet is Connected. Ready to mint.' : 'Please connect your Phantom wallet.'}
         </h2>
 
-        <section className="w-full max-w-4xl flex justify-center overflow-auto border rounded-xl p-6 dark:border-white/[.145]">
-          <MosaicCanvas />
+        {loading && <p className="text-sm text-gray-500 animate-pulse">Loading on-chain tessera history...</p>}
+
+        <section className="w-full max-w-4xl flex justify-center overflow-auto border rounded-xl p-6 dark:border-white/[.145] relative">
+          <MosaicCanvas slots={slots} />
         </section>
       </main>
     </div>
