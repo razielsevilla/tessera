@@ -2,6 +2,7 @@
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { MosaicCanvas } from '../components/MosaicCanvas';
 import MintForm from '../components/MintForm';
 import { useTesseraHistory } from '../hooks/useTesseraHistory';
@@ -19,7 +20,10 @@ export default function Home() {
     <div className="min-h-screen flex flex-col p-4 sm:p-8 font-[family-name:var(--font-geist-sans)]">
       <header className="flex flex-col sm:flex-row justify-between items-center w-full max-w-5xl mx-auto border-b pb-4 gap-4 sm:gap-0 dark:border-white/[.145]">
         <h1 className="text-2xl font-bold text-center sm:text-left">Tessera Dashboard</h1>
-        <WalletMultiButtonDynamic />
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          <WalletMultiButtonDynamic />
+        </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-start gap-8 mt-6 sm:mt-10 w-full max-w-5xl mx-auto">

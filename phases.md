@@ -136,7 +136,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] "Mint Today" flow: form → engine → IPFS upload → contract call → grid update
 - [x] Loading, error, and success states for all async operations
 - [x] Responsive layout for desktop and tablet viewports
-- [ ] Dark mode default with theme toggle
+- [x] Dark mode default with theme toggle
 - [ ] E2E test (Playwright): connect wallet (mock) → fill form → submit → new tile appears
 
 ---
