@@ -112,7 +112,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] `UserProfile` account: streak counter, total mints, highest frame tier
 - [x] `TesseraAccount` account: full BMP, minting timestamp, wallet owner
 - [x] `MilestoneAccount`: skill tier unlock records
-- [ ] `TesseraMinted` event emitted on success
+- [x] `TesseraMinted` event emitted on success
 - [ ] Local devnet deployment script (`scripts/deploy.ts`) working
 - [ ] Unit tests covering: happy path, double-mint rejection, wrong-date rejection, bad signature rejection
 - [ ] Contract bytecode size within network limits

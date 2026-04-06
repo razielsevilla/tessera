@@ -55,7 +55,14 @@ pub mod tessera {
         // 3. Populate new TesseraAccount
         tessera.wallet_owner = ctx.accounts.owner.key();
         tessera.minting_timestamp = current_timestamp;
-        tessera.bmp = payload;
+        tessera.bmp = payload.clone();
+
+        emit!(TesseraMinted {
+            wallet_owner: tessera.wallet_owner,
+            total_mints_count: profile.total_mints,
+            streak_counter: profile.streak_counter,
+            minting_timestamp: current_timestamp,
+        });
 
         msg!("Minting Tessera! Total Mints: {}, Streak: {}", profile.total_mints, profile.streak_counter);
         Ok(())
@@ -171,6 +178,14 @@ pub struct MilestoneAccount {
     pub skill_id: u8,
     pub tier_unlocked: u8,
     pub unlock_timestamp: i64,
+}
+
+#[event]
+pub struct TesseraMinted {
+    pub wallet_owner: Pubkey,
+    pub total_mints_count: u32,
+    pub streak_counter: u32,
+    pub minting_timestamp: i64,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
