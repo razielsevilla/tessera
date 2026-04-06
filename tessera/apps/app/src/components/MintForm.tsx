@@ -50,18 +50,10 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
           dataHash.fill(2);
       }
       
-      const signature = await wallet.signMessage(dataHash); // [u8; 64]
-
-      setStatus('Uploading encrypted blob to IPFS (mock fallback)...');
-      
-      // 3. IPFS Upload
-      let cid = 'QmMockCid1234567890';
-      try {
-        // if (typeof uploadVaultBlob === 'function') {
-        //   cid = await uploadVaultBlob(encryptedData);
-        // }
-        // mock logic
-      } catch (err) {
+      // Phantom Wallet prevents apps from blindly signing raw 32-byte arrays as it suspects they 
+      // might be malicious Solana transactions. For MVP/Demo, we sign a human-readable encoded string.
+      const messageToSign = new TextEncoder().encode(`Tessera Mint Authentication\nPayload Hash: ${Buffer.from(dataHash).toString('hex')}`);
+      const signature = await wallet.signMessage(messageToSign); // [u8; 64]
         console.warn('IPFS upload failed/missing, using mock CID', err);
       }
 
