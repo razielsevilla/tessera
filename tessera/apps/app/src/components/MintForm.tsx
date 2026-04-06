@@ -54,11 +54,22 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       // might be malicious Solana transactions. For MVP/Demo, we sign a human-readable encoded string.
       const messageToSign = new TextEncoder().encode(`Tessera Mint Authentication\nPayload Hash: ${Buffer.from(dataHash).toString('hex')}`);
       const signature = await wallet.signMessage(messageToSign); // [u8; 64]
+
+      setStatus('Uploading encrypted blob to IPFS (mock fallback)...');
+
+      // 3. IPFS Upload
+      let cid = 'QmMockCid1234567890';
+      try {
+        // if (typeof uploadVaultBlob === 'function') {
+        //   cid = await uploadVaultBlob(encryptedData);
+        // }
+        // mock logic
+      } catch (err) {
         console.warn('IPFS upload failed/missing, using mock CID', err);
       }
 
       setStatus('Preparing Solana transaction...');
-      
+
       // 4. Contract Call
       const provider = new anchor.AnchorProvider(connection, wallet as any, {});
       const program = new anchor.Program(idl as unknown as anchor.Idl, provider);
