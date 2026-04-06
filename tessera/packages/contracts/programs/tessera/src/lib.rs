@@ -25,11 +25,12 @@ pub mod tessera {
 
     pub fn mint_tessera(ctx: Context<MintTessera>, payload: BundledMetadataPayload) -> Result<()> {
         let profile = &mut ctx.accounts.user_profile;
-        
+        let tessera = &mut ctx.accounts.new_tessera;
+
         // 1. Verify Ed25519 signature via ix_sysvar
         let ix = load_instruction_at_checked(0, &ctx.accounts.ix_sysvar)?;
         require_keys_eq!(ix.program_id, ED25519_ID, ErrorCode::InvalidSignature);
-        
+
         // 2. Cooldown check
         let clock = Clock::get()?;
         let current_timestamp = clock.unix_timestamp;
@@ -51,9 +52,41 @@ pub mod tessera {
         profile.total_mints = profile.total_mints.checked_add(1).unwrap_or(1);
         profile.last_mint_timestamp = current_timestamp;
 
+        // 3. Populate new TesseraAccount
+        tessera.wallet_owner = ctx.accounts.owner.key();
+        tessera.minting_timestamp = current_timestamp;
+        tessera.bmp = payload;
+
         msg!("Minting Tessera! Total Mints: {}, Streak: {}", profile.total_mints, profile.streak_counter);
         Ok(())
     }
+}
+
+#[derive(Accounts)]
+#[instruction(payload: BundledMetadataPayload)]
+pub struct MintTessera<'info> {
+    #[account(
+        mut,
+        seeds = [b"profile", owner.key().as_ref()],
+        bump,
+        has_one = owner
+    )]
+    pub user_profile: Account<'info, UserProfile>,
+    #[account(
+        init,
+        payer = owner,
+        // 8 (discriminator) + 32 (owner) + 8 (timestamp) + 64 (sig) + 32 (hash) + 4 (string prefix) + 128 (max uri)
+        space = 8 + 32 + 8 + 64 + 32 + 4 + 128,
+        seeds = [b"tessera", owner.key().as_ref(), &user_profile.total_mints.to_le_bytes()],
+        bump
+    )]
+    pub new_tessera: Account<'info, TesseraAccount>,
+    #[account(mut)]
+    pub owner: Signer<'info>,
+    /// CHECK: The instruction sysvar is required to verify the Ed25519 signature
+    #[account(address = IX_ID)]
+    pub ix_sysvar: AccountInfo<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -74,22 +107,6 @@ pub struct InitializeProfile<'info> {
     pub system_program: Program<'info, System>,
 }
 
-#[derive(Accounts)]
-pub struct MintTessera<'info> {
-    #[account(
-        mut,
-        seeds = [b"profile", owner.key().as_ref()],
-        bump,
-        has_one = owner
-    )]
-    pub user_profile: Account<'info, UserProfile>,
-    #[account(mut)]
-    pub owner: Signer<'info>,
-    /// CHECK: The instruction sysvar is required to verify the Ed25519 signature
-    #[account(address = IX_ID)]
-    pub ix_sysvar: AccountInfo<'info>,
-}
-
 #[account]
 pub struct UserProfile {
     pub owner: Pubkey,
@@ -97,6 +114,13 @@ pub struct UserProfile {
     pub streak_counter: u32,
     pub total_mints: u32,
     pub highest_frame_tier: u8,
+}
+
+#[account]
+pub struct TesseraAccount {
+    pub wallet_owner: Pubkey,
+    pub minting_timestamp: i64,
+    pub bmp: BundledMetadataPayload,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
