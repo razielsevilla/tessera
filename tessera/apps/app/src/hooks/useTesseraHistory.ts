@@ -38,7 +38,7 @@ export function useTesseraHistory() {
       try {
         // Query the program for TesseraAccount structs belonging to this wallet.
         // Using memcmp offset 8 bytes to skip discriminator and match wallet_owner.
-        const accounts = await (program!.account as any)['TesseraAccount'].all([
+        const accounts = await (program!.account as any)['tesseraAccount'].all([
           {
             memcmp: {
               offset: 8,
