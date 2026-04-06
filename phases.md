@@ -107,7 +107,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 - [x] Rust smart contract written in `packages/contracts/` (Solana Anchor or Ink!)
 - [x] `mint_tessera(payload: BundledMetadataPayload)` instruction implemented
-- [ ] One-mint-per-day-per-wallet enforcement logic implemented and tested
+- [x] One-mint-per-day-per-wallet enforcement logic implemented and tested
 - [ ] Ed25519 payload signature verification within the contract
 - [ ] `UserProfile` account: streak counter, total mints, highest frame tier
 - [ ] `TesseraAccount` account: full BMP, minting timestamp, wallet owner
