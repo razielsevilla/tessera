@@ -17,6 +17,9 @@ pub mod tessera {
         let profile = &mut ctx.accounts.user_profile;
         profile.owner = ctx.accounts.owner.key();
         profile.last_mint_timestamp = 0;
+        profile.streak_counter = 0;
+        profile.total_mints = 0;
+        profile.highest_frame_tier = 0;
         Ok(())
     }
 
@@ -30,16 +33,25 @@ pub mod tessera {
         // 2. Cooldown check
         let clock = Clock::get()?;
         let current_timestamp = clock.unix_timestamp;
+        let seconds_in_day = 86400;
 
         // Enforce one mint per day (86400 seconds)
         require!(
-            current_timestamp - profile.last_mint_timestamp >= 86400,
+            current_timestamp - profile.last_mint_timestamp >= seconds_in_day,
             ErrorCode::MintTooSoon
         );
 
+        // Update streak: if it's been more than 48 hours, streak resets, otherwise increment
+        if profile.last_mint_timestamp == 0 || (current_timestamp - profile.last_mint_timestamp > seconds_in_day * 2) {
+            profile.streak_counter = 1;
+        } else {
+            profile.streak_counter = profile.streak_counter.checked_add(1).unwrap_or(1);
+        }
+
+        profile.total_mints = profile.total_mints.checked_add(1).unwrap_or(1);
         profile.last_mint_timestamp = current_timestamp;
 
-        msg!("Minting Tessera...");
+        msg!("Minting Tessera! Total Mints: {}, Streak: {}", profile.total_mints, profile.streak_counter);
         Ok(())
     }
 }
@@ -52,7 +64,7 @@ pub struct InitializeProfile<'info> {
     #[account(
         init,
         payer = owner,
-        space = 8 + 32 + 8, // discriminator + pubkey + i64
+        space = 8 + 32 + 8 + 4 + 4 + 1 + 3, // discriminator + pubkey + i64 + u32 + u32 + u8 + padding
         seeds = [b"profile", owner.key().as_ref()],
         bump
     )]
@@ -82,6 +94,9 @@ pub struct MintTessera<'info> {
 pub struct UserProfile {
     pub owner: Pubkey,
     pub last_mint_timestamp: i64,
+    pub streak_counter: u32,
+    pub total_mints: u32,
+    pub highest_frame_tier: u8,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
@@ -108,6 +123,9 @@ mod tests {
         let mut profile = UserProfile {
             owner: Pubkey::new_unique(),
             last_mint_timestamp: 1000000,
+            streak_counter: 1,
+            total_mints: 1,
+            highest_frame_tier: 0,
         };
         let seconds_in_day = 86400;
 

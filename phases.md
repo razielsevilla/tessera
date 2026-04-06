@@ -109,7 +109,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] `mint_tessera(payload: BundledMetadataPayload)` instruction implemented
 - [x] One-mint-per-day-per-wallet enforcement logic implemented and tested
 - [x] Ed25519 payload signature verification within the contract
-- [ ] `UserProfile` account: streak counter, total mints, highest frame tier
+- [x] `UserProfile` account: streak counter, total mints, highest frame tier
 - [ ] `TesseraAccount` account: full BMP, minting timestamp, wallet owner
 - [ ] `MilestoneAccount`: skill tier unlock records
 - [ ] `TesseraMinted` event emitted on success
