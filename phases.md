@@ -113,7 +113,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] `TesseraAccount` account: full BMP, minting timestamp, wallet owner
 - [x] `MilestoneAccount`: skill tier unlock records
 - [x] `TesseraMinted` event emitted on success
-- [ ] Local devnet deployment script (`scripts/deploy.ts`) working
+- [x] Local devnet deployment script (`scripts/deploy.ts`) working
 - [ ] Unit tests covering: happy path, double-mint rejection, wrong-date rejection, bad signature rejection
 - [ ] Contract bytecode size within network limits
 - [ ] Anchor IDL (or Ink! metadata) generated and committed to repo
