@@ -34,13 +34,13 @@ export const MosaicCanvas: React.FC<MosaicCanvasProps> = ({ slots }) => {
   const displaySlots = slots || defaultSlots;
 
   return (
-    <div className="w-full overflow-x-auto p-4 flex flex-col items-center">
-      <h3 className="text-lg font-semibold mb-4">Your Year in Tessera</h3>
-      <div 
-        className="grid gap-1" 
-        style={{ 
-          gridTemplateColumns: 'repeat(52, minmax(12px, 1fr))',
-          gridTemplateRows: 'repeat(7, 12px)'
+    <div className="w-full overflow-x-auto p-2 sm:p-4 flex flex-col items-center">
+      <h3 className="text-lg sm:text-xl font-semibold mb-4 text-center">Your Year in Tessera</h3>
+      <div
+        className="grid gap-1"
+        style={{
+          gridTemplateColumns: 'repeat(52, minmax(10px, 16px))',
+          gridTemplateRows: 'repeat(7, minmax(10px, 16px))'
         }}
       >
         {displaySlots.map((slot) => (

@@ -112,8 +112,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
   if (!wallet.connected) return null;
 
   return (
-    <div className="w-full max-w-sm mx-auto p-4 border rounded-xl dark:border-white/[.145] bg-neutral-50 dark:bg-black">
-      <h3 className="text-lg font-bold mb-4">Mint Today's Tessera</h3>
+    <div className="w-full max-w-sm mx-auto p-4 sm:p-6 border rounded-xl dark:border-white/[.145] bg-neutral-50 dark:bg-black shadow-sm">
+      <h3 className="text-lg font-bold mb-4 text-center sm:text-left">Mint Today's Tessera</h3>
       <form onSubmit={handleMint} className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <label className="text-sm">Mood (1-10)</label>
