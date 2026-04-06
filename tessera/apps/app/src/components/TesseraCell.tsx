@@ -1,0 +1,64 @@
+﻿import React from 'react';
+
+export interface BMPMetadata {
+  moodScore?: number; // 1-10
+  socialBattery?: number; // 1-10
+  productivityScore?: number; // 0-100
+  frameTier?: number; // 0: None, 1: Bronze, 2: Silver, 3: Gold, 4: Legendary
+}
+
+interface TesseraCellProps {
+  id: number;
+  isFilled: boolean;
+  metadata?: BMPMetadata;
+}
+
+export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata }) => {
+  if (!isFilled || !metadata) {
+    return (
+      <div 
+        className="w-3 h-3 rounded-sm transition-colors bg-gray-200 dark:bg-gray-800"
+        title={Day \ - Empty}
+      />
+    );
+  }
+
+  // Derive visual properties from BMP metadata
+  // Mood dictates hue (red to green)
+  const hue = ((metadata.moodScore || 5) / 10) * 120; // 0 to 120 (red to green)
+  // Social battery dictates lightness
+  const lightness = 40 + ((metadata.socialBattery || 5) / 10) * 20; // 40% to 60%
+  const color = hsl(\, 70%, \%);
+  
+  // Productivity dicates opacity
+  const opacity = 0.4 + ((metadata.productivityScore || 50) / 100) * 0.6; // 0.4 to 1.0
+
+  // Frame tier dictates border and shadow
+  let borderClass = 'border border-transparent';
+  let shadowClass = '';
+  switch (metadata.frameTier) {
+    case 1: // Bronze
+      borderClass = 'border border-[#cd7f32]';
+      break;
+    case 2: // Silver
+      borderClass = 'border border-[#c0c0c0]';
+      shadowClass = 'shadow-[0_0_2px_#c0c0c0]';
+      break;
+    case 3: // Gold
+      borderClass = 'border border-[#ffd700]';
+      shadowClass = 'shadow-[0_0_4px_#ffd700]';
+      break;
+    case 4: // Legendary
+      borderClass = 'border border-[#9400d3]';
+      shadowClass = 'shadow-[0_0_6px_#9400d3] animate-pulse';
+      break;
+  }
+
+  return (
+    <div
+      className={w-3 h-3 rounded-sm transition-all hover:scale-125 hover:z-10 \ \}
+      style={{ backgroundColor: color, opacity }}
+      title={Day \\nMood: \/10\nSocial: \/10\nProductivity: \/100\nTier: \}
+    />
+  );
+};

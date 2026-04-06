@@ -1,8 +1,10 @@
 ﻿import React from 'react';
+import { TesseraCell, BMPMetadata } from './TesseraCell';
 
 interface TesseraSlot {
   id: number;
   isFilled: boolean;
+  metadata?: BMPMetadata;
 }
 
 interface MosaicCanvasProps {
@@ -11,11 +13,23 @@ interface MosaicCanvasProps {
 
 export const MosaicCanvas: React.FC<MosaicCanvasProps> = ({ slots }) => {
   // Default to 365 mock slots if none provided
-  const defaultSlots = Array.from({ length: 365 }).map((_, i) => ({
-    id: i,
-    // Mock a few filled states for visual testing
-    isFilled: [32, 45, 100, 250, 364].includes(i),
-  }));
+  const defaultSlots = Array.from({ length: 365 }).map((_, i) => {
+    const isFilled = [32, 45, 100, 250, 364].includes(i);
+    
+    // Generate some mock metadata to visually test the cell logic
+    const mockMetadata: BMPMetadata | undefined = isFilled ? {
+      moodScore: Math.floor(Math.random() * 10) + 1,
+      socialBattery: Math.floor(Math.random() * 10) + 1,
+      productivityScore: Math.floor(Math.random() * 100) + 1,
+      frameTier: Math.floor(Math.random() * 5),
+    } : undefined;
+
+    return {
+      id: i,
+      isFilled,
+      metadata: mockMetadata
+    };
+  });
 
   const displaySlots = slots || defaultSlots;
 
@@ -30,10 +44,11 @@ export const MosaicCanvas: React.FC<MosaicCanvasProps> = ({ slots }) => {
         }}
       >
         {displaySlots.map((slot) => (
-          <div
+          <TesseraCell
             key={slot.id}
-            className={w-3 h-3 rounded-sm transition-colors \}
-            title={Day \\}
+            id={slot.id}
+            isFilled={slot.isFilled}
+            metadata={slot.metadata}
           />
         ))}
       </div>
