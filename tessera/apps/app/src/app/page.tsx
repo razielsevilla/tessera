@@ -2,6 +2,7 @@
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
+import { MosaicCanvas } from '../components/MosaicCanvas';
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -18,10 +19,14 @@ export default function Home() {
         <WalletMultiButtonDynamic />
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center gap-8 mt-10">
+      <main className="flex-1 flex flex-col items-center justify-start gap-8 mt-10 w-full max-w-5xl mx-auto">
         <h2 className="text-xl">
           {connected ? 'Wallet is Connected. Ready to mint.' : 'Please connect your Phantom wallet.'}
         </h2>
+
+        <section className="w-full max-w-4xl flex justify-center overflow-auto border rounded-xl p-6 dark:border-white/[.145]">
+          <MosaicCanvas />
+        </section>
       </main>
     </div>
   );
