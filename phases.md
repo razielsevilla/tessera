@@ -116,7 +116,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Local devnet deployment script (`scripts/deploy.ts`) working
 - [x] Unit tests covering: happy path, double-mint rejection, wrong-date rejection, bad signature rejection
 - [x] Contract bytecode size within network limits
-- [ ] Anchor IDL (or Ink! metadata) generated and committed to repo
+- [x] Anchor IDL (or Ink! metadata) generated and committed to repo
 
 ---
 
