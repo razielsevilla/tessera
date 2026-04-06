@@ -137,7 +137,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Loading, error, and success states for all async operations
 - [x] Responsive layout for desktop and tablet viewports
 - [x] Dark mode default with theme toggle
-- [ ] E2E test (Playwright): connect wallet (mock) → fill form → submit → new tile appears
+- [x] E2E test (Playwright): connect wallet (mock) → fill form → submit → new tile appears
 
 ---
 
