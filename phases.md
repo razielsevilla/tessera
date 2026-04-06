@@ -133,7 +133,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] `MosaicCanvas` renders a 365-slot grid (empty + filled states)
 - [x] `TesseraCell` renders visual properties from on-chain BMP metadata
 - [x] On-chain tessera history fetched and rendered for connected wallet
-- [ ] "Mint Today" flow: form → engine → IPFS upload → contract call → grid update
+- [x] "Mint Today" flow: form → engine → IPFS upload → contract call → grid update
 - [ ] Loading, error, and success states for all async operations
 - [ ] Responsive layout for desktop and tablet viewports
 - [ ] Dark mode default with theme toggle

@@ -1,22 +1,148 @@
-﻿{
+{
   "version": "0.1.0",
   "name": "tessera",
   "instructions": [
-    { "name": "initialize", "accounts": [], "args": [] },
-    { "name": "initializeProfile", "accounts": [], "args": [] },
-    { "name": "mintTessera", "accounts": [], "args": [] },
-    { "name": "recordMilestone", "accounts": [], "args": [] }
+    {
+      "name": "initialize",
+      "accounts": [],
+      "args": []
+    },
+    {
+      "name": "initializeProfile",
+      "accounts": [
+        {
+          "name": "userProfile",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "mintTessera",
+      "accounts": [
+        {
+          "name": "userProfile",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "newTessera",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ixSysvar",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "payload",
+          "type": {
+            "defined": "BundledMetadataPayload"
+          }
+        }
+      ]
+    },
+    {
+      "name": "recordMilestone",
+      "accounts": [],
+      "args": []
+    }
   ],
   "accounts": [
-    { "name": "UserProfile", "type": { "kind": "struct", "fields": [] } },
-    { "name": "TesseraAccount", "type": { "kind": "struct", "fields": [] } },
-    { "name": "MilestoneAccount", "type": { "kind": "struct", "fields": [] } }
+    {
+      "name": "UserProfile",
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
+    },
+    {
+      "name": "TesseraAccount",
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
+    },
+    {
+      "name": "MilestoneAccount",
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "BundledMetadataPayload",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authSig",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          },
+          {
+            "name": "dataHash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "metadataUri",
+            "type": "string"
+          }
+        ]
+      }
+    }
   ],
   "events": [
-    { "name": "TesseraMinted", "fields": [] }
+    {
+      "name": "TesseraMinted",
+      "fields": []
+    }
   ],
   "errors": [
-    { "code": 6000, "name": "MintTooSoon", "msg": "You can only mint one Tessera per day." },
-    { "code": 6001, "name": "InvalidSignature", "msg": "Invalid Ed25519 payload signature." }
+    {
+      "code": 6000,
+      "name": "MintTooSoon",
+      "msg": "You can only mint one Tessera per day."
+    },
+    {
+      "code": 6001,
+      "name": "InvalidSignature",
+      "msg": "Invalid Ed25519 payload signature."
+    }
   ]
 }

@@ -21,25 +21,21 @@ export function useTesseraHistory() {
   const program = useMemo(() => {
     if (!wallet.publicKey) return null;
     const provider = new anchor.AnchorProvider(connection, wallet as any, {});
-    return new anchor.Program(idl as anchor.Idl, provider);
+    return new anchor.Program(idl as unknown as anchor.Idl, provider);
   }, [connection, wallet]);
 
   useEffect(() => {
-    if (!program || !wallet.publicKey) {
-      setSlots(undefined);
-      return;
-    }
 
     const fetchHistory = async () => {
       setLoading(true);
       try {
         // Query the program for TesseraAccount structs belonging to this wallet.
         // Using memcmp offset 8 bytes to skip discriminator and match wallet_owner.
-        const accounts = await program.account.tesseraAccount.all([
+        const accounts = await (program!.account as any)['TesseraAccount'].all([
           {
             memcmp: {
               offset: 8,
-              bytes: wallet.publicKey.toBase58()
+              bytes: wallet.publicKey!.toBase58()
             }
           }
         ]);
@@ -51,7 +47,7 @@ export function useTesseraHistory() {
         })) as TesseraSlot[];
 
         // Fill slots based on on-chain data
-        accounts.forEach((acc) => {
+        accounts.forEach((acc: any) => {
           const onChainData = acc.account as any;
           // Real MVP: Using modulo to map timestamps safely to a 365 array index.
           // Eventually, specific date-math would handle exact tile projection.

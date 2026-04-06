@@ -3,6 +3,7 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
 import { MosaicCanvas } from '../components/MosaicCanvas';
+import MintForm from '../components/MintForm';
 import { useTesseraHistory } from '../hooks/useTesseraHistory';
 
 const WalletMultiButtonDynamic = dynamic(
@@ -25,6 +26,12 @@ export default function Home() {
         <h2 className="text-xl">
           {connected ? 'Wallet is Connected. Ready to mint.' : 'Please connect your Phantom wallet.'}
         </h2>
+
+        {connected && (
+          <section className="w-full max-w-4xl flex justify-center">
+            <MintForm onMintSuccess={() => window.location.reload()} />
+          </section>
+        )}
 
         {loading && <p className="text-sm text-gray-500 animate-pulse">Loading on-chain tessera history...</p>}
 

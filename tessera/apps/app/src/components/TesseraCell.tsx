@@ -18,7 +18,7 @@ export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata
     return (
       <div 
         className="w-3 h-3 rounded-sm transition-colors bg-gray-200 dark:bg-gray-800"
-        title={Day \ - Empty}
+        title={`Day ${id} - Empty`}
       />
     );
   }
@@ -28,8 +28,8 @@ export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata
   const hue = ((metadata.moodScore || 5) / 10) * 120; // 0 to 120 (red to green)
   // Social battery dictates lightness
   const lightness = 40 + ((metadata.socialBattery || 5) / 10) * 20; // 40% to 60%
-  const color = hsl(\, 70%, \%);
-  
+  const color = `hsl(${hue}, 70%, ${lightness}%)`;
+
   // Productivity dicates opacity
   const opacity = 0.4 + ((metadata.productivityScore || 50) / 100) * 0.6; // 0.4 to 1.0
 
@@ -56,9 +56,9 @@ export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata
 
   return (
     <div
-      className={w-3 h-3 rounded-sm transition-all hover:scale-125 hover:z-10 \ \}
+      className={`w-3 h-3 rounded-sm transition-all hover:scale-125 hover:z-10 ${borderClass} ${shadowClass}`}
       style={{ backgroundColor: color, opacity }}
-      title={Day \\nMood: \/10\nSocial: \/10\nProductivity: \/100\nTier: \}
+      title={`Day ${id}\nMood: ${metadata.moodScore}/10\nSocial: ${metadata.socialBattery}/10\nProductivity: ${metadata.productivityScore}/100\nTier: ${metadata.frameTier}`}
     />
   );
 };
