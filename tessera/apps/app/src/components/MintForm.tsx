@@ -6,6 +6,7 @@ import { engine } from '@tessera/engine';
 import idl from '../../../../packages/contracts/target/idl/tessera.json';
 import { TaskTracker } from './TaskTracker';
 import { RetrospectiveLogger, RetrospectiveData } from './RetrospectiveLogger';
+import { LifeEconomyTracker } from './LifeEconomyTracker';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
   const { connection } = useConnection();
@@ -15,6 +16,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [taskPoints, setTaskPoints] = useState(0);
+  const [economyPoints, setEconomyPoints] = useState(0);
   const [retroData, setRetrospectiveData] = useState<RetrospectiveData>({
     milestone: '',
     notes: '',
@@ -39,7 +41,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       const rawData = new TextEncoder().encode(JSON.stringify({
         moodScore: 8,
         socialBattery: 5,
-        productivityScore: Math.min(100, taskPoints + 20), // base productivity 20 + task points
+        productivityScore: Math.min(100, taskPoints + (economyPoints / 2) + 20), // aggregate scores
+        economyPoints: economyPoints,
         frameTier: 2,
         retrospective: retroData
       }));
@@ -141,17 +144,22 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
           onChange={setRetrospectiveData} 
         />
 
+        <LifeEconomyTracker
+          disabled={loading}
+          onPointsUpdate={setEconomyPoints}
+        />
+
         <div className="flex flex-col gap-2">
           <label className="text-sm">Mood (1-10)</label>
           <input type="range" min="1" max="10" defaultValue="8" disabled={loading} />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm">Productivity (Base + Tasks)</label>
+          <label className="text-sm">Productivity (Base + Tasks + Economy)</label>
           <input 
             type="range" 
             min="1" 
             max="100" 
-            value={Math.min(100, taskPoints + 20)} 
+            value={Math.min(100, taskPoints + (economyPoints / 2) + 20)} 
             disabled 
             className="opacity-50"
           />
