@@ -4,6 +4,7 @@ import * as anchor from '@coral-xyz/anchor';
 import { PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY } from '@solana/web3.js';
 import { engine } from '@tessera/engine';
 import idl from '../../../../packages/contracts/target/idl/tessera.json';
+import { TaskTracker } from './TaskTracker';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
   const { connection } = useConnection();
@@ -12,6 +13,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
   const [status, setStatus] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [taskPoints, setTaskPoints] = useState(0);
 
   const handleMint = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       const rawData = new TextEncoder().encode(JSON.stringify({
         moodScore: 8,
         socialBattery: 5,
-        productivityScore: 85,
+        productivityScore: Math.min(100, taskPoints + 20), // base productivity 20 + task points
         frameTier: 2
       }));
 
@@ -119,15 +121,28 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
 
   return (
     <div className="w-full max-w-sm mx-auto p-4 sm:p-6 border rounded-xl dark:border-white/[.145] bg-neutral-50 dark:bg-black shadow-sm">
-      <h3 className="text-lg font-bold mb-4 text-center sm:text-left">Mint Today's Tessera</h3>
+      <h3 className="text-lg font-bold mb-4 text-center sm:text-left">Mint Today&apos;s Tessera</h3>
       <form onSubmit={handleMint} className="flex flex-col gap-4">
+        
+        <TaskTracker 
+          disabled={loading} 
+          onPointsUpdate={setTaskPoints} 
+        />
+
         <div className="flex flex-col gap-2">
           <label className="text-sm">Mood (1-10)</label>
           <input type="range" min="1" max="10" defaultValue="8" disabled={loading} />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm">Productivity (1-100)</label>
-          <input type="range" min="1" max="100" defaultValue="85" disabled={loading} />
+          <label className="text-sm">Productivity (Base + Tasks)</label>
+          <input 
+            type="range" 
+            min="1" 
+            max="100" 
+            value={Math.min(100, taskPoints + 20)} 
+            disabled 
+            className="opacity-50"
+          />
         </div>
         <button
           type="submit"
