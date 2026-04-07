@@ -152,7 +152,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 **Sprint & Project Module**
 - [x] Task completion tracker with point weights implemented
-- [ ] Milestone and sprint retrospective logging
+- [x] Milestone and sprint retrospective logging
 - [ ] Life economy (household gamification) task list
 - [ ] Module score formula documented and unit-tested
 

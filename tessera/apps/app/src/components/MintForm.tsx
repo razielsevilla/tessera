@@ -5,6 +5,7 @@ import { PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY } from '@solana/we
 import { engine } from '@tessera/engine';
 import idl from '../../../../packages/contracts/target/idl/tessera.json';
 import { TaskTracker } from './TaskTracker';
+import { RetrospectiveLogger, RetrospectiveData } from './RetrospectiveLogger';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
   const { connection } = useConnection();
@@ -14,6 +15,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [taskPoints, setTaskPoints] = useState(0);
+  const [retroData, setRetrospectiveData] = useState<RetrospectiveData>({
+    milestone: '',
+    notes: '',
+    isSprintEnd: false
+  });
 
   const handleMint = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +40,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         moodScore: 8,
         socialBattery: 5,
         productivityScore: Math.min(100, taskPoints + 20), // base productivity 20 + task points
-        frameTier: 2
+        frameTier: 2,
+        retrospective: retroData
       }));
 
       // Use a dummy key for MVP demo
@@ -127,6 +134,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         <TaskTracker 
           disabled={loading} 
           onPointsUpdate={setTaskPoints} 
+        />
+
+        <RetrospectiveLogger 
+          disabled={loading} 
+          onChange={setRetrospectiveData} 
         />
 
         <div className="flex flex-col gap-2">
