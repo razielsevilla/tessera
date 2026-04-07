@@ -26,6 +26,7 @@
 
 ```
 Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
+
                 │                        │
                 └────── Phase 4 ◄────────┘
                               │
@@ -150,7 +151,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 ### Checklist — Definition of Done
 
 **Sprint & Project Module**
-- [ ] Task completion tracker with point weights implemented
+- [x] Task completion tracker with point weights implemented
 - [ ] Milestone and sprint retrospective logging
 - [ ] Life economy (household gamification) task list
 - [ ] Module score formula documented and unit-tested
