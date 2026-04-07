@@ -6,7 +6,17 @@
     {
       "name": "initialize",
       "accounts": [],
-      "args": []
+      "args": [],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ]
     },
     {
       "name": "initializeProfile",
@@ -27,7 +37,17 @@
           "isSigner": false
         }
       ],
-      "args": []
+      "args": [],
+      "discriminator": [
+        102,
+        98,
+        121,
+        119,
+        47,
+        37,
+        214,
+        238
+      ]
     },
     {
       "name": "mintTessera",
@@ -67,12 +87,32 @@
             }
           }
         }
+      ],
+      "discriminator": [
+        215,
+        73,
+        88,
+        116,
+        250,
+        187,
+        200,
+        224
       ]
     },
     {
       "name": "recordMilestone",
       "accounts": [],
-      "args": []
+      "args": [],
+      "discriminator": [
+        104,
+        203,
+        144,
+        176,
+        32,
+        141,
+        116,
+        1
+      ]
     }
   ],
   "accounts": [

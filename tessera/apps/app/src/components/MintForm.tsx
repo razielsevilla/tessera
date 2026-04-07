@@ -51,6 +51,13 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       if (!dataHash || dataHash.length === 0) {
         dataHash = new Uint8Array(32);
         dataHash.fill(2);
+      }
+
+      // Phantom Wallet prevents apps from blindly signing raw 32-byte arrays as it suspects they
+      // might be malicious Solana transactions. For MVP/Demo, we sign a human-readable encoded string.
+      const messageToSign = new TextEncoder().encode(`Tessera Mint Authentication\nPayload Hash: ${Buffer.from(dataHash).toString('hex')}`);
+      const signature = await wallet.signMessage(messageToSign); // [u8; 64]
+
       setStatus('Uploading encrypted blob to IPFS (mock fallback)...');
 
       // 3. IPFS Upload
