@@ -7,6 +7,7 @@ import idl from '../../../../packages/contracts/target/idl/tessera.json';
 import { TaskTracker } from './TaskTracker';
 import { RetrospectiveLogger, RetrospectiveData } from './RetrospectiveLogger';
 import { LifeEconomyTracker } from './LifeEconomyTracker';
+import { calculateProductivityScore } from '../lib/scoring';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
   const { connection } = useConnection();
@@ -41,7 +42,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       const rawData = new TextEncoder().encode(JSON.stringify({
         moodScore: 8,
         socialBattery: 5,
-        productivityScore: Math.min(100, taskPoints + (economyPoints / 2) + 20), // aggregate scores
+        productivityScore: calculateProductivityScore(taskPoints, economyPoints),
         economyPoints: economyPoints,
         frameTier: 2,
         retrospective: retroData
@@ -159,7 +160,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
             type="range" 
             min="1" 
             max="100" 
-            value={Math.min(100, taskPoints + (economyPoints / 2) + 20)} 
+            value={calculateProductivityScore(taskPoints, economyPoints)} 
             disabled 
             className="opacity-50"
           />

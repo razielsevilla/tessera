@@ -154,7 +154,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Task completion tracker with point weights implemented
 - [x] Milestone and sprint retrospective logging
 - [x] Life economy (household gamification) task list
-- [ ] Module score formula documented and unit-tested
+- [x] Module score formula documented and unit-tested
 
 **Media & Literature Module**
 - [ ] Book/story log with genre tags and progress tracking
