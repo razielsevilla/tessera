@@ -58,6 +58,10 @@ export declare class TesseraEngine {
      * Creates a new BmpBuilder for assembling Bundled Metadata Payloads.
      */
     createBmpBuilder(): BmpBuilder;
+    /**
+     * Generates a ZK proof for a threshold value.
+     */
+    generateThresholdProof(value: number, threshold: number, provingKey: Uint8Array): any;
 }
 export declare const engine: TesseraEngine;
 export type { BmpBuilder };

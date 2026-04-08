@@ -184,6 +184,7 @@ export declare const BundledMetadataPayloadSchema: z.ZodObject<{
         skillName: string;
         hoursSpent: number;
     }>, "many">;
+    zkProofRef: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     moodScore: number;
     socialBattery: number;
@@ -220,6 +221,7 @@ export declare const BundledMetadataPayloadSchema: z.ZodObject<{
         skillName: string;
         hoursSpent: number;
     }[];
+    zkProofRef?: string | undefined;
 }, {
     moodScore: number;
     socialBattery: number;
@@ -256,5 +258,6 @@ export declare const BundledMetadataPayloadSchema: z.ZodObject<{
         skillName: string;
         hoursSpent: number;
     }[];
+    zkProofRef?: string | undefined;
 }>;
 export type BundledMetadataPayload = z.infer<typeof BundledMetadataPayloadSchema>;

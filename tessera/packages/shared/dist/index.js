@@ -53,5 +53,6 @@ exports.BundledMetadataPayloadSchema = zod_1.z.object({
     retrospective: exports.RetrospectiveDataSchema,
     media: exports.MediaLogDataSchema,
     interactiveFiction: exports.InteractiveFictionDataSchema,
-    skillsPracticed: zod_1.z.array(exports.SkillLogSchema)
+    skillsPracticed: zod_1.z.array(exports.SkillLogSchema),
+    zkProofRef: zod_1.z.string().optional()
 });

@@ -1,4 +1,4 @@
-import initWasm, { init_panic_hook, encryptBlob, decryptBlob, hashModuleScores, hashBytes, deriveVaultKey, BmpBuilder, } from "@tessera/engine-core";
+import initWasm, { init_panic_hook, encryptBlob, decryptBlob, hashModuleScores, hashBytes, deriveVaultKey, BmpBuilder, generate_threshold_proof, } from "@tessera/engine-core";
 /**
  * High-level TypeScript wrapper for the Tessera WASM encryption engine.
  * This class handles initialization and provides a clean API for cryptographic operations.
@@ -99,6 +99,13 @@ export class TesseraEngine {
     createBmpBuilder() {
         this.ensureInitialized();
         return new BmpBuilder();
+    }
+    /**
+     * Generates a ZK proof for a threshold value.
+     */
+    generateThresholdProof(value, threshold, provingKey) {
+        this.ensureInitialized();
+        return generate_threshold_proof(value, threshold, provingKey);
     }
 }
 // Export a default instance for convenience
