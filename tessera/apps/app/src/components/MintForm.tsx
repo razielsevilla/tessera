@@ -29,7 +29,9 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
     title: '',
     type: 'book',
     progress: 0,
-    genres: []
+    genres: [],
+    pacing: 'medium',
+    tropes: []
   });
   const [interactiveFictionData, setInteractiveFictionData] = useState<InteractiveFictionData>({
     storyTitle: '',

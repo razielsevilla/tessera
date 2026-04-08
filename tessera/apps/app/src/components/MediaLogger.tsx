@@ -5,6 +5,8 @@ export interface MediaLogData {
   type: 'book' | 'story' | 'article' | 'other';
   progress: number; // 0-100 percentage
   genres: string[];
+  pacing?: 'slow' | 'medium' | 'fast';
+  tropes: string[];
 }
 
 interface MediaLoggerProps {
@@ -28,8 +30,11 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
     title: '',
     type: 'book',
     progress: 0,
-    genres: []
+    genres: [],
+    pacing: 'medium',
+    tropes: []
   });
+  const [newTrope, setNewTrope] = useState('');
 
   const handleUpdate = (updates: Partial<MediaLogData>) => {
     const newData = { ...data, ...updates };
@@ -42,6 +47,19 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
       ? data.genres.filter(g => g !== genre)
       : [...data.genres, genre];
     handleUpdate({ genres: newGenres });
+  };
+
+  const addTrope = () => {
+    if (!newTrope.trim()) return;
+    const trope = newTrope.trim();
+    if (!data.tropes.includes(trope)) {
+      handleUpdate({ tropes: [...data.tropes, trope] });
+    }
+    setNewTrope('');
+  };
+
+  const removeTrope = (trope: string) => {
+    handleUpdate({ tropes: data.tropes.filter(t => t !== trope) });
   };
 
   return (
@@ -110,6 +128,67 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
           ))}
         </div>
       </div>
+      
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-600 dark:text-gray-400">Pacing</label>
+        <div className="flex gap-4">
+          {['slow', 'medium', 'fast'].map((pacing) => (
+            <label key={pacing} className="flex items-center gap-1 text-sm">
+              <input
+                type="radio"
+                name="pacing"
+                value={pacing}
+                checked={data.pacing === pacing}
+                onChange={(e) => handleUpdate({ pacing: e.target.value as 'slow' | 'medium' | 'fast' })}
+                disabled={disabled}
+              />
+              {pacing.charAt(0).toUpperCase() + pacing.slice(1)}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-600 dark:text-gray-400">Tropes</label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={newTrope}
+            onChange={(e) => setNewTrope(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTrope())}
+            placeholder="e.g. Enemies to lovers, Found family"
+            disabled={disabled}
+            className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+          />
+          <button
+            type="button"
+            onClick={addTrope}
+            disabled={disabled || !newTrope.trim()}
+            className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded text-sm hover:bg-blue-200 disabled:opacity-50 dark:bg-blue-900/40 dark:text-blue-200"
+          >
+            Add
+          </button>
+        </div>
+        {data.tropes.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-1">
+            {data.tropes.map((trope, i) => (
+              <span key={i} className="flex items-center gap-1 bg-gray-100 dark:bg-neutral-800 px-2 py-1 rounded text-xs text-gray-700 dark:text-gray-300">
+                {trope}
+                <button
+                  type="button"
+                  onClick={() => removeTrope(trope)}
+                  title="Remove trope"
+                  disabled={disabled}
+                  className="text-gray-500 hover:text-red-500 font-bold"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }

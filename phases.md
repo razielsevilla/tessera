@@ -159,7 +159,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 **Media & Literature Module**
 - [x] Book/story log with genre tags and progress tracking
 - [x] Interactive fiction branching choice logger
-- [ ] Trope and pacing metadata fields
+- [x] Trope and pacing metadata fields
 - [ ] Session duration tracking
 
 **Social Battery Module**
