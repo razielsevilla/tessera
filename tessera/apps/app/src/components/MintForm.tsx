@@ -3,6 +3,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import * as anchor from '@coral-xyz/anchor';
 import { PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY } from '@solana/web3.js';
 import { engine } from '@tessera/engine';
+import { BundledMetadataPayloadSchema } from '@tessera/types';
 import idl from '../../../../packages/contracts/target/idl/tessera.json';
 import { TaskTracker } from './TaskTracker';
 import { RetrospectiveLogger, RetrospectiveData } from './RetrospectiveLogger';
@@ -66,7 +67,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
 
       setStatus('Encrypting and generating BMP...');
       // 1. Mock JSON form data
-      const rawData = new TextEncoder().encode(JSON.stringify({
+      const payload = {
         moodScore: socialData.moodScore,
         socialBattery: 5,
         socialEngagements: {
@@ -83,7 +84,18 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         media: mediaData,
         interactiveFiction: interactiveFictionData,
         skillsPracticed: skillsData
-      }));
+      };
+
+      try {
+        BundledMetadataPayloadSchema.parse(payload);
+      } catch (validationError: any) {
+        console.error('Validation failed:', validationError);
+        setError(`Validation error: ${validationError.message || 'Invalid form data. Please check your tracking modules.'}`);
+        setLoading(false);
+        return;
+      }
+
+      const rawData = new TextEncoder().encode(JSON.stringify(payload));
 
       // Use a dummy key for MVP demo
       const key = new Uint8Array(32);
