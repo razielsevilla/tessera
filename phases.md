@@ -210,7 +210,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 ### Checklist — Definition of Done
 
-- [ ] ZK circuit defined for threshold proof (e.g., `hours_studied >= threshold`)
+- [x] ZK circuit defined for threshold proof (e.g., `hours_studied >= threshold`)
 - [ ] Proving key and verification key generated and committed
 - [ ] Client-side proof generation integrated into engine WASM module
 - [ ] Contract verifier for ZK proofs implemented

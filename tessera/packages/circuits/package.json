@@ -1,0 +1,11 @@
+{
+  "name": "@tessera/circuits",
+  "version": "0.1.0",
+  "description": "Zero-Knowledge circuits for Tessera",
+  "scripts": {
+    "build": "circom src/threshold.circom --r1cs --wasm --sym"
+  },
+  "dependencies": {
+    "circomlib": "^2.0.5"
+  }
+}
