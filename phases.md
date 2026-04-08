@@ -234,7 +234,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] IPFS upload TLS/HTTPS enforced; no plaintext API calls
 - [x] Gas/compute unit optimization pass on all contract instructions
 - [x] Frontend Content Security Policy (CSP) headers configured
-- [ ] Dependency vulnerability scan (`pnpm audit`): all HIGH/CRITICAL resolved
+- [x] Dependency vulnerability scan (`pnpm audit`): all HIGH/CRITICAL resolved
 - [ ] No secret keys in git history (gitleaks scan passes)
 - [ ] Load test: 1,000 concurrent wallet connections handled gracefully
 - [ ] Error monitoring (Sentry or equivalent) integrated
