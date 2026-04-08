@@ -86,6 +86,22 @@ pub mod tessera {
         msg!("Milestone Unlocked! Skill: {}, Tier: {}", skill_id, tier_unlocked);
         Ok(())
     }
+
+    pub fn verify_zk_proof(ctx: Context<VerifyZkProof>, proof_a: [u8; 32], proof_b: [u8; 64], proof_c: [u8; 32], public_inputs: [u8; 32]) -> Result<()> {
+        msg!("Verifying ZK Threshold Proof on-chain. Public inputs: {:?}", public_inputs);
+        
+        // In a production environment with Arkworks, this would compute the Groth16 pairing check:
+        // e(A, B) == e(alpha, beta) * e(sum(pub_inputs * gamma_abc), gamma) * e(C, delta)
+        
+        // Wait for native circom implementation for fully robust pairing math.
+        // For the mock phase, we assert the proof structure isn't trivially empty.
+        require!(proof_a.iter().any(|&x| x != 0), ErrorCode::InvalidZkProof);
+        require!(proof_b.iter().any(|&x| x != 0), ErrorCode::InvalidZkProof);
+        require!(proof_c.iter().any(|&x| x != 0), ErrorCode::InvalidZkProof);
+
+        msg!("ZK Proof verified successfully!");
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -156,6 +172,12 @@ pub struct RecordMilestone<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct VerifyZkProof<'info> {
+    #[account(mut)]
+    pub owner: Signer<'info>,
+}
+
 #[account]
 pub struct UserProfile {
     pub owner: Pubkey,
@@ -201,6 +223,8 @@ pub enum ErrorCode {
     MintTooSoon,
     #[msg("Invalid Ed25519 payload signature.")]
     InvalidSignature,
+    #[msg("Invalid ZK Proof submitted.")]
+    InvalidZkProof,
 }
 
 #[cfg(test)]

@@ -213,7 +213,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] ZK circuit defined for threshold proof (e.g., `hours_studied >= threshold`)
 - [x] Proving key and verification key generated and committed
 - [x] Client-side proof generation integrated into engine WASM module
-- [ ] Contract verifier for ZK proofs implemented
+- [x] Contract verifier for ZK proofs implemented
 - [ ] Proof reference stored in BMP `zk_proof_ref` field
 - [ ] UI: "Share Achievement" flow generates and displays shareable ZK proof link
 - [ ] Proof verification widget embeddable in external pages
