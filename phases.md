@@ -230,7 +230,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 ### Checklist — Definition of Done
 
 - [x] Smart contract formal audit completed (internal or third-party)
-- [ ] Encryption engine penetration test: avalanche effect, differential analysis
+- [x] Encryption engine penetration test: avalanche effect, differential analysis
 - [ ] IPFS upload TLS/HTTPS enforced; no plaintext API calls
 - [ ] Gas/compute unit optimization pass on all contract instructions
 - [ ] Frontend Content Security Policy (CSP) headers configured
