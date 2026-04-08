@@ -41,7 +41,10 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
     choicesMade: []
   });
   const [socialData, setSocialData] = useState<SocialBatteryData>({
-    moodScore: 8
+    moodScore: 8,
+    meetings: 0,
+    calls: 0,
+    managedTeams: 0
   });
 
   const handleMint = async (e: React.FormEvent) => {
@@ -62,6 +65,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       const rawData = new TextEncoder().encode(JSON.stringify({
         moodScore: socialData.moodScore,
         socialBattery: 5,
+        socialEngagements: {
+          meetings: socialData.meetings,
+          calls: socialData.calls,
+          managedTeams: socialData.managedTeams
+        },
         productivityScore: calculateProductivityScore(taskPoints, economyPoints),
         economyPoints: economyPoints,
         frameTier: 2,
