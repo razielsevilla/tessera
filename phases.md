@@ -165,7 +165,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 **Social Battery Module**
 - [x] Mood baseline slider (1–10)
 - [x] External engagement counter (meetings, calls, managed teams)
-- [ ] Social recharge/drain event logging
+- [x] Social recharge/drain event logging
 - [ ] Correlation metadata (mood delta vs. engagement count)
 
 **Skills & Skill Tree Module**

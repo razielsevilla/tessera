@@ -44,7 +44,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
     moodScore: 8,
     meetings: 0,
     calls: 0,
-    managedTeams: 0
+    managedTeams: 0,
+    events: []
   });
 
   const handleMint = async (e: React.FormEvent) => {
@@ -68,7 +69,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         socialEngagements: {
           meetings: socialData.meetings,
           calls: socialData.calls,
-          managedTeams: socialData.managedTeams
+          managedTeams: socialData.managedTeams,
+          events: socialData.events
         },
         productivityScore: calculateProductivityScore(taskPoints, economyPoints),
         economyPoints: economyPoints,
