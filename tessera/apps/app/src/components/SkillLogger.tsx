@@ -9,9 +9,10 @@ export interface SkillLog {
 export interface SkillLoggerProps {
   disabled?: boolean;
   onChange: (data: SkillLog[]) => void;
+  accumulatedHistory?: Record<string, number>;
 }
 
-export function SkillLogger({ disabled, onChange }: SkillLoggerProps) {
+export function SkillLogger({ disabled, onChange, accumulatedHistory = {} }: SkillLoggerProps) {
   const [skills, setSkills] = useState<SkillLog[]>([]);
   const [currentSkill, setCurrentSkill] = useState('');
   const [currentHours, setCurrentHours] = useState(1);
@@ -79,22 +80,27 @@ export function SkillLogger({ disabled, onChange }: SkillLoggerProps) {
 
       {skills.length > 0 && (
         <ul className="flex flex-col gap-2 mt-2">
-          {skills.map((s, i) => (
-            <li key={i} className="flex justify-between items-center text-sm p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded border border-zinc-100 dark:border-zinc-800">
-              <span className="font-medium">{s.skillName}</span>
-              <div className="flex gap-3 items-center">
-                <span className="font-mono text-xs bg-zinc-200 dark:bg-zinc-700 px-2 py-1 rounded">{s.hoursSpent} hrs</span>
-                <button 
-                  type="button" 
-                  onClick={() => handleRemoveSkill(i)} 
-                  disabled={disabled} 
-                  className="text-red-500 hover:text-red-700 font-bold px-1"
-                >
-                  ×
-                </button>
-              </div>
-            </li>
-          ))}
+          {skills.map((s, i) => {
+            const historical = accumulatedHistory[s.skillName.toLowerCase()] || 0;
+            const totalToDate = historical + s.hoursSpent;
+            return (
+              <li key={i} className="flex justify-between items-center text-sm p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded border border-zinc-100 dark:border-zinc-800">
+                <span className="font-medium">{s.skillName}</span>
+                <div className="flex gap-3 items-center">
+                  <span className="font-mono text-xs bg-zinc-200 dark:bg-zinc-700 px-2 py-1 rounded">+{s.hoursSpent} hrs</span>
+                  <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">Total: {totalToDate}h</span>
+                  <button 
+                    type="button" 
+                    onClick={() => handleRemoveSkill(i)} 
+                    disabled={disabled} 
+                    className="text-red-500 hover:text-red-700 font-bold px-1"
+                  >
+                    ×
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
 

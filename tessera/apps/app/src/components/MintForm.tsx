@@ -205,6 +205,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         <SkillLogger
           disabled={loading}
           onChange={setSkillsData}
+          accumulatedHistory={{
+            'rust': 42.5,
+            'typescript': 120,
+            'solana': 14
+          }}
         />
 
         <div className="flex flex-col gap-2">
