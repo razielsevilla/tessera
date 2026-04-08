@@ -9,6 +9,7 @@ import { RetrospectiveLogger, RetrospectiveData } from './RetrospectiveLogger';
 import { LifeEconomyTracker } from './LifeEconomyTracker';
 import { MediaLogger, MediaLogData } from './MediaLogger';
 import { InteractiveFictionLogger, InteractiveFictionData } from './InteractiveFictionLogger';
+import { SocialBatteryLogger, SocialBatteryData } from './SocialBatteryLogger';
 import { calculateProductivityScore } from '../lib/scoring';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
@@ -39,6 +40,9 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
     currentNodeId: '',
     choicesMade: []
   });
+  const [socialData, setSocialData] = useState<SocialBatteryData>({
+    moodScore: 8
+  });
 
   const handleMint = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +60,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
       setStatus('Encrypting and generating BMP...');
       // 1. Mock JSON form data
       const rawData = new TextEncoder().encode(JSON.stringify({
-        moodScore: 8,
+        moodScore: socialData.moodScore,
         socialBattery: 5,
         productivityScore: calculateProductivityScore(taskPoints, economyPoints),
         economyPoints: economyPoints,
@@ -178,10 +182,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
           onChange={setInteractiveFictionData}
         />
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm">Mood (1-10)</label>
-          <input type="range" min="1" max="10" defaultValue="8" disabled={loading} />
-        </div>
+        <SocialBatteryLogger
+          disabled={loading}
+          onChange={setSocialData}
+        />
+
         <div className="flex flex-col gap-2">
           <label className="text-sm">Productivity (Base + Tasks + Economy)</label>
           <input 
