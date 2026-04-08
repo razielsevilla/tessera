@@ -42,6 +42,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
   });
   const [socialData, setSocialData] = useState<SocialBatteryData>({
     moodScore: 8,
+    moodDelta: 0,
     meetings: 0,
     calls: 0,
     managedTeams: 0,
@@ -67,6 +68,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         moodScore: socialData.moodScore,
         socialBattery: 5,
         socialEngagements: {
+          moodDelta: socialData.moodDelta,
           meetings: socialData.meetings,
           calls: socialData.calls,
           managedTeams: socialData.managedTeams,

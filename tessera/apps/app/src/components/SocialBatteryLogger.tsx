@@ -7,6 +7,7 @@ export interface SocialEvent {
 
 export interface SocialBatteryData {
   moodScore: number;
+  moodDelta: number;
   meetings: number;
   calls: number;
   managedTeams: number;
@@ -21,6 +22,7 @@ interface SocialBatteryLoggerProps {
 export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerProps) {
   const [data, setData] = useState<SocialBatteryData>({
     moodScore: 8,
+    moodDelta: 0,
     meetings: 0,
     calls: 0,
     managedTeams: 0,
@@ -64,6 +66,22 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
           disabled={disabled}
           className="w-full"
         />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between items-center">
+          <label className="text-sm text-gray-600 dark:text-gray-400">Social Mood Impact ({data.moodDelta > 0 ? '+' : ''}{data.moodDelta})</label>
+        </div>
+        <input 
+          type="range" 
+          min="-10" 
+          max="10" 
+          value={data.moodDelta}
+          onChange={(e) => handleUpdate({ moodDelta: parseInt(e.target.value, 10) })}
+          disabled={disabled}
+          className="w-full"
+        />
+        <p className="text-xs text-gray-500 dark:text-gray-500">How did social engagements affect your baseline mood?</p>
       </div>
 
       <div className="grid grid-cols-3 gap-4">

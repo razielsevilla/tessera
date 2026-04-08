@@ -166,7 +166,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Mood baseline slider (1–10)
 - [x] External engagement counter (meetings, calls, managed teams)
 - [x] Social recharge/drain event logging
-- [ ] Correlation metadata (mood delta vs. engagement count)
+- [x] Correlation metadata (mood delta vs. engagement count)
 
 **Skills & Skill Tree Module**
 - [ ] Per-skill daily hours logger
