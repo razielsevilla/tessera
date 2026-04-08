@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { engine } from '@tessera/engine';
-import { CheckCircle2, Copy, Share2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, Copy, Share2, AlertCircle, Code } from 'lucide-react';
 
 export function ShareAchievement() {
   const [value, setValue] = useState<number>(0);
@@ -9,6 +9,7 @@ export function ShareAchievement() {
   const [link, setLink] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [embedCopied, setEmbedCopied] = useState(false);
 
   const generateProof = async () => {
     setLoading(true);
@@ -40,6 +41,16 @@ export function ShareAchievement() {
       navigator.clipboard.writeText(link);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const copyEmbedCode = () => {
+    if (link) {
+      const embedUrl = link.replace('/prove/', '/embed/prove/');
+      const embedHtml = `<iframe src="${embedUrl}" width="320" height="140" style="border:none;overflow:hidden;background:transparent;" allowtransparency="true" scrolling="no"></iframe>`;
+      navigator.clipboard.writeText(embedHtml);
+      setEmbedCopied(true);
+      setTimeout(() => setEmbedCopied(false), 2000);
     }
   };
 
@@ -90,7 +101,7 @@ export function ShareAchievement() {
       )}
 
       {link && (
-        <div className="flex flex-col gap-2 mt-2">
+        <div className="flex flex-col gap-3 mt-4">
           <span className="text-sm font-medium text-green-600 dark:text-green-400 flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4" /> Proof Generated Successfully!
           </span>
@@ -102,11 +113,19 @@ export function ShareAchievement() {
             />
             <button 
               onClick={copyToClipboard}
+              title="Copy verified link"
               className="p-2 border rounded hover:bg-gray-100 dark:hover:bg-zinc-800 dark:border-white/[.145] transition-colors"
             >
               {copied ? <CheckCircle2 className="w-5 h-5 text-green-600" /> : <Copy className="w-5 h-5" />}
             </button>
           </div>
+          <button
+            onClick={copyEmbedCode}
+            className="flex items-center justify-center gap-2 mt-2 w-full border border-gray-300 dark:border-white/[.145] hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors p-2 rounded text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
+            {embedCopied ? <CheckCircle2 className="w-4 h-4 text-green-600" /> : <Code className="w-4 h-4" />}
+            {embedCopied ? 'Embed Code Copied!' : 'Copy Embed Widget Code'}
+          </button>
         </div>
       )}
     </div>
