@@ -8,6 +8,7 @@ import { TaskTracker } from './TaskTracker';
 import { RetrospectiveLogger, RetrospectiveData } from './RetrospectiveLogger';
 import { LifeEconomyTracker } from './LifeEconomyTracker';
 import { MediaLogger, MediaLogData } from './MediaLogger';
+import { InteractiveFictionLogger, InteractiveFictionData } from './InteractiveFictionLogger';
 import { calculateProductivityScore } from '../lib/scoring';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
@@ -29,6 +30,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
     type: 'book',
     progress: 0,
     genres: []
+  });
+  const [interactiveFictionData, setInteractiveFictionData] = useState<InteractiveFictionData>({
+    storyTitle: '',
+    currentNodeId: '',
+    choicesMade: []
   });
 
   const handleMint = async (e: React.FormEvent) => {
@@ -53,7 +59,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         economyPoints: economyPoints,
         frameTier: 2,
         retrospective: retroData,
-        media: mediaData
+        media: mediaData,
+        interactiveFiction: interactiveFictionData
       }));
 
       // Use a dummy key for MVP demo
@@ -161,6 +168,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         <MediaLogger
           disabled={loading}
           onChange={setMediaData}
+        />
+
+        <InteractiveFictionLogger
+          disabled={loading}
+          onChange={setInteractiveFictionData}
         />
 
         <div className="flex flex-col gap-2">
