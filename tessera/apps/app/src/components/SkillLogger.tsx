@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SkillTreeGraph } from './SkillTreeGraph';
 
 export interface SkillLog {
   skillName: string;
@@ -14,6 +15,7 @@ export function SkillLogger({ disabled, onChange }: SkillLoggerProps) {
   const [skills, setSkills] = useState<SkillLog[]>([]);
   const [currentSkill, setCurrentSkill] = useState('');
   const [currentHours, setCurrentHours] = useState(1);
+  const [showTree, setShowTree] = useState(false);
 
   useEffect(() => {
     onChange(skills);
@@ -95,6 +97,16 @@ export function SkillLogger({ disabled, onChange }: SkillLoggerProps) {
           ))}
         </ul>
       )}
+
+      {showTree && <SkillTreeGraph />}
+
+      <button 
+        type="button" 
+        onClick={() => setShowTree(!showTree)}
+        className="mt-1 text-xs text-blue-500 hover:text-blue-600 transition-colors self-start font-medium"
+      >
+        {showTree ? 'Hide Skill Dependency Map' : 'View Skill Dependency Map'}
+      </button>
     </div>
   );
 }
