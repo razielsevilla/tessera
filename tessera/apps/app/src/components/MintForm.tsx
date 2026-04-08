@@ -7,6 +7,7 @@ import idl from '../../../../packages/contracts/target/idl/tessera.json';
 import { TaskTracker } from './TaskTracker';
 import { RetrospectiveLogger, RetrospectiveData } from './RetrospectiveLogger';
 import { LifeEconomyTracker } from './LifeEconomyTracker';
+import { MediaLogger, MediaLogData } from './MediaLogger';
 import { calculateProductivityScore } from '../lib/scoring';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
@@ -22,6 +23,12 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
     milestone: '',
     notes: '',
     isSprintEnd: false
+  });
+  const [mediaData, setMediaData] = useState<MediaLogData>({
+    title: '',
+    type: 'book',
+    progress: 0,
+    genres: []
   });
 
   const handleMint = async (e: React.FormEvent) => {
@@ -45,7 +52,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         productivityScore: calculateProductivityScore(taskPoints, economyPoints),
         economyPoints: economyPoints,
         frameTier: 2,
-        retrospective: retroData
+        retrospective: retroData,
+        media: mediaData
       }));
 
       // Use a dummy key for MVP demo
@@ -148,6 +156,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         <LifeEconomyTracker
           disabled={loading}
           onPointsUpdate={setEconomyPoints}
+        />
+
+        <MediaLogger
+          disabled={loading}
+          onChange={setMediaData}
         />
 
         <div className="flex flex-col gap-2">

@@ -157,7 +157,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Module score formula documented and unit-tested
 
 **Media & Literature Module**
-- [ ] Book/story log with genre tags and progress tracking
+- [x] Book/story log with genre tags and progress tracking
 - [ ] Interactive fiction branching choice logger
 - [ ] Trope and pacing metadata fields
 - [ ] Session duration tracking
