@@ -232,7 +232,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Smart contract formal audit completed (internal or third-party)
 - [x] Encryption engine penetration test: avalanche effect, differential analysis
 - [x] IPFS upload TLS/HTTPS enforced; no plaintext API calls
-- [ ] Gas/compute unit optimization pass on all contract instructions
+- [x] Gas/compute unit optimization pass on all contract instructions
 - [ ] Frontend Content Security Policy (CSP) headers configured
 - [ ] Dependency vulnerability scan (`pnpm audit`): all HIGH/CRITICAL resolved
 - [ ] No secret keys in git history (gitleaks scan passes)
