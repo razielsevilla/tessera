@@ -6,6 +6,7 @@ pub mod bmp;
 pub mod hash;
 pub mod signature;
 pub mod utils;
+pub mod zk;
 
 #[wasm_bindgen]
 pub fn init_panic_hook() {
