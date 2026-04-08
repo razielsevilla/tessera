@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getTileColor } from './colorMapping';
+import { getTileColor, getGlowAndOpacity } from './colorMapping';
 
 describe('colorMapping', () => {
   it('maps low mood score to a red hue', () => {
@@ -25,4 +25,29 @@ describe('colorMapping', () => {
     const color = getTileColor(5, 100);
     expect(color).toBe('hsl(53, 100%, 50%)');
   });
+
+  describe('getGlowAndOpacity', () => {
+    it('sets minimum opacity and no glow for 0 productivity', () => {
+      const { opacity, blurRadius } = getGlowAndOpacity(0);
+      expect(opacity).toBe(0.3);
+      expect(blurRadius).toBe(0);
+    });
+
+    it('sets maximum opacity and max glow for 100 productivity', () => {
+      const { opacity, blurRadius } = getGlowAndOpacity(100);
+      expect(opacity).toBe(1);
+      expect(blurRadius).toBe(24);
+    });
+
+    it('clamps values correctly for inputs > 100 or < 0', () => {
+      const { opacity, blurRadius } = getGlowAndOpacity(250);
+      expect(opacity).toBe(1);
+      expect(blurRadius).toBe(24);
+
+      const negativeResult = getGlowAndOpacity(-20);
+      expect(negativeResult.opacity).toBe(0.3);
+      expect(negativeResult.blurRadius).toBe(0);
+    });
+  });
 });
+

@@ -36,3 +36,28 @@ export function getTileColor(moodScore: number, socialBattery: number): string {
 
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
+
+/**
+ * Map productivity score to CSS opacity and blur (glow) intensity.
+ *
+ * @param productivityScore - A number representing productivity. (e.g., 0-100)
+ * @returns An object containing `opacity` (0.2 to 1) and `glowBlurOffset` (in px)
+ */
+export function getGlowAndOpacity(productivityScore: number): { opacity: number; blurRadius: number } {
+  const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
+  
+  // Assume productivity score varies generally between 0 and 100 for this scale
+  const clampedScore = clamp(productivityScore, 0, 100);
+
+  // Map 0 -> 0.3 opacity to still allow visibility, 100 -> 1.0 opacity
+  const minOpacity = 0.3;
+  const opacity = minOpacity + (clampedScore / 100) * (1 - minOpacity);
+
+  // Map 0 -> 0px blur, 100 -> 24px blur (representing a strong glow)
+  const blurRadius = Math.floor((clampedScore / 100) * 24);
+
+  return {
+    opacity: Number(opacity.toFixed(2)),
+    blurRadius,
+  };
+}
