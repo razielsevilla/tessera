@@ -8,9 +8,16 @@ import {
 let pinataInstance: PinataSDK | null = null;
 function getPinata() {
   if (!pinataInstance) {
+    let gatewayUrl = process.env.NEXT_PUBLIC_GATEWAY_URL || "";
+    
+    // Enforce TLS/HTTPS on the gateway URL
+    if (gatewayUrl && gatewayUrl.startsWith("http://") && !gatewayUrl.includes("localhost") && !gatewayUrl.includes("127.0.0.1")) {
+      gatewayUrl = gatewayUrl.replace("http://", "https://");
+    }
+
     pinataInstance = new PinataSDK({
       pinataJwt: process.env.PINATA_JWT || "",
-      pinataGateway: process.env.NEXT_PUBLIC_GATEWAY_URL || "",
+      pinataGateway: gatewayUrl,
     });
   }
   return pinataInstance;

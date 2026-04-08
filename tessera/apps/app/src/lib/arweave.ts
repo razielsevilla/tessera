@@ -1,9 +1,14 @@
 import Arweave from 'arweave';
 
+const arweaveHost = process.env.ARWEAVE_HOST || 'arweave.net';
+// Force protocol to always be https in production/remote scenarios
+const protocol = (arweaveHost.includes('localhost') || arweaveHost.includes('127.0.0.1')) ? 'http' : 'https';
+const port = protocol === 'https' ? 443 : 1984;
+
 const arweave = Arweave.init({
-    host: 'arweave.net',
-    port: 443,
-    protocol: 'https'
+    host: arweaveHost,
+    port: port,
+    protocol: protocol
 });
 
 /**

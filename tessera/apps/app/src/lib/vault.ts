@@ -32,9 +32,15 @@ export async function fetchAndDecryptVault(
 
   try {
     // Strip trailing slash to avoid double-slash in URL construction
-    const gatewayUrl =
+    let gatewayUrl =
       process.env.NEXT_PUBLIC_GATEWAY_URL?.replace(/\/$/, "") ||
       "https://gateway.pinata.cloud";
+      
+    // Enforce TLS/HTTPS on the gateway URL
+    if (gatewayUrl.startsWith("http://") && !gatewayUrl.includes("localhost") && !gatewayUrl.includes("127.0.0.1")) {
+      gatewayUrl = gatewayUrl.replace("http://", "https://");
+    }
+      
     const url = `${gatewayUrl}/ipfs/${cid}`;
 
     // Fetch with automatic rate-limit retry
