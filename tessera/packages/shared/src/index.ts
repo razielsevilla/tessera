@@ -63,6 +63,7 @@ export const BundledMetadataPayloadSchema = z.object({
   retrospective: RetrospectiveDataSchema,
   media: MediaLogDataSchema,
   interactiveFiction: InteractiveFictionDataSchema,
-  skillsPracticed: z.array(SkillLogSchema)
+  skillsPracticed: z.array(SkillLogSchema),
+  zkProofRef: z.string().optional()
 });
 export type BundledMetadataPayload = z.infer<typeof BundledMetadataPayloadSchema>;

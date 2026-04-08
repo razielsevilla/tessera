@@ -135,8 +135,8 @@ pub struct MintTessera<'info> {
     #[account(
         init,
         payer = owner,
-        // 8 (discriminator) + 32 (owner) + 8 (timestamp) + 64 (sig) + 32 (hash) + 4 (string prefix) + 128 (max uri)
-        space = 8 + 32 + 8 + 64 + 32 + 4 + 128,
+        // 8 (discriminator) + 32 (owner) + 8 (timestamp) + 64 (sig) + 32 (hash) + 4 (string prefix) + 128 (max uri) + 1 (Option) + 4 (string prefix) + 64 (max zk ref)
+        space = 8 + 32 + 8 + 64 + 32 + 4 + 128 + 1 + 4 + 64,
         seeds = [b"tessera", owner.key().as_ref(), &user_profile.total_mints.to_le_bytes()],
         bump
     )]
@@ -215,6 +215,7 @@ pub struct BundledMetadataPayload {
     pub auth_sig: [u8; 64],
     pub data_hash: [u8; 32],
     pub metadata_uri: String,
+    pub zk_proof_ref: Option<String>,
 }
 
 #[error_code]

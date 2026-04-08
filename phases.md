@@ -214,7 +214,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Proving key and verification key generated and committed
 - [x] Client-side proof generation integrated into engine WASM module
 - [x] Contract verifier for ZK proofs implemented
-- [ ] Proof reference stored in BMP `zk_proof_ref` field
+- [x] Proof reference stored in BMP `zk_proof_ref` field
 - [ ] UI: "Share Achievement" flow generates and displays shareable ZK proof link
 - [ ] Proof verification widget embeddable in external pages
 - [ ] Security review: no information leakage from proof parameters
