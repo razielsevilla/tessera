@@ -6,6 +6,7 @@ import initWasm, {
   hashBytes,
   deriveVaultKey,
   BmpBuilder,
+  generate_threshold_proof,
 } from "@tessera/engine-core";
 
 /**
@@ -117,6 +118,14 @@ export class TesseraEngine {
   public createBmpBuilder(): BmpBuilder {
     this.ensureInitialized();
     return new BmpBuilder();
+  }
+
+  /**
+   * Generates a ZK proof for a threshold value.
+   */
+  public generateThresholdProof(value: number, threshold: number, provingKey: Uint8Array): any {
+    this.ensureInitialized();
+    return generate_threshold_proof(value, threshold, provingKey);
   }
 }
 

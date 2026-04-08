@@ -7,6 +7,8 @@ import { MosaicCanvas } from '../components/MosaicCanvas';
 import MintForm from '../components/MintForm';
 import { useTesseraHistory } from '../hooks/useTesseraHistory';
 
+import { ShareAchievement } from '../components/ShareAchievement';
+
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
   { ssr: false }
@@ -47,6 +49,10 @@ export default function Home() {
 
         <section className="w-full max-w-4xl flex justify-center overflow-auto border rounded-xl p-4 sm:p-6 dark:border-white/[.145] relative">
           <MosaicCanvas slots={slots} />
+        </section>
+
+        <section className="w-full max-w-4xl">
+          <ShareAchievement />
         </section>
       </main>
     </div>
