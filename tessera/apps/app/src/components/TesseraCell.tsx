@@ -11,9 +11,10 @@ interface TesseraCellProps {
   id: number;
   isFilled: boolean;
   metadata?: BMPMetadata;
+  isNewMint?: boolean;
 }
 
-export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata }) => {
+export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata, isNewMint = false }) => {
   if (!isFilled || !metadata) {
     return (
       <div 
@@ -54,9 +55,12 @@ export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata
       break;
   }
 
+  const baseClasses = 'w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse';
+  const mintClass = isNewMint ? 'animate-mint-glow' : '';
+
   return (
     <div
-      className={`w-3 h-3 rounded-sm transition-all hover:scale-125 hover:z-10 ${borderClass} ${shadowClass}`}
+      className={`${baseClasses} ${mintClass} ${borderClass} ${shadowClass}`}
       style={{ backgroundColor: color, opacity }}
       title={`Day ${id}\nMood: ${metadata.moodScore}/10\nSocial: ${metadata.socialBattery}/10\nProductivity: ${metadata.productivityScore}/100\nTier: ${metadata.frameTier}`}
     />
