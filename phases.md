@@ -217,7 +217,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Proof reference stored in BMP `zk_proof_ref` field
 - [x] UI: "Share Achievement" flow generates and displays shareable ZK proof link
 - [x] Proof verification widget embeddable in external pages
-- [ ] Security review: no information leakage from proof parameters
+- [x] Security review: no information leakage from proof parameters
 
 ---
 
