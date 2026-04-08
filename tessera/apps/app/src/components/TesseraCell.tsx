@@ -12,14 +12,18 @@ interface TesseraCellProps {
   isFilled: boolean;
   metadata?: BMPMetadata;
   isNewMint?: boolean;
+  onClick?: (id: number) => void;
+  hasPrevStreak?: boolean;
+  hasNextStreak?: boolean;
 }
 
-export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata, isNewMint = false }) => {
+export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata, isNewMint = false, onClick, hasPrevStreak, hasNextStreak }) => {
   if (!isFilled || !metadata) {
     return (
       <div 
-        className="w-3 h-3 rounded-sm transition-colors bg-gray-200 dark:bg-gray-800"
+        className="w-3 h-3 rounded-sm transition-colors bg-gray-200 dark:bg-gray-800 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
         title={`Day ${id} - Empty`}
+        onClick={() => onClick && onClick(id)}
       />
     );
   }
@@ -55,14 +59,21 @@ export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata
       break;
   }
 
-  const baseClasses = 'w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse';
+  const baseClasses = 'relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer';
   const mintClass = isNewMint ? 'animate-mint-glow' : '';
 
   return (
     <div
       className={`${baseClasses} ${mintClass} ${borderClass} ${shadowClass}`}
       style={{ backgroundColor: color, opacity }}
-      title={`Day ${id}\nMood: ${metadata.moodScore}/10\nSocial: ${metadata.socialBattery}/10\nProductivity: ${metadata.productivityScore}/100\nTier: ${metadata.frameTier}`}
-    />
+      title={`Day ${id}\nMood: ${metadata.moodScore}/10\nSocial: ${metadata.socialBattery}/10\nProductivity: ${metadata.productivityScore}/100\nTier: ${metadata.frameTier}\n${(hasPrevStreak || hasNextStreak) ? '🔥 On a streak!' : ''}`}
+      onClick={() => onClick && onClick(id)}
+    >
+      {(hasPrevStreak || hasNextStreak) && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-1 h-1 bg-white/70 rounded-full shadow-[0_0_2px_#fff]"></div>
+        </div>
+      )}
+    </div>
   );
 };

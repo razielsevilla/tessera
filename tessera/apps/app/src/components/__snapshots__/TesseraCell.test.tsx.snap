@@ -1,0 +1,120 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TesseraCell Visual Variants > renders correctly as newly minted 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer animate-mint-glow border border-transparent "
+  style="background-color: rgb(116, 218, 47); opacity: 0.91;"
+  title="Day 1
+Mood: 8/10
+Social: 6/10
+Productivity: 85/100
+Tier: 0
+"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly when empty 1`] = `
+<div
+  class="w-3 h-3 rounded-sm transition-colors bg-gray-200 dark:bg-gray-800 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
+  title="Day 1 - Empty"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly with Frame Tier: Bronze (Tier 1) 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer  border border-[#cd7f32] "
+  style="background-color: rgb(116, 218, 47); opacity: 0.91;"
+  title="Day 1
+Mood: 8/10
+Social: 6/10
+Productivity: 85/100
+Tier: 1
+"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly with Frame Tier: Gold (Tier 3) 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer  border border-[#ffd700] shadow-[0_0_4px_#ffd700]"
+  style="background-color: rgb(116, 218, 47); opacity: 0.91;"
+  title="Day 1
+Mood: 8/10
+Social: 6/10
+Productivity: 85/100
+Tier: 3
+"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly with Frame Tier: Legendary (Tier 4) 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer  border border-[#9400d3] shadow-[0_0_6px_#9400d3] animate-pulse"
+  style="background-color: rgb(116, 218, 47); opacity: 0.91;"
+  title="Day 1
+Mood: 8/10
+Social: 6/10
+Productivity: 85/100
+Tier: 4
+"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly with Frame Tier: None (Tier 0) 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer  border border-transparent "
+  style="background-color: rgb(116, 218, 47); opacity: 0.91;"
+  title="Day 1
+Mood: 8/10
+Social: 6/10
+Productivity: 85/100
+Tier: 0
+"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly with Frame Tier: Silver (Tier 2) 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer  border border-[#c0c0c0] shadow-[0_0_2px_#c0c0c0]"
+  style="background-color: rgb(116, 218, 47); opacity: 0.91;"
+  title="Day 1
+Mood: 8/10
+Social: 6/10
+Productivity: 85/100
+Tier: 2
+"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly with low mood, low social, low prod 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer  border border-transparent "
+  style="background-color: rgb(182, 62, 32); opacity: 0.7;"
+  title="Day 1
+Mood: 1/10
+Social: 1/10
+Productivity: 0/100
+Tier: 0
+"
+/>
+`;
+
+exports[`TesseraCell Visual Variants > renders correctly with streak styling 1`] = `
+<div
+  class="relative w-3 h-3 rounded-sm transition-all hover:z-10 hover:animate-subtle-pulse cursor-pointer  border border-transparent "
+  style="background-color: rgb(116, 218, 47); opacity: 0.91;"
+  title="Day 1
+Mood: 8/10
+Social: 6/10
+Productivity: 85/100
+Tier: 0
+🔥 On a streak!"
+>
+  <div
+    class="absolute inset-0 flex items-center justify-center pointer-events-none"
+  >
+    <div
+      class="w-1 h-1 bg-white/70 rounded-full shadow-[0_0_2px_#fff]"
+    />
+  </div>
+</div>
+`;

@@ -189,16 +189,16 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 ### Checklist — Definition of Done
 
-- [ ] Color mapping algorithm: mood/social-battery → HSL color implemented
-- [ ] Glow/opacity intensity mapped from productivity score
-- [ ] Border/frame tier system: None → Bronze → Silver → Gold → Legendary
-- [ ] Texture/pattern system: at least 5 distinct patterns for media genre types
-- [ ] Tile animation: subtle pulse on hover, glow on mint confirmation
-- [ ] Yearly mosaic zoom: from full-year view to single-day tile drill-down
-- [ ] Visual legend/key component explaining all tile properties
-- [ ] Streak indicators on consecutive minted days
-- [ ] Export mosaic as PNG/SVG (client-side canvas rendering)
-- [ ] Visual regression tests: snapshot tests for each tile variant
+- [x] Color mapping algorithm: mood/social-battery → HSL color implemented
+- [x] Glow/opacity intensity mapped from productivity score
+- [x] Border/frame tier system: None → Bronze → Silver → Gold → Legendary
+- [x] Texture/pattern system: at least 5 distinct patterns for media genre types
+- [x] Tile animation: subtle pulse on hover, glow on mint confirmation
+- [x] Yearly mosaic zoom: from full-year view to single-day tile drill-down
+- [x] Visual legend/key component explaining all tile properties
+- [x] Streak indicators on consecutive minted days
+- [x] Export mosaic as PNG/SVG (client-side canvas rendering)
+- [x] Visual regression tests: snapshot tests for each tile variant
 
 ---
 
