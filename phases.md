@@ -169,7 +169,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Correlation metadata (mood delta vs. engagement count)
 
 **Skills & Skill Tree Module**
-- [ ] Per-skill daily hours logger
+- [x] Per-skill daily hours logger
 - [ ] Skill tree node graph UI (visual dependency map)
 - [ ] Total accumulated hours tracked per skill
 - [ ] Milestone threshold definitions (e.g., Bronze at 10hrs/Rust)

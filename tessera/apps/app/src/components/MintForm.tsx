@@ -10,6 +10,7 @@ import { LifeEconomyTracker } from './LifeEconomyTracker';
 import { MediaLogger, MediaLogData } from './MediaLogger';
 import { InteractiveFictionLogger, InteractiveFictionData } from './InteractiveFictionLogger';
 import { SocialBatteryLogger, SocialBatteryData } from './SocialBatteryLogger';
+import { SkillLogger, SkillLog } from './SkillLogger';
 import { calculateProductivityScore } from '../lib/scoring';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
@@ -48,6 +49,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
     managedTeams: 0,
     events: []
   });
+  const [skillsData, setSkillsData] = useState<SkillLog[]>([]);
 
   const handleMint = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,7 +81,8 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         frameTier: 2,
         retrospective: retroData,
         media: mediaData,
-        interactiveFiction: interactiveFictionData
+        interactiveFiction: interactiveFictionData,
+        skillsPracticed: skillsData
       }));
 
       // Use a dummy key for MVP demo
@@ -197,6 +200,11 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
         <SocialBatteryLogger
           disabled={loading}
           onChange={setSocialData}
+        />
+
+        <SkillLogger
+          disabled={loading}
+          onChange={setSkillsData}
         />
 
         <div className="flex flex-col gap-2">
