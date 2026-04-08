@@ -97,11 +97,14 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
 
       const rawData = new TextEncoder().encode(JSON.stringify(payload));
 
-      // Use a dummy key for MVP demo
-      const key = new Uint8Array(32);
-      key.fill(1); // placeholder
+      setStatus('Requesting vault key signature...');
+      // 2. Derive deterministic vault encryption key from a wallet signature
+      const authMessage = new TextEncoder().encode('Sign to derive your Tessera encryption vault key.');
+      const ikmSignature = await wallet.signMessage(authMessage);
+      const salt = new Uint8Array(16); // zero salt for simple deterministic MVP
+      const key = engine.deriveKey(new Uint8Array(ikmSignature), salt, 'tessera-vault-key');
 
-      // 2. Encrypt & Generate BMP
+      // 3. Encrypt & Generate BMP
       const encryptedData = engine.encrypt(rawData, key);
       let dataHash;
       try {
@@ -122,7 +125,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
 
       setStatus('Uploading encrypted blob to IPFS (mock fallback)...');
 
-      // 3. IPFS Upload
+      // 4. IPFS Upload
       let cid = 'QmMockCid1234567890';
       try {
         // if (typeof uploadVaultBlob === 'function') {
@@ -135,7 +138,7 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
 
       setStatus('Preparing Solana transaction...');
 
-      // 4. Contract Call
+      // 5. Contract Call
       const provider = new anchor.AnchorProvider(connection, wallet as any, {});
       const program = new anchor.Program(idl as unknown as anchor.Idl, provider);
 
