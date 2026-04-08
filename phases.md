@@ -160,7 +160,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Book/story log with genre tags and progress tracking
 - [x] Interactive fiction branching choice logger
 - [x] Trope and pacing metadata fields
-- [ ] Session duration tracking
+- [x] Session duration tracking
 
 **Social Battery Module**
 - [ ] Mood baseline slider (1–10)

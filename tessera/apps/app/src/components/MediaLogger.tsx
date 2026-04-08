@@ -7,6 +7,7 @@ export interface MediaLogData {
   genres: string[];
   pacing?: 'slow' | 'medium' | 'fast';
   tropes: string[];
+  sessionDurationMinutes: number;
 }
 
 interface MediaLoggerProps {
@@ -32,7 +33,8 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
     progress: 0,
     genres: [],
     pacing: 'medium',
-    tropes: []
+    tropes: [],
+    sessionDurationMinutes: 0
   });
   const [newTrope, setNewTrope] = useState('');
 
@@ -187,6 +189,19 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
             ))}
           </div>
         )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-600 dark:text-gray-400">Session Duration (minutes)</label>
+        <input 
+          type="number" 
+          min="0"
+          value={data.sessionDurationMinutes || ''}
+          onChange={(e) => handleUpdate({ sessionDurationMinutes: parseInt(e.target.value, 10) || 0 })}
+          placeholder="e.g. 45" 
+          disabled={disabled}
+          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+        />
       </div>
 
     </div>
