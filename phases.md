@@ -236,7 +236,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Frontend Content Security Policy (CSP) headers configured
 - [x] Dependency vulnerability scan (`pnpm audit`): all HIGH/CRITICAL resolved
 - [x] No secret keys in git history (gitleaks scan passes)
-- [ ] Load test: 1,000 concurrent wallet connections handled gracefully
+- [x] Load test: 1,000 concurrent wallet connections handled gracefully
 - [ ] Error monitoring (Sentry or equivalent) integrated
 - [ ] All P0 and P1 bugs resolved; known P2 bugs documented
 
