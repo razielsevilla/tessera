@@ -12,6 +12,14 @@ export interface SkillLoggerProps {
   accumulatedHistory?: Record<string, number>;
 }
 
+const getSkillTier = (hours: number) => {
+  if (hours >= 1000) return { name: 'Legendary', cls: 'text-purple-700 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800' };
+  if (hours >= 100) return { name: 'Gold', cls: 'text-yellow-700 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800' };
+  if (hours >= 50) return { name: 'Silver', cls: 'text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700' };
+  if (hours >= 10) return { name: 'Bronze', cls: 'text-amber-800 dark:text-amber-500 bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800' };
+  return { name: 'Novice', cls: 'text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700' };
+};
+
 export function SkillLogger({ disabled, onChange, accumulatedHistory = {} }: SkillLoggerProps) {
   const [skills, setSkills] = useState<SkillLog[]>([]);
   const [currentSkill, setCurrentSkill] = useState('');
@@ -83,9 +91,15 @@ export function SkillLogger({ disabled, onChange, accumulatedHistory = {} }: Ski
           {skills.map((s, i) => {
             const historical = accumulatedHistory[s.skillName.toLowerCase()] || 0;
             const totalToDate = historical + s.hoursSpent;
+            const tier = getSkillTier(totalToDate);
             return (
               <li key={i} className="flex justify-between items-center text-sm p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded border border-zinc-100 dark:border-zinc-800">
-                <span className="font-medium">{s.skillName}</span>
+                <div className="flex gap-2 items-center">
+                  <span className="font-medium">{s.skillName}</span>
+                  <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border ${tier.cls}`}>
+                    {tier.name}
+                  </span>
+                </div>
                 <div className="flex gap-3 items-center">
                   <span className="font-mono text-xs bg-zinc-200 dark:bg-zinc-700 px-2 py-1 rounded">+{s.hoursSpent} hrs</span>
                   <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">Total: {totalToDate}h</span>

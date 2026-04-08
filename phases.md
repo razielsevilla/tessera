@@ -172,7 +172,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] Per-skill daily hours logger
 - [x] Skill tree node graph UI (visual dependency map)
 - [x] Total accumulated hours tracked per skill
-- [ ] Milestone threshold definitions (e.g., Bronze at 10hrs/Rust)
+- [x] Milestone threshold definitions (e.g., Bronze at 10hrs/Rust)
 
 **Cross-Module**
 - [ ] All module schemas validated by shared Zod schemas (`@tessera/types`)
