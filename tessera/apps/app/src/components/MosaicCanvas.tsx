@@ -1,5 +1,4 @@
 ﻿import React, { useState, useRef, useCallback } from 'react';
-import { toPng, toSvg } from 'html-to-image';
 import { TesseraCell, BMPMetadata } from './TesseraCell';
 import { MosaicLegend } from './MosaicLegend';
 
@@ -23,12 +22,12 @@ export const MosaicCanvas: React.FC<MosaicCanvasProps> = ({ slots }) => {
     // Generate some consecutive days for streak testing
     const isFilled = [32, 33, 34, 45, 100, 250, 251, 364].includes(i);
     
-    // Generate some mock metadata to visually test the cell logic
+    // Generate deterministic mock metadata to prevent React hydration mismatch
     const mockMetadata: BMPMetadata | undefined = isFilled ? {
-      moodScore: Math.floor(Math.random() * 10) + 1,
-      socialBattery: Math.floor(Math.random() * 10) + 1,
-      productivityScore: Math.floor(Math.random() * 100) + 1,
-      frameTier: Math.floor(Math.random() * 5),
+      moodScore: (i % 10) + 1,
+      socialBattery: ((i * 3) % 10) + 1,
+      productivityScore: ((i * 7) % 100) + 1,
+      frameTier: i % 5,
     } : undefined;
 
     return {

@@ -1,22 +1,23 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, use } from 'react';
 import { ShieldCheck, AlertTriangle } from 'lucide-react';
 
-export default function EmbedProvePage({ params }: { params: { data: string } }) {
+export default function EmbedProvePage({ params }: { params: Promise<{ data: string }> }) {
   const [proof, setProof] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const resolvedParams = use(params);
 
   useEffect(() => {
     try {
-      const decodedStr = atob(decodeURIComponent(params.data));
+      const decodedStr = atob(decodeURIComponent(resolvedParams.data));
       const parsed = JSON.parse(decodedStr);
       setProof(parsed);
     } catch (e) {
       console.error(e);
       setError('Invalid proof data.');
     }
-  }, [params.data]);
+  }, [resolvedParams.data]);
 
   return (
     <div className="flex items-center justify-center font-[family-name:var(--font-geist-sans)] h-screen w-full bg-transparent overflow-hidden object-contain m-0 p-0">
@@ -26,7 +27,7 @@ export default function EmbedProvePage({ params }: { params: { data: string } })
             <ShieldCheck className="w-5 h-5 text-green-500 shrink-0" /> Tessera Verified
           </h2>
           <a 
-            href={`/prove/${params.data}`} 
+            href={`/prove/${resolvedParams.data}`} 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-xs text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 m-0"

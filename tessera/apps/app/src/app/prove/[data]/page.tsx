@@ -1,23 +1,24 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Share2, CheckCircle2, ShieldCheck, AlertTriangle } from 'lucide-react';
+import React, { useEffect, useState, use } from 'react';
+import { CheckCircle2, ShieldCheck, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 
-export default function ProvePage({ params }: { params: { data: string } }) {
+export default function ProvePage({ params }: { params: Promise<{ data: string }> }) {
   const [proof, setProof] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const resolvedParams = use(params);
 
   useEffect(() => {
     try {
-      const decodedStr = atob(decodeURIComponent(params.data));
+      const decodedStr = atob(decodeURIComponent(resolvedParams.data));
       const parsed = JSON.parse(decodedStr);
       setProof(parsed);
     } catch (e) {
       console.error(e);
       setError('Invalid proof formatting or corrupted link.');
     }
-  }, [params.data]);
+  }, [resolvedParams.data]);
 
   return (
     <div className="min-h-screen flex flex-col p-8 items-center font-[family-name:var(--font-geist-sans)] justify-center">
