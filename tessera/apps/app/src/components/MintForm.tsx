@@ -106,11 +106,23 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
 
       // 3. Encrypt & Generate BMP
       const encryptedData = engine.encrypt(rawData, key);
+      
+      // Calculate Module Scores Array for Poseidon ZK-hash
+      const totalSkillHours = Math.floor(skillsData.reduce((acc, s) => acc + s.hoursSpent, 0));
+      const moduleScores = [
+        BigInt(taskPoints),
+        BigInt(economyPoints),
+        BigInt(socialData.moodScore),
+        BigInt(Math.floor(mediaData.progress)),
+        BigInt(totalSkillHours)
+      ];
+
       let dataHash;
       try {
-          dataHash = engine.hashBytes(encryptedData); // [u8; 32]
+          dataHash = engine.hashScores(moduleScores); // [u8; 32]
       } catch(e) {
-          // fallback if engine.hashBytes is unexported
+          console.warn('hashScores failed, falling back to hashBytes:', e);
+          dataHash = engine.hashBytes(encryptedData);
       }
 
       if (!dataHash || dataHash.length === 0) {

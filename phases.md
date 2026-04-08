@@ -177,7 +177,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 **Cross-Module**
 - [x] All module schemas validated by shared Zod schemas (`@tessera/types`)
 - [x] All module data is encrypted before leaving the browser
-- [ ] Module scores feed correctly into BMP hash computation
+- [x] Module scores feed correctly into BMP hash computation
 
 ---
 
