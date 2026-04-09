@@ -128,6 +128,10 @@ export function ThreeMosaic({ slots, onDayClick }: ThreeMosaicProps) {
         <OrbitControls 
           enablePan={true}
           enableZoom={true}
+          enableDamping={true}
+          dampingFactor={0.05}
+          autoRotate={true}
+          autoRotateSpeed={0.5}
           maxPolarAngle={Math.PI / 2 - 0.1} // Don't go below ground
           minDistance={10}
           maxDistance={50}
