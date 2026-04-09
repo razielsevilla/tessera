@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { TesseraCell, BMPMetadata } from './TesseraCell';
 import { MosaicLegend } from './MosaicLegend';
+import { ThreeMosaic } from './ThreeMosaic';
 
 interface TesseraSlot {
   id: number;
@@ -38,6 +39,8 @@ export const MosaicCanvas: React.FC<MosaicCanvasProps> = ({ slots }) => {
   });
 
   const displaySlots = slots || defaultSlots;
+
+  const [viewMode, setViewMode] = useState<'2D' | '3D'>('3D');
 
   const handleCellClick = (id: number) => {
     setSelectedDayId(id);
@@ -141,17 +144,27 @@ export const MosaicCanvas: React.FC<MosaicCanvasProps> = ({ slots }) => {
     <div className="w-full overflow-x-auto p-2 sm:p-4 flex flex-col items-center animate-fade-in transition-all">
       <div className="w-full max-w-4xl flex justify-between items-center mb-6 border-b border-stone-200 dark:border-stone-800 pb-4">
         <h3 className="text-lg sm:text-xl font-serif text-stone-800 dark:text-stone-200">Past Entries</h3>
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 items-center">
+          <div className="flex bg-stone-100 dark:bg-stone-800 rounded mr-4 p-1">
+            <button 
+              onClick={() => setViewMode('2D')}
+              className={`px-3 py-1 text-sm rounded ${viewMode === '2D' ? 'bg-white dark:bg-stone-600 shadow' : ''}`}
+            >2D</button>
+            <button 
+              onClick={() => setViewMode('3D')}
+              className={`px-3 py-1 text-sm rounded ${viewMode === '3D' ? 'bg-white dark:bg-stone-600 shadow' : ''}`}
+            >3D</button>
+          </div>
           <button 
             onClick={handleExportPNG} 
-            disabled={exporting}
+            disabled={exporting || viewMode === '3D'}
             className="text-xs font-serif bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 px-3 py-1.5 rounded transition-colors disabled:opacity-50"
           >
             Export PNG
           </button>
           <button 
             onClick={handleExportSVG} 
-            disabled={exporting}
+            disabled={exporting || viewMode === '3D'}
             className="text-xs font-serif bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 px-3 py-1.5 rounded transition-colors disabled:opacity-50"
           >
             Export SVG
@@ -159,33 +172,39 @@ export const MosaicCanvas: React.FC<MosaicCanvasProps> = ({ slots }) => {
         </div>
       </div>
       
-      <div ref={mosaicRef} className="p-6 bg-white dark:bg-stone-950 rounded-lg shadow-sm border border-stone-100 dark:border-stone-800 inline-block">
-        <div
-          className="grid gap-1.5"
-          style={{
-            gridTemplateColumns: 'repeat(52, minmax(12px, 16px))',
-            gridTemplateRows: 'repeat(7, minmax(12px, 16px))',
-            gridAutoFlow: 'column'
-          }}
-        >
-          {displaySlots.map((slot, i) => {
-            const hasPrevStreak = slot.isFilled && i > 0 && displaySlots[i - 1].isFilled;
-            const hasNextStreak = slot.isFilled && i < displaySlots.length - 1 && displaySlots[i + 1].isFilled;
-
-            return (
-              <TesseraCell
-                key={slot.id}
-                id={slot.id}
-                isFilled={slot.isFilled}
-                metadata={slot.metadata}
-                onClick={handleCellClick}
-                hasPrevStreak={hasPrevStreak}
-                hasNextStreak={hasNextStreak}
-              />
-            );
-          })}
+      {viewMode === '3D' ? (
+        <div className="w-full max-w-4xl h-[500px] mb-8 relative">
+           <ThreeMosaic slots={displaySlots} onDayClick={handleCellClick} />
         </div>
-      </div>
+      ) : (
+        <div ref={mosaicRef} className="p-6 bg-white dark:bg-stone-950 rounded-lg shadow-sm border border-stone-100 dark:border-stone-800 inline-block">
+          <div
+            className="grid gap-1.5"
+            style={{
+              gridTemplateColumns: 'repeat(52, minmax(12px, 16px))',
+              gridTemplateRows: 'repeat(7, minmax(12px, 16px))',
+              gridAutoFlow: 'column'
+            }}
+          >
+            {displaySlots.map((slot, i) => {
+              const hasPrevStreak = slot.isFilled && i > 0 && displaySlots[i - 1].isFilled;
+              const hasNextStreak = slot.isFilled && i < displaySlots.length - 1 && displaySlots[i + 1].isFilled;
+
+              return (
+                <TesseraCell
+                  key={slot.id}
+                  id={slot.id}
+                  isFilled={slot.isFilled}
+                  metadata={slot.metadata}
+                  onClick={handleCellClick}
+                  hasPrevStreak={hasPrevStreak}
+                  hasNextStreak={hasNextStreak}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
       <MosaicLegend />
     </div>
   );
