@@ -2,7 +2,7 @@
 
 import React, { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Instance, Instances, RoundedBox } from '@react-three/drei';
+import { OrbitControls, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 import { BMPMetadata } from './TesseraCell';
 
@@ -66,6 +66,9 @@ interface ThreeMosaicProps {
 }
 
 export function ThreeMosaic({ slots, onDayClick }: ThreeMosaicProps) {
+  const [dpr, setDpr] = useState(1.5);
+  const [performanceMode, setPerformanceMode] = useState<'high' | 'low'>('high');
+
   // Map moodScore (1-10) to a color
   const getColor = (metadata?: BMPMetadata) => {
     if (!metadata) return '#e7e5e4'; // empty stone color
@@ -112,13 +115,18 @@ export function ThreeMosaic({ slots, onDayClick }: ThreeMosaicProps) {
 
   return (
     <div className="w-full h-[500px] bg-stone-100 dark:bg-stone-950 rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing border border-stone-200 dark:border-stone-800 shadow-inner">
-      <Canvas camera={{ position: [0, 15, 30], fov: 40 }}>
+      <Canvas camera={{ position: [0, 15, 30], fov: 40 }} dpr={dpr} shadows={performanceMode === 'high'}>
+        <PerformanceMonitor 
+          onIncline={() => { setDpr(1.5); setPerformanceMode('high'); }} 
+          onDecline={() => { setDpr(1); setPerformanceMode('low'); }} 
+        />
+        
         <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow />
+        <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow={performanceMode === 'high'} />
         <directionalLight position={[-10, 10, -10]} intensity={0.5} />
         
         {/* Base plane */}
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow={performanceMode === 'high'}>
           <planeGeometry args={[60, 20]} />
           <meshStandardMaterial color="#292524" roughness={0.8} />
         </mesh>
@@ -130,7 +138,7 @@ export function ThreeMosaic({ slots, onDayClick }: ThreeMosaicProps) {
           enableZoom={true}
           enableDamping={true}
           dampingFactor={0.05}
-          autoRotate={true}
+          autoRotate={performanceMode === 'high'}
           autoRotateSpeed={0.5}
           maxPolarAngle={Math.PI / 2 - 0.1} // Don't go below ground
           minDistance={10}
@@ -138,7 +146,7 @@ export function ThreeMosaic({ slots, onDayClick }: ThreeMosaicProps) {
         />
       </Canvas>
       <div className="absolute bottom-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur">
-        Drag to rotate • Scroll to zoom
+        {performanceMode === 'low' ? 'Power Saver' : 'Drag to rotate • Scroll to zoom'}
       </div>
     </div>
   );

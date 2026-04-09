@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, RoundedBox, Environment, ContactShadows, Float } from '@react-three/drei';
+import { OrbitControls, RoundedBox, Environment, ContactShadows, Float, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface BookModelProps {
@@ -111,11 +111,19 @@ function BookModel({ isUnlocked, onUnlockComplete }: BookModelProps) {
 }
 
 export function ThreeDiaryCover({ isUnlocked = false, onUnlockComplete }: { isUnlocked?: boolean, onUnlockComplete?: () => void }) {
+  const [dpr, setDpr] = useState(1.5);
+  const [performanceMode, setPerformanceMode] = useState<'high' | 'low'>('high');
+
   return (
     <div className={`absolute inset-0 w-full h-full -z-10 ${isUnlocked ? '' : 'cursor-grab active:cursor-grabbing'}`}>
-      <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }}>
+      <Canvas camera={{ position: [0, 0, 7.5], fov: 45 }} dpr={dpr} shadows={performanceMode === 'high'}>
+        <PerformanceMonitor 
+          onIncline={() => { setDpr(1.5); setPerformanceMode('high'); }} 
+          onDecline={() => { setDpr(1); setPerformanceMode('low'); }} 
+        />
+        
         <ambientLight intensity={0.6} />
-        <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
+        <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow={performanceMode === 'high'} />
         <directionalLight position={[-10, -10, -5]} intensity={0.5} />
         <Environment preset="city" />
         
