@@ -22,6 +22,7 @@ const ShareAchievement = dynamic(
 
 import { LockKeyhole } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { ThreeDiaryCover } from '../components/ThreeDiaryCover';
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
@@ -60,29 +61,27 @@ export default function Home() {
       </header>
 
       {!connected ? (
-        <main className="flex-1 flex items-center justify-center w-full mt-4 sm:-mt-12">
-          {/* Locked Diary Cover */}
-          <div className="relative w-full max-w-md h-[550px] bg-stone-200 dark:bg-stone-900 border-l-[16px] border-stone-400 dark:border-stone-950 shadow-2xl rounded-r-3xl flex flex-col items-center justify-center p-8 text-center ring-1 ring-stone-300 dark:ring-stone-800 overflow-hidden group transition-transform hover:-translate-y-1 duration-500">
-            {/* Decorative binding bands */}
-            <div className="absolute top-1/4 left-0 w-full h-12 bg-stone-300/40 dark:bg-stone-800/40 -translate-y-1/2 border-y border-stone-300 dark:border-stone-800 shadow-sm"></div>
-            <div className="absolute top-3/4 left-0 w-full h-12 bg-stone-300/40 dark:bg-stone-800/40 -translate-y-1/2 border-y border-stone-300 dark:border-stone-800 shadow-sm"></div>
+        <main className="flex-1 flex items-center justify-center w-full mt-4 sm:-mt-12 relative overflow-hidden">
+          {/* Interactive R3F 3D Diary Cover */}
+          <ThreeDiaryCover />
+
+          {/* Central Unlock Interface Overlay */}
+          <div className="relative z-10 flex flex-col items-center justify-center p-8 bg-stone-100/90 dark:bg-stone-950/90 backdrop-blur-md rounded-2xl shadow-2xl border border-stone-300 dark:border-stone-700 w-80 text-center transition-transform hover:scale-105 duration-500">
+            <LockKeyhole className="w-10 h-10 mb-4 text-stone-500 dark:text-stone-400" strokeWidth={1.5} />
             
-            {/* Clasp / Lock */}
-            <div className="relative z-10 flex flex-col items-center justify-center p-6 bg-stone-100 dark:bg-stone-950 rounded-2xl shadow-xl border-2 border-stone-300 dark:border-stone-700 w-64 rotate-0 transition-transform duration-700">
-              <LockKeyhole className="w-10 h-10 mb-4 text-stone-400 dark:text-stone-500" strokeWidth={1.5} />
-              
-              <h2 className="text-xl font-serif font-bold text-stone-700 dark:text-stone-300 mb-2">Sealed Journal</h2>
-              <p className="text-sm text-stone-500 italic font-serif mb-6 px-4">Present your cryptographic seal to unlock the pages.</p>
-              
-              <div className="shadow-sm rounded-md overflow-hidden">
-                <WalletMultiButtonDynamic />
-              </div>
-            </div>
+            <h2 className="text-2xl font-serif font-bold text-stone-800 dark:text-stone-200 mb-2">Sealed Journal</h2>
+            <p className="text-sm text-stone-600 dark:text-stone-400 italic font-serif mb-8 px-2 leading-relaxed">
+              Present your cryptographic seal to unbind these pages.
+            </p>
             
-            {/* Subtle Title Emboss */}
-            <div className="absolute bottom-8 right-8 text-stone-400/50 dark:text-stone-600/30 text-4xl font-serif italic uppercase tracking-widest pointer-events-none transform -rotate-12">
-              Tessera
+            <div className="shadow-lg rounded-md overflow-hidden transform hover:scale-105 transition-transform duration-300">
+              <WalletMultiButtonDynamic />
             </div>
+          </div>
+          
+          {/* Subtle Background Title */}
+          <div className="absolute bottom-8 right-8 text-stone-300/30 dark:text-stone-800/30 text-6xl font-serif italic uppercase tracking-widest pointer-events-none select-none">
+            Tessera
           </div>
         </main>
       ) : (
