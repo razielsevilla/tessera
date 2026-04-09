@@ -35,21 +35,21 @@ export function LifeEconomyTracker({ onPointsUpdate, disabled }: LifeEconomyTrac
   };
 
   return (
-    <div className="flex flex-col gap-4 border rounded-lg p-4 bg-white dark:bg-black dark:border-white/[.145]">
+    <div className="flex flex-col gap-4 border border-stone-200 dark:border-stone-800 rounded-xl p-6 bg-white dark:bg-stone-900/50 shadow-sm transition-all text-stone-800 dark:text-stone-300 font-serif dark:border-stone-800">
       <h4 className="font-semibold text-md">Life Economy (Household Chores)</h4>
       
       <div className="flex flex-col gap-2">
         {tasks.map(task => (
-          <div key={task.id} className="flex items-center justify-between gap-2 p-2 border rounded bg-gray-50 dark:bg-neutral-900 dark:border-white/[.1]">
+          <div key={task.id} className="flex items-center justify-between gap-2 p-2 border rounded bg-stone-50 dark:bg-neutral-900 dark:border-stone-800">
             <div className="flex items-center gap-2 overflow-hidden">
               <input 
                 type="checkbox" 
                 checked={task.completed}
                 onChange={() => toggleTask(task.id)}
                 disabled={disabled}
-                className="w-4 h-4 rounded border-gray-300"
+                className="w-4 h-4 rounded border-stone-300"
               />
-              <span className={`text-sm truncate ${task.completed ? 'line-through text-gray-400' : ''}`}>
+              <span className={`text-sm truncate ${task.completed ? 'line-through text-stone-400' : ''}`}>
                 {task.title}
               </span>
             </div>
@@ -62,7 +62,7 @@ export function LifeEconomyTracker({ onPointsUpdate, disabled }: LifeEconomyTrac
         ))}
       </div>
 
-      <div className="flex gap-2 items-center text-sm font-medium pt-2 border-t dark:border-white/[.145]">
+      <div className="flex gap-2 items-center text-sm font-medium pt-2 border-t dark:border-stone-800">
         <span>Life Points Generated:</span>
         <span className="text-green-600 dark:text-green-500">{calculatePoints(tasks)}</span>
       </div>

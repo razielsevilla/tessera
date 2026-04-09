@@ -65,28 +65,28 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 border rounded-lg p-4 bg-white dark:bg-black dark:border-white/[.145]">
+    <div className="flex flex-col gap-4 border border-stone-200 dark:border-stone-800 rounded-xl p-6 bg-white dark:bg-stone-900/50 shadow-sm transition-all text-stone-800 dark:text-stone-300 font-serif dark:border-stone-800">
       <h4 className="font-semibold text-md">Media & Literature Log</h4>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Title</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Title</label>
         <input 
           type="text" 
           value={data.title}
           onChange={(e) => handleUpdate({ title: e.target.value })}
           placeholder="What are you reading?" 
           disabled={disabled}
-          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Type</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Type</label>
         <select
           value={data.type}
           onChange={(e) => handleUpdate({ type: e.target.value as any })}
           disabled={disabled}
-          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145]"
+          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800"
         >
           <option value="book">Book</option>
           <option value="story">Short Story</option>
@@ -97,7 +97,7 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
 
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Progress ({data.progress}%)</label>
+          <label className="text-sm text-stone-600 dark:text-stone-400">Progress ({data.progress}%)</label>
         </div>
         <input 
           type="range" 
@@ -111,7 +111,7 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Genres</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Genres</label>
         <div className="flex flex-wrap gap-2">
           {AVAILABLE_GENRES.map((genre) => (
             <button
@@ -121,8 +121,8 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
               disabled={disabled}
               className={`px-2 py-1 text-xs rounded-full border transition-colors ${
                 data.genres.includes(genre)
-                  ? 'bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-900/30 dark:border-blue-700 dark:text-blue-300'
-                  : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-gray-400 dark:hover:bg-neutral-700'
+                  ? 'bg-stone-100 border-stone-300 text-stone-800 dark:bg-stone-900/30 dark:border-stone-700 dark:text-stone-300'
+                  : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-stone-400 dark:hover:bg-neutral-700'
               }`}
             >
               {genre}
@@ -132,7 +132,7 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
       </div>
       
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Pacing</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Pacing</label>
         <div className="flex gap-4">
           {['slow', 'medium', 'fast'].map((pacing) => (
             <label key={pacing} className="flex items-center gap-1 text-sm">
@@ -151,7 +151,7 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Tropes</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Tropes</label>
         <div className="flex gap-2">
           <input
             type="text"
@@ -160,13 +160,13 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
             onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTrope())}
             placeholder="e.g. Enemies to lovers, Found family"
             disabled={disabled}
-            className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+            className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
           />
           <button
             type="button"
             onClick={addTrope}
             disabled={disabled || !newTrope.trim()}
-            className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded text-sm hover:bg-blue-200 disabled:opacity-50 dark:bg-blue-900/40 dark:text-blue-200"
+            className="px-3 py-1.5 bg-stone-100 text-stone-800 rounded text-sm hover:bg-stone-200 disabled:opacity-50 dark:bg-stone-900/40 dark:text-stone-200"
           >
             Add
           </button>
@@ -174,14 +174,14 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
         {data.tropes.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-1">
             {data.tropes.map((trope, i) => (
-              <span key={i} className="flex items-center gap-1 bg-gray-100 dark:bg-neutral-800 px-2 py-1 rounded text-xs text-gray-700 dark:text-gray-300">
+              <span key={i} className="flex items-center gap-1 bg-stone-100 dark:bg-neutral-800 px-2 py-1 rounded text-xs text-stone-700 dark:text-stone-300">
                 {trope}
                 <button
                   type="button"
                   onClick={() => removeTrope(trope)}
                   title="Remove trope"
                   disabled={disabled}
-                  className="text-gray-500 hover:text-red-500 font-bold"
+                  className="text-stone-500 hover:text-red-500 font-bold"
                 >
                   ×
                 </button>
@@ -192,7 +192,7 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Session Duration (minutes)</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Session Duration (minutes)</label>
         <input 
           type="number" 
           min="0"
@@ -200,7 +200,7 @@ export function MediaLogger({ onChange, disabled }: MediaLoggerProps) {
           onChange={(e) => handleUpdate({ sessionDurationMinutes: parseInt(e.target.value, 10) || 0 })}
           placeholder="e.g. 45" 
           disabled={disabled}
-          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
         />
       </div>
 

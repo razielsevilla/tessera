@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 
 export interface BMPMetadata {
   moodScore?: number; // 1-10
@@ -21,7 +21,7 @@ export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata
   if (!isFilled || !metadata) {
     return (
       <div 
-        className="w-3 h-3 rounded-sm transition-colors bg-gray-200 dark:bg-gray-800 cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
+        className="w-3 h-3 rounded-sm transition-colors bg-stone-200 dark:bg-stone-800 cursor-pointer hover:bg-stone-300 dark:hover:bg-stone-700"
         title={`Day ${id} - Empty`}
         onClick={() => onClick && onClick(id)}
       />
@@ -66,7 +66,7 @@ export const TesseraCell: React.FC<TesseraCellProps> = ({ id, isFilled, metadata
     <div
       className={`${baseClasses} ${mintClass} ${borderClass} ${shadowClass}`}
       style={{ backgroundColor: color, opacity }}
-      title={`Day ${id}\nMood: ${metadata.moodScore}/10\nSocial: ${metadata.socialBattery}/10\nProductivity: ${metadata.productivityScore}/100\nTier: ${metadata.frameTier}\n${(hasPrevStreak || hasNextStreak) ? '🔥 On a streak!' : ''}`}
+      title={`Day ${id}\nMood: ${metadata.moodScore}/10\nSocial: ${metadata.socialBattery}/10\nProductivity: ${metadata.productivityScore}/100\nTier: ${metadata.frameTier}\n${(hasPrevStreak || hasNextStreak) ? '?? On a streak!' : ''}`}
       onClick={() => onClick && onClick(id)}
     >
       {(hasPrevStreak || hasNextStreak) && (

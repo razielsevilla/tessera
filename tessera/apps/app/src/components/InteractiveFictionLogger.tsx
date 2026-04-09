@@ -38,35 +38,35 @@ export function InteractiveFictionLogger({ onChange, disabled }: InteractiveFict
   };
 
   return (
-    <div className="flex flex-col gap-4 border rounded-lg p-4 bg-white dark:bg-black dark:border-white/[.145]">
+    <div className="flex flex-col gap-4 border border-stone-200 dark:border-stone-800 rounded-xl p-6 bg-white dark:bg-stone-900/50 shadow-sm transition-all text-stone-800 dark:text-stone-300 font-serif dark:border-stone-800">
       <h4 className="font-semibold text-md">Interactive Fiction Logger</h4>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Story Title</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Story Title</label>
         <input
           type="text"
           value={data.storyTitle}
           onChange={(e) => handleUpdate({ storyTitle: e.target.value })}
           placeholder="e.g. Choose Your Own Adventure"
           disabled={disabled}
-          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Current Node/Chapter ID</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Current Node/Chapter ID</label>
         <input
           type="text"
           value={data.currentNodeId}
           onChange={(e) => handleUpdate({ currentNodeId: e.target.value })}
           placeholder="e.g. Node-42 or Chapter 3"
           disabled={disabled}
-          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+          className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Branching Choices Log</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Branching Choices Log</label>
         <div className="flex gap-2">
           <input
             type="text"
@@ -75,22 +75,22 @@ export function InteractiveFictionLogger({ onChange, disabled }: InteractiveFict
             onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addChoice())}
             placeholder="Choice made..."
             disabled={disabled}
-            className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+            className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
           />
           <button
             type="button"
             onClick={addChoice}
             disabled={disabled || !newChoice.trim()}
-            className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded text-sm hover:bg-blue-200 disabled:opacity-50 dark:bg-blue-900/40 dark:text-blue-200"
+            className="px-3 py-1.5 bg-stone-100 text-stone-800 rounded text-sm hover:bg-stone-200 disabled:opacity-50 dark:bg-stone-900/40 dark:text-stone-200"
           >
             Add
           </button>
         </div>
         
         {data.choicesMade.length > 0 && (
-          <ul className="mt-2 text-sm text-gray-600 dark:text-gray-400 flex flex-col gap-1">
+          <ul className="mt-2 text-sm text-stone-600 dark:text-stone-400 flex flex-col gap-1">
             {data.choicesMade.map((choice, i) => (
-              <li key={i} className="flex justify-between items-center bg-gray-50 dark:bg-neutral-800 px-2 py-1 rounded">
+              <li key={i} className="flex justify-between items-center bg-stone-50 dark:bg-neutral-800 px-2 py-1 rounded">
                 <span>{i + 1}. {choice}</span>
                 <button
                   type="button"

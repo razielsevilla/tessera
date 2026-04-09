@@ -20,52 +20,106 @@ const ShareAchievement = dynamic(
   { ssr: false }
 );
 
+import { LockKeyhole } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
   { ssr: false }
 );
 
 export default function Home() {
-  const { connected } = useWallet();
+  const { connected, connecting } = useWallet();
   const { slots, loading, error } = useTesseraHistory();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent flash of unauthenticated UI while checking connection or mounting
+  if (!mounted || connecting) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-stone-50 dark:bg-stone-950">
+        <div className="w-16 h-16 border-4 border-stone-200 dark:border-stone-800 border-t-stone-600 dark:border-t-stone-400 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex flex-col p-4 sm:p-8 font-[family-name:var(--font-geist-sans)]">
-      <header className="flex flex-col sm:flex-row justify-between items-center w-full max-w-5xl mx-auto border-b pb-4 gap-4 sm:gap-0 dark:border-white/[.145]">
-        <h1 className="text-2xl font-bold text-center sm:text-left">Tessera Dashboard</h1>
+    <div className="min-h-screen flex flex-col p-4 sm:p-8 font-[family-name:var(--font-geist-sans)] bg-stone-50 dark:bg-stone-950 text-stone-800 dark:text-stone-300">
+      <header className="flex flex-col sm:flex-row justify-between items-center w-full max-w-7xl mx-auto border-b border-stone-200 dark:border-stone-800 pb-6 gap-4 sm:gap-0">
+        <div className="flex flex-col items-center sm:items-start tracking-tight">
+          <h1 className="text-3xl font-serif text-stone-900 dark:text-stone-100">My Journal</h1>
+          <p className="text-sm text-stone-500 italic mt-1">Chronicle your journey, one tessera at a time.</p>
+        </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <WalletMultiButtonDynamic />
+          {connected && <WalletMultiButtonDynamic />}
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-start gap-8 mt-6 sm:mt-10 w-full max-w-5xl mx-auto">
-        <h2 className="text-lg sm:text-xl text-center">
-          {connected ? 'Wallet is Connected. Ready to mint.' : 'Please connect your Phantom wallet.'}
-        </h2>
-
-        {connected && (
-          <section className="w-full max-w-4xl flex justify-center">
-            <MintForm onMintSuccess={() => window.location.reload()} />
-          </section>
-        )}
-
-        {loading && <p className="text-sm text-gray-500 animate-pulse bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg">Loading on-chain tessera history...</p>}
-        
-        {error && (
-          <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 rounded-lg flex items-center justify-between w-full max-w-md mx-4 sm:mx-0 text-center sm:text-left">
-            <span>Failed to load history: {error}</span>
+      {!connected ? (
+        <main className="flex-1 flex items-center justify-center w-full mt-4 sm:-mt-12">
+          {/* Locked Diary Cover */}
+          <div className="relative w-full max-w-md h-[550px] bg-stone-200 dark:bg-stone-900 border-l-[16px] border-stone-400 dark:border-stone-950 shadow-2xl rounded-r-3xl flex flex-col items-center justify-center p-8 text-center ring-1 ring-stone-300 dark:ring-stone-800 overflow-hidden group transition-transform hover:-translate-y-1 duration-500">
+            {/* Decorative binding bands */}
+            <div className="absolute top-1/4 left-0 w-full h-12 bg-stone-300/40 dark:bg-stone-800/40 -translate-y-1/2 border-y border-stone-300 dark:border-stone-800 shadow-sm"></div>
+            <div className="absolute top-3/4 left-0 w-full h-12 bg-stone-300/40 dark:bg-stone-800/40 -translate-y-1/2 border-y border-stone-300 dark:border-stone-800 shadow-sm"></div>
+            
+            {/* Clasp / Lock */}
+            <div className="relative z-10 flex flex-col items-center justify-center p-6 bg-stone-100 dark:bg-stone-950 rounded-2xl shadow-xl border-2 border-stone-300 dark:border-stone-700 w-64 rotate-0 transition-transform duration-700">
+              <LockKeyhole className="w-10 h-10 mb-4 text-stone-400 dark:text-stone-500" strokeWidth={1.5} />
+              
+              <h2 className="text-xl font-serif font-bold text-stone-700 dark:text-stone-300 mb-2">Sealed Journal</h2>
+              <p className="text-sm text-stone-500 italic font-serif mb-6 px-4">Present your cryptographic seal to unlock the pages.</p>
+              
+              <div className="shadow-sm rounded-md overflow-hidden">
+                <WalletMultiButtonDynamic />
+              </div>
+            </div>
+            
+            {/* Subtle Title Emboss */}
+            <div className="absolute bottom-8 right-8 text-stone-400/50 dark:text-stone-600/30 text-4xl font-serif italic uppercase tracking-widest pointer-events-none transform -rotate-12">
+              Tessera
+            </div>
           </div>
-        )}
+        </main>
+      ) : (
+        <main className="flex-1 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mt-10 items-start">
+          {/* Left Page (Today's Entry) */}
+          <div className="lg:col-span-7 xl:col-span-7 flex flex-col gap-6">
+            <h2 className="text-lg sm:text-xl font-serif italic text-stone-600 dark:text-stone-400 border-b border-stone-200 dark:border-stone-800 pb-2 inline-block">
+              Your pen is ready. Seal today&apos;s entry.
+            </h2>
+            
+            <section className="w-full">
+              <div className="bg-white dark:bg-stone-900/80 p-6 sm:p-8 rounded-2xl shadow-md border border-stone-200 dark:border-stone-800 relative z-10">
+                <MintForm onMintSuccess={() => window.location.reload()} />
+              </div>
+            </section>
+          </div>
 
-        <section className="w-full max-w-4xl flex justify-center overflow-auto border rounded-xl p-4 sm:p-6 dark:border-white/[.145] relative">
-          <MosaicCanvas slots={slots} />
-        </section>
+          {/* Right Page (History & Share) */}
+          <div className="lg:col-span-5 xl:col-span-5 flex flex-col gap-8 lg:mt-11">
+            {loading && <p className="text-sm font-serif italic text-stone-500 animate-pulse bg-stone-100 dark:bg-stone-900 px-6 py-3 rounded-lg shadow-inner">Dusting off the archives...</p>}
+            
+            {error && (
+              <div className="text-sm text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 px-6 py-4 rounded-lg flex items-center justify-between font-serif shadow-sm">
+                <span>The scroll tore: {error}</span>
+              </div>
+            )}
 
-        <section className="w-full max-w-4xl">
-          <ShareAchievement />
-        </section>
-      </main>
+            <section className="w-full flex justify-center overflow-auto rounded-2xl p-0 sm:p-0">
+              <MosaicCanvas slots={slots} />
+            </section>
+
+            <section className="w-full pb-16">
+              <ShareAchievement />
+            </section>
+          </div>
+        </main>
+      )}
     </div>
   );
 }

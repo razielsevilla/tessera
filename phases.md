@@ -30,7 +30,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
                 │                        │
                 └────── Phase 4 ◄────────┘
                               │
-                         Phase 5 ──► Phase 6 ──► Phase 7 ──► Phase 8 ──► Phase 9
+                         Phase 5 ──► Phase 6 ──► Phase 7 ──► Phase 8 ──► Phase 9 ──► Phase 10
 ```
 
 ---
@@ -242,7 +242,25 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 ---
 
-## Phase 9 — Public Launch
+## Phase 9 — 3D Immersive Transformation (R3F)
+
+**Goal:** Translate the 2D UI into a fully immersive 3D experience using React Three Fiber (R3F) and `@react-three/drei`, turning the diary and mosaic into tactile, interactive 3D objects.
+
+**Duration Estimate:** 4–6 weeks
+
+### Checklist — Definition of Done
+
+- [x] **Core 3D Engine Setup:** React Three Fiber, `three`, and `@react-three/drei` installed and integrated into Next.js.
+- [ ] **3D Diary Cover:** Implement a 3D book model with dynamic lighting, shadows, and leather/parchment textures for the unauthenticated state.
+- [ ] **Unlock Animation:** Wallet connection triggers a fluid 3D book opening animation, transitioning the camera seamlessly into the diary spread.
+- [ ] **3D Mosaic Canvas:** Rebuild the `MosaicCanvas` into a topological 3D voxel grid where `moodScore` controls block color/emission and `productivityScore` controls block height.
+- [ ] **Interactive Camera:** Add `OrbitControls` allowing users to freely pan, zoom, and rotate around their 3D mosaic year-in-review.
+- [ ] **Seal Animation:** Implement a 3D hot wax seal stamping animation upon mint confirmation.
+- [ ] **Performance Polish:** Implement graceful degradation for low-end mobile devices (e.g., lower polygon counts, disabling shadows if FPS drops).
+
+---
+
+## Phase 10 — Public Launch
 
 **Goal:** Deploy to mainnet, configure production infrastructure, and open Tessera to the public.
 
@@ -276,4 +294,5 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 | 6 | Mosaic & Visual System | Dynamic tile rendering from BMP metadata | Animated yearly mosaic canvas | 3–4 weeks |
 | 7 | ZK Proof Integration | Optional: threshold proofs without data exposure | Shareable ZK achievement links | 4–6 weeks |
 | 8 | Hardening & Security Audit | Full audit, optimizations, bug fixes | Audit report + zero P0 bugs | 3–4 weeks |
-| 9 | Public Launch | Mainnet deploy, docs, community launch | Live production app | 2–3 weeks |
+| 9 | 3D Immersive Transformation | R3F integration for realistic 3D diary and mosaic | Interactive 3D web experience | 4–6 weeks |
+| 10 | Public Launch | Mainnet deploy, docs, community launch | Live production app | 2–3 weeks |

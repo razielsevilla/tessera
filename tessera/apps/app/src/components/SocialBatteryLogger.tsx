@@ -50,12 +50,12 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
   };
 
   return (
-    <div className="flex flex-col gap-4 border rounded-lg p-4 bg-white dark:bg-black dark:border-white/[.145]">
+    <div className="flex flex-col gap-4 border border-stone-200 dark:border-stone-800 rounded-xl p-6 bg-white dark:bg-stone-900/50 shadow-sm transition-all text-stone-800 dark:text-stone-300 font-serif dark:border-stone-800">
       <h4 className="font-semibold text-md">Social Battery & Mood</h4>
 
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Mood Baseline ({data.moodScore}/10)</label>
+          <label className="text-sm text-stone-600 dark:text-stone-400">Mood Baseline ({data.moodScore}/10)</label>
         </div>
         <input 
           type="range" 
@@ -70,7 +70,7 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
 
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Social Mood Impact ({data.moodDelta > 0 ? '+' : ''}{data.moodDelta})</label>
+          <label className="text-sm text-stone-600 dark:text-stone-400">Social Mood Impact ({data.moodDelta > 0 ? '+' : ''}{data.moodDelta})</label>
         </div>
         <input 
           type="range" 
@@ -81,12 +81,12 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
           disabled={disabled}
           className="w-full"
         />
-        <p className="text-xs text-gray-500 dark:text-gray-500">How did social engagements affect your baseline mood?</p>
+        <p className="text-xs text-stone-500 dark:text-stone-500">How did social engagements affect your baseline mood?</p>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Meetings</label>
+          <label className="text-sm text-stone-600 dark:text-stone-400">Meetings</label>
           <input 
             type="number" 
             min="0" 
@@ -94,11 +94,11 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
             onChange={(e) => handleUpdate({ meetings: parseInt(e.target.value, 10) || 0 })}
             disabled={disabled}
             placeholder="0"
-            className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+            className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Calls</label>
+          <label className="text-sm text-stone-600 dark:text-stone-400">Calls</label>
           <input 
             type="number" 
             min="0" 
@@ -106,11 +106,11 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
             onChange={(e) => handleUpdate({ calls: parseInt(e.target.value, 10) || 0 })}
             disabled={disabled}
             placeholder="0"
-            className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+            className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Managed Teams</label>
+          <label className="text-sm text-stone-600 dark:text-stone-400">Managed Teams</label>
           <input 
             type="number" 
             min="0" 
@@ -118,19 +118,19 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
             onChange={(e) => handleUpdate({ managedTeams: parseInt(e.target.value, 10) || 0 })}
             disabled={disabled}
             placeholder="0"
-            className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+            className="px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="text-sm text-gray-600 dark:text-gray-400">Social Recharge/Drain Events</label>
+        <label className="text-sm text-stone-600 dark:text-stone-400">Social Recharge/Drain Events</label>
         <div className="flex gap-2">
           <select
             value={newEventType}
             onChange={(e) => setNewEventType(e.target.value as 'recharge' | 'drain')}
             disabled={disabled}
-            className="px-2 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] text-gray-700 dark:text-gray-300"
+            className="px-2 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 text-stone-700 dark:text-stone-300"
           >
             <option value="recharge">🔋 Recharge</option>
             <option value="drain">🪫 Drain</option>
@@ -142,13 +142,13 @@ export function SocialBatteryLogger({ onChange, disabled }: SocialBatteryLoggerP
             onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addEvent())}
             placeholder="e.g. Coffee with friends"
             disabled={disabled}
-            className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+            className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
           />
           <button
             type="button"
             onClick={addEvent}
             disabled={disabled || !newEventDesc.trim()}
-            className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded text-sm hover:bg-blue-200 disabled:opacity-50 dark:bg-blue-900/40 dark:text-blue-200"
+            className="px-3 py-1.5 bg-stone-100 text-stone-800 rounded text-sm hover:bg-stone-200 disabled:opacity-50 dark:bg-stone-900/40 dark:text-stone-200"
           >
             Add
           </button>

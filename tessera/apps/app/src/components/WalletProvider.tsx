@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { FC, ReactNode, useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';

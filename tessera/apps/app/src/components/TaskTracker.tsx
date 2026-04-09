@@ -54,36 +54,36 @@ export function TaskTracker({ onPointsUpdate, disabled }: TaskTrackerProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 border rounded-lg p-4 bg-white dark:bg-black dark:border-white/[.145]">
+    <div className="flex flex-col gap-4 border border-stone-200 dark:border-stone-800 rounded-xl p-6 bg-white dark:bg-stone-900/50 shadow-sm transition-all text-stone-800 dark:text-stone-300 font-serif dark:border-stone-800">
       <h4 className="font-semibold text-md">Sprint & Project Tasks</h4>
       
       <div className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-1">
         {tasks.length === 0 && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 italic text-center py-2">No tasks added yet.</p>
+          <p className="text-sm text-stone-500 dark:text-stone-400 italic text-center py-2">No tasks added yet.</p>
         )}
         {tasks.map(task => (
-          <div key={task.id} className="flex items-center justify-between gap-2 p-2 border rounded bg-gray-50 dark:bg-neutral-900 dark:border-white/[.1]">
+          <div key={task.id} className="flex items-center justify-between gap-2 p-2 border rounded bg-stone-50 dark:bg-neutral-900 dark:border-stone-800">
             <div className="flex items-center gap-2 overflow-hidden">
               <input 
                 type="checkbox" 
                 checked={task.completed}
                 onChange={() => toggleTask(task.id)}
                 disabled={disabled}
-                className="w-4 h-4 rounded border-gray-300"
+                className="w-4 h-4 rounded border-stone-300"
               />
-              <span className={`text-sm truncate ${task.completed ? 'line-through text-gray-400' : ''}`}>
+              <span className={`text-sm truncate ${task.completed ? 'line-through text-stone-400' : ''}`}>
                 {task.title}
               </span>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="text-xs font-mono bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-mono bg-stone-100 dark:bg-stone-900/40 text-stone-600 dark:text-stone-400 px-2 py-0.5 rounded-full">
                 {task.weight} pts
               </span>
               <button 
                 type="button"
                 onClick={() => removeTask(task.id)}
                 disabled={disabled}
-                className="text-gray-400 hover:text-red-500 disabled:opacity-50"
+                className="text-stone-400 hover:text-red-500 disabled:opacity-50"
               >
                 ✕
               </button>
@@ -92,9 +92,9 @@ export function TaskTracker({ onPointsUpdate, disabled }: TaskTrackerProps) {
         ))}
       </div>
 
-      <div className="flex gap-2 items-center text-sm font-medium pt-2 border-t dark:border-white/[.145]">
+      <div className="flex gap-2 items-center text-sm font-medium pt-2 border-t dark:border-stone-800">
         <span>Total Points:</span>
-        <span className="text-blue-600 dark:text-blue-400">{calculatePoints(tasks)}</span>
+        <span className="text-stone-600 dark:text-stone-400">{calculatePoints(tasks)}</span>
       </div>
 
       <div className="flex gap-2">
@@ -104,7 +104,7 @@ export function TaskTracker({ onPointsUpdate, disabled }: TaskTrackerProps) {
           onChange={(e) => setNewTaskTitle(e.target.value)}
           placeholder="New Task" 
           disabled={disabled}
-          className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145] placeholder-gray-400"
+          className="flex-1 px-3 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800 placeholder-gray-400"
           onKeyDown={(e) => e.key === 'Enter' && addTask(e as unknown as React.FormEvent)}
         />
         <input 
@@ -115,7 +115,7 @@ export function TaskTracker({ onPointsUpdate, disabled }: TaskTrackerProps) {
           max="100"
           placeholder="Pts" 
           disabled={disabled}
-          className="w-16 px-2 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-white/[.145]"
+          className="w-16 px-2 py-1.5 text-sm border rounded dark:bg-neutral-900 dark:border-stone-800"
         />
         <button 
           type="button"

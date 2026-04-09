@@ -55,31 +55,33 @@ export function ShareAchievement() {
   };
 
   return (
-    <div className="border dark:border-white/[.145] p-6 rounded-xl w-full max-w-xl mx-auto flex flex-col gap-4">
-      <h2 className="text-xl font-bold flex items-center gap-2">
-        <Share2 className="w-5 h-5" /> Share Achievement (ZK Proof)
-      </h2>
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        Prove you met a certain threshold (e.g. 50 hours studied) without revealing your exact total.
-      </p>
+    <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-8 rounded-2xl w-full max-w-2xl mx-auto flex flex-col gap-6 shadow-sm font-serif">
+      <div className="flex flex-col border-b border-stone-100 dark:border-stone-800 pb-4">
+        <h2 className="text-2xl font-serif text-stone-800 dark:text-stone-200 flex items-center gap-3">
+          <Share2 className="w-5 h-5 text-stone-500" /> Share Achievement
+        </h2>
+        <p className="text-sm font-serif italic text-stone-500 mt-2">
+          Prove you met a designated milestone without revealing your entire progress.
+        </p>
+      </div>
 
-      <div className="flex gap-4">
-        <label className="flex-1 flex flex-col gap-1 text-sm font-medium">
-          Actual Value
+      <div className="flex flex-col sm:flex-row gap-6">
+        <label className="flex-1 flex flex-col gap-2 text-sm text-stone-600 dark:text-stone-400 italic">
+          Total Accumulated
           <input 
             type="number" 
             min="0"
-            className="border p-2 rounded dark:bg-black dark:border-white/[.145]"
+            className="border border-stone-200 dark:border-stone-700 p-3 rounded-lg bg-stone-50 dark:bg-stone-950 focus:ring-1 focus:ring-stone-500 outline-none transition-shadow"
             value={value} 
             onChange={(e) => setValue(Number(e.target.value))} 
           />
         </label>
-        <label className="flex-1 flex flex-col gap-1 text-sm font-medium">
-          Minimum Threshold
+        <label className="flex-1 flex flex-col gap-2 text-sm text-stone-600 dark:text-stone-400 italic">
+          Target Milestone
           <input 
             type="number" 
             min="0"
-            className="border p-2 rounded dark:bg-black dark:border-white/[.145]"
+            className="border border-stone-200 dark:border-stone-700 p-3 rounded-lg bg-stone-50 dark:bg-stone-950 focus:ring-1 focus:ring-stone-500 outline-none transition-shadow"
             value={threshold} 
             onChange={(e) => setThreshold(Number(e.target.value))} 
           />
@@ -89,14 +91,14 @@ export function ShareAchievement() {
       <button
         onClick={generateProof}
         disabled={loading}
-        className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors disabled:opacity-50"
+        className="mt-2 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 font-serif font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-50 tracking-wide"
       >
-        {loading ? 'Generating Proof...' : 'Generate Proof'}
+        {loading ? 'Scribing Proof...' : 'Generate Proof'}
       </button>
 
       {error && (
-        <div className="flex items-center justify-between text-red-600 bg-red-50 dark:bg-red-900/20 px-4 py-3 rounded-lg border border-red-200 dark:border-red-800">
-          <span className="flex items-center gap-2"><AlertCircle className="w-4 h-4"/> {error}</span>
+        <div className="flex items-center justify-between text-rose-600 bg-rose-50 dark:bg-rose-950/30 px-4 py-3 rounded-lg border border-rose-200 dark:border-rose-900">
+          <span className="flex items-center gap-2 italic"><AlertCircle className="w-4 h-4"/> {error}</span>
         </div>
       )}
 
@@ -109,19 +111,19 @@ export function ShareAchievement() {
             <input 
               readOnly 
               value={link} 
-              className="flex-1 border p-2 rounded bg-gray-50 text-gray-600 dark:bg-zinc-900 dark:text-zinc-400 dark:border-white/[.145] text-sm overflow-hidden text-ellipsis whitespace-nowrap"
+              className="flex-1 border p-2 rounded bg-stone-50 text-stone-600 dark:bg-zinc-900 dark:text-zinc-400 dark:border-stone-800 text-sm overflow-hidden text-ellipsis whitespace-nowrap"
             />
             <button 
               onClick={copyToClipboard}
               title="Copy verified link"
-              className="p-2 border rounded hover:bg-gray-100 dark:hover:bg-zinc-800 dark:border-white/[.145] transition-colors"
+              className="p-2 border rounded hover:bg-stone-100 dark:hover:bg-zinc-800 dark:border-stone-800 transition-colors"
             >
               {copied ? <CheckCircle2 className="w-5 h-5 text-green-600" /> : <Copy className="w-5 h-5" />}
             </button>
           </div>
           <button
             onClick={copyEmbedCode}
-            className="flex items-center justify-center gap-2 mt-2 w-full border border-gray-300 dark:border-white/[.145] hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors p-2 rounded text-sm font-medium text-gray-700 dark:text-gray-300"
+            className="flex items-center justify-center gap-2 mt-2 w-full border border-stone-300 dark:border-stone-800 hover:bg-stone-50 dark:hover:bg-zinc-800 transition-colors p-2 rounded text-sm font-medium text-stone-700 dark:text-stone-300"
           >
             {embedCopied ? <CheckCircle2 className="w-4 h-4 text-green-600" /> : <Code className="w-4 h-4" />}
             {embedCopied ? 'Embed Code Copied!' : 'Copy Embed Widget Code'}

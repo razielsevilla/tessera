@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import * as anchor from '@coral-xyz/anchor';
 import { PublicKey, SystemProgram, SYSVAR_INSTRUCTIONS_PUBKEY } from '@solana/web3.js';
@@ -195,92 +195,100 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
   if (!wallet.connected) return null;
 
   return (
-    <div className="w-full max-w-sm mx-auto p-4 sm:p-6 border rounded-xl dark:border-white/[.145] bg-neutral-50 dark:bg-black shadow-sm">
-      <h3 className="text-lg font-bold mb-4 text-center sm:text-left">Mint Today&apos;s Tessera</h3>
-      <form onSubmit={handleMint} className="flex flex-col gap-4">
-        
-        <TaskTracker 
-          disabled={loading} 
-          onPointsUpdate={setTaskPoints} 
-        />
+    <div className="w-full">
+      <div className="flex flex-col items-center mb-8 border-b border-stone-200 dark:border-stone-800 pb-4">
+        <h3 className="text-2xl sm:text-3xl font-serif text-stone-800 dark:text-stone-200">Seal Today&apos;s Entry</h3>
+        <p className="text-sm font-serif italic text-stone-500 mt-2">Reflect on your tasks, moods, and stories.</p>
+      </div>
 
-        <RetrospectiveLogger 
-          disabled={loading} 
-          onChange={setRetrospectiveData} 
-        />
+      <form onSubmit={handleMint} className="flex flex-col gap-8 font-serif">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <div className="flex flex-col gap-8">
+            <TaskTracker 
+              disabled={loading} 
+              onPointsUpdate={setTaskPoints} 
+            />
+            <LifeEconomyTracker
+              disabled={loading}
+              onPointsUpdate={setEconomyPoints}
+            />
+            <RetrospectiveLogger 
+              disabled={loading} 
+              onChange={setRetrospectiveData} 
+            />
+          </div>
 
-        <LifeEconomyTracker
-          disabled={loading}
-          onPointsUpdate={setEconomyPoints}
-        />
+          <div className="flex flex-col gap-8">
+            <SocialBatteryLogger
+              disabled={loading}
+              onChange={setSocialData}
+            />
+            <MediaLogger
+              disabled={loading}
+              onChange={setMediaData}
+            />
+            <InteractiveFictionLogger
+              disabled={loading}
+              onChange={setInteractiveFictionData}
+            />
+          </div>
+        </div>
 
-        <MediaLogger
-          disabled={loading}
-          onChange={setMediaData}
-        />
+        <div className="w-full">
+          <SkillLogger
+            disabled={loading}
+            onChange={setSkillsData}
+            accumulatedHistory={{
+              'rust': 42.5,
+              'typescript': 120,
+              'solana': 14
+            }}
+          />
+        </div>
 
-        <InteractiveFictionLogger
-          disabled={loading}
-          onChange={setInteractiveFictionData}
-        />
-
-        <SocialBatteryLogger
-          disabled={loading}
-          onChange={setSocialData}
-        />
-
-        <SkillLogger
-          disabled={loading}
-          onChange={setSkillsData}
-          accumulatedHistory={{
-            'rust': 42.5,
-            'typescript': 120,
-            'solana': 14
-          }}
-        />
-
-        <div className="flex flex-col gap-2">
-          <label className="text-sm">Productivity (Base + Tasks + Economy)</label>
+        <div className="flex flex-col gap-2 pt-4 border-t border-stone-200 dark:border-stone-800">
+          <label className="text-sm italic text-stone-500">Overall Productivity (Auto-Calculated)</label>
           <input 
             type="range" 
             min="1" 
             max="100" 
             value={calculateProductivityScore(taskPoints, economyPoints)} 
             disabled 
-            className="opacity-50"
+            className="opacity-50 accent-stone-700"
           />
         </div>
+        
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex justify-center items-center gap-2"
+          className="px-6 py-3 mt-4 bg-stone-900 dark:bg-stone-100 text-stone-50 dark:text-stone-900 font-serif font-medium rounded-lg hover:bg-stone-800 dark:hover:bg-stone-200 disabled:opacity-50 transition-colors flex justify-center items-center gap-3 text-lg tracking-wide shadow-md"
         >
           {loading ? (
             <>
-              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <span>Processing...</span>
+              <span className="italic">Sealing Entry...</span>
             </>
-          ) : 'Mint Tile'}
+          ) : 'Seal Entry'}
         </button>
       </form>
 
       {status && (
-        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800 rounded-lg text-sm text-center animate-pulse">
+        <div className="mt-6 p-4 bg-stone-100 dark:bg-stone-800/50 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700 rounded-lg text-sm text-center animate-pulse font-serif italic">
           {status}
         </div>
       )}
 
       {error && (
-        <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 border border-red-200 dark:border-red-800 rounded-lg text-sm text-center">
+        <div className="mt-6 p-4 bg-rose-50 dark:bg-rose-950/30 text-rose-600 border border-rose-200 dark:border-rose-900 rounded-lg text-sm font-serif">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 text-green-600 border border-green-200 dark:border-green-800 rounded-lg text-sm text-center truncate">
+        <div className="mt-6 p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900 rounded-lg text-sm text-center font-serif italic">
           {success}
         </div>
       )}
