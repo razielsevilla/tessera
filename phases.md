@@ -255,7 +255,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 - [x] **Unlock Animation:** Wallet connection triggers a fluid 3D book opening animation, transitioning the camera seamlessly into the diary spread.
 - [x] **3D Mosaic Canvas:** Rebuild the `MosaicCanvas` into a topological 3D voxel grid where `moodScore` controls block color/emission and `productivityScore` controls block height.
 - [x] **Interactive Camera:** Add `OrbitControls` allowing users to freely pan, zoom, and rotate around their 3D mosaic year-in-review.
-- [ ] **Seal Animation:** Implement a 3D hot wax seal stamping animation upon mint confirmation.
+- [x] **Seal Animation:** Implement a 3D hot wax seal stamping animation upon mint confirmation.
 - [ ] **Performance Polish:** Implement graceful degradation for low-end mobile devices (e.g., lower polygon counts, disabling shadows if FPS drops).
 
 ---

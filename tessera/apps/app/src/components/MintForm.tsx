@@ -13,11 +13,13 @@ import { InteractiveFictionLogger, InteractiveFictionData } from './InteractiveF
 import { SocialBatteryLogger, SocialBatteryData } from './SocialBatteryLogger';
 import { SkillLogger, SkillLog } from './SkillLogger';
 import { calculateProductivityScore } from '../lib/scoring';
+import { ThreeWaxSeal } from './ThreeWaxSeal';
 
 export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void }) {
   const { connection } = useConnection();
   const wallet = useWallet();
   const [loading, setLoading] = useState(false);
+  const [showSealAnim, setShowSealAnim] = useState(false);
   const [status, setStatus] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -182,20 +184,26 @@ export default function MintForm({ onMintSuccess }: { onMintSuccess?: () => void
 
       setStatus('');
       setSuccess(`Mint success! Tx: ${tx}`);
-      if (onMintSuccess) onMintSuccess();
+      setShowSealAnim(true);
     } catch (err: any) {
       console.error('Minting error:', err);
       setStatus('');
       setError(`Error: ${err.message}`);
-    } finally {
       setLoading(false);
     }
+  };
+
+  const handleSealComplete = () => {
+    setShowSealAnim(false);
+    setLoading(false);
+    if (onMintSuccess) onMintSuccess();
   };
 
   if (!wallet.connected) return null;
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
+      {showSealAnim && <ThreeWaxSeal onComplete={handleSealComplete} />}
       <div className="flex flex-col items-center mb-8 border-b border-stone-200 dark:border-stone-800 pb-4">
         <h3 className="text-2xl sm:text-3xl font-serif text-stone-800 dark:text-stone-200">Seal Today&apos;s Entry</h3>
         <p className="text-sm font-serif italic text-stone-500 mt-2">Reflect on your tasks, moods, and stories.</p>
