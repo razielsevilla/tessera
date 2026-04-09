@@ -3,11 +3,22 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
 import { ThemeToggle } from '../components/ThemeToggle';
-import { MosaicCanvas } from '../components/MosaicCanvas';
-import MintForm from '../components/MintForm';
 import { useTesseraHistory } from '../hooks/useTesseraHistory';
 
-import { ShareAchievement } from '../components/ShareAchievement';
+const MosaicCanvas = dynamic(
+  async () => (await import('../components/MosaicCanvas')).MosaicCanvas,
+  { ssr: false }
+);
+
+const MintForm = dynamic(
+  async () => await import('../components/MintForm'),
+  { ssr: false }
+);
+
+const ShareAchievement = dynamic(
+  async () => (await import('../components/ShareAchievement')).ShareAchievement,
+  { ssr: false }
+);
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
