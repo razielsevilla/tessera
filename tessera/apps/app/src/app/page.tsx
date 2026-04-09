@@ -33,10 +33,18 @@ export default function Home() {
   const { connected, connecting } = useWallet();
   const { slots, loading, error } = useTesseraHistory();
   const [mounted, setMounted] = useState(false);
+  const [showDiarySpread, setShowDiarySpread] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // When disconnected, reset the view
+  useEffect(() => {
+    if (!connected) {
+      setShowDiarySpread(false);
+    }
+  }, [connected]);
 
   // Prevent flash of unauthenticated UI while checking connection or mounting
   if (!mounted || connecting) {
@@ -60,13 +68,13 @@ export default function Home() {
         </div>
       </header>
 
-      {!connected ? (
+      {!showDiarySpread ? (
         <main className="flex-1 flex items-center justify-center w-full mt-4 sm:-mt-12 relative overflow-hidden">
           {/* Interactive R3F 3D Diary Cover */}
-          <ThreeDiaryCover />
+          <ThreeDiaryCover isUnlocked={connected} onUnlockComplete={() => setShowDiarySpread(true)} />
 
           {/* Central Unlock Interface Overlay */}
-          <div className="relative z-10 flex flex-col items-center justify-center p-8 bg-stone-100/90 dark:bg-stone-950/90 backdrop-blur-md rounded-2xl shadow-2xl border border-stone-300 dark:border-stone-700 w-80 text-center transition-transform hover:scale-105 duration-500">
+          <div className={`relative z-10 flex flex-col items-center justify-center p-8 bg-stone-100/90 dark:bg-stone-950/90 backdrop-blur-md rounded-2xl shadow-2xl border border-stone-300 dark:border-stone-700 w-80 text-center transition-all duration-700 ${connected ? 'opacity-0 scale-150 pointer-events-none' : 'opacity-100 hover:scale-105'}`}>
             <LockKeyhole className="w-10 h-10 mb-4 text-stone-500 dark:text-stone-400" strokeWidth={1.5} />
             
             <h2 className="text-2xl font-serif font-bold text-stone-800 dark:text-stone-200 mb-2">Sealed Journal</h2>
@@ -80,7 +88,7 @@ export default function Home() {
           </div>
           
           {/* Subtle Background Title */}
-          <div className="absolute bottom-8 right-8 text-stone-300/30 dark:text-stone-800/30 text-6xl font-serif italic uppercase tracking-widest pointer-events-none select-none">
+          <div className={`absolute bottom-8 right-8 text-stone-300/30 dark:text-stone-800/30 text-6xl font-serif italic uppercase tracking-widest pointer-events-none select-none transition-opacity duration-500 ${connected ? 'opacity-0' : 'opacity-100'}`}>
             Tessera
           </div>
         </main>

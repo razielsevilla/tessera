@@ -252,7 +252,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3
 
 - [x] **Core 3D Engine Setup:** React Three Fiber, `three`, and `@react-three/drei` installed and integrated into Next.js.
 - [x] **3D Diary Cover:** Implement a 3D book model with dynamic lighting, shadows, and leather/parchment textures for the unauthenticated state.
-- [ ] **Unlock Animation:** Wallet connection triggers a fluid 3D book opening animation, transitioning the camera seamlessly into the diary spread.
+- [x] **Unlock Animation:** Wallet connection triggers a fluid 3D book opening animation, transitioning the camera seamlessly into the diary spread.
 - [ ] **3D Mosaic Canvas:** Rebuild the `MosaicCanvas` into a topological 3D voxel grid where `moodScore` controls block color/emission and `productivityScore` controls block height.
 - [ ] **Interactive Camera:** Add `OrbitControls` allowing users to freely pan, zoom, and rotate around their 3D mosaic year-in-review.
 - [ ] **Seal Animation:** Implement a 3D hot wax seal stamping animation upon mint confirmation.
