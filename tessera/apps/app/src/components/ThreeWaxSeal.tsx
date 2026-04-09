@@ -77,8 +77,8 @@ export function ThreeWaxSeal({ onComplete }: { onComplete?: () => void }) {
                 metalness={0.1} 
               />
               {phase !== 'descending' && (
-                {/* Embossed Logo inside wax */}
                 <mesh position={[0, 0.051, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                  {/* Embossed Logo inside wax */}
                   <ringGeometry args={[0.3, 0.4, 32]} />
                   <meshStandardMaterial color="#7f1d1d" roughness={0.4} />
                 </mesh>
