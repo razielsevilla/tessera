@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, RoundedBox, Environment, ContactShadows, Float, PerformanceMonitor } from '@react-three/drei';
+import { OrbitControls, RoundedBox, ContactShadows, Float, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface BookModelProps {
@@ -125,7 +125,6 @@ export function ThreeDiaryCover({ isUnlocked = false, onUnlockComplete }: { isUn
         <ambientLight intensity={0.6} />
         <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow={performanceMode === 'high'} />
         <directionalLight position={[-10, -10, -5]} intensity={0.5} />
-        <Environment preset="city" />
         
         <BookModel isUnlocked={isUnlocked} onUnlockComplete={onUnlockComplete} />
         

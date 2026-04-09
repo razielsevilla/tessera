@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, ContactShadows, PerformanceMonitor } from '@react-three/drei';
+import { ContactShadows, PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 
 export function ThreeWaxSeal({ onComplete }: { onComplete?: () => void }) {
@@ -59,7 +59,6 @@ export function ThreeWaxSeal({ onComplete }: { onComplete?: () => void }) {
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 10, 5]} intensity={1.5} castShadow={performanceMode === 'high'} />
           <directionalLight position={[-5, 5, -5]} intensity={0.5} />
-          <Environment preset="city" />
 
           <group ref={groupRef} position={[0, -0.5, 0]}>
             {/* The Paper / Parchment Base */}
