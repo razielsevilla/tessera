@@ -95,10 +95,14 @@ const TextArea = ({ label, placeholder, rows = 4, value, onChange }) => (
 );
 
 const PageHeader = ({ title, description, icon: Icon, colorClass }) => {
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const [today, setToday] = useState('');
+  useEffect(() => {
+    setToday(new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
+  }, []);
+  
   return (
     <div className="mb-10 text-center md:text-left border-b border-[#E2DCC8] pb-6">
-      <p className="text-xs font-semibold tracking-widest text-stone-400 uppercase mb-3">{today}</p>
+      <p className="text-xs font-semibold tracking-widest text-stone-400 uppercase mb-3 min-h-[16px]">{today}</p>
       <h2 className="text-3xl font-serif font-bold text-stone-800 flex items-center justify-center md:justify-start gap-3">
         {Icon && <Icon className={colorClass} size={28} />}
         {title}
@@ -570,6 +574,11 @@ const Web3ProvingStation = () => {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('retro'); // Defaulting to retro to showcase the diary feel
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navItems = [
     { id: 'retro', label: 'Retrospectives', icon: LockKeyhole },
@@ -591,6 +600,8 @@ export default function App() {
       default: return <RetrospectiveLogger />;
     }
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-[#F4F1EA] text-stone-800 font-sans flex overflow-hidden selection:bg-[#E2DCC8] selection:text-stone-900">
