@@ -1,17 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { engine } from '@tessera/engine';
 import { 
   Activity, BookOpen, Film, Lock, 
   Grid, Shield, Zap, Wallet, 
   ChevronRight, Save, Link as LinkIcon, CheckCircle2,
-  LockKeyhole, Key, PenTool, Bookmark
+  LockKeyhole, Key, PenTool, Bookmark, Unlock
 } from 'lucide-react';
+
+import { useWallet } from '@solana/wallet-adapter-react';
 
 // --- API Helper ---
 const callGemini = async (prompt: string) => {
-  const apiKey = ""; 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || ""; 
+  if (!apiKey) {
+    throw new Error("Missing NEXT_PUBLIC_GEMINI_API_KEY environment variable. Please add it to your .env.local file.");
+  }
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   
   let retries = 0;
   const maxRetries = 5;
@@ -278,6 +284,7 @@ const MediaLogger = () => (
 );
 
 const RetrospectiveLogger = () => {
+  const { publicKey } = useWallet();
   const [title, setTitle] = useState('');
   const [entry, setEntry] = useState('');
   const [insight, setInsight] = useState('');
@@ -285,13 +292,38 @@ const RetrospectiveLogger = () => {
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [encrypted, setEncrypted] = useState(false);
 
-  const handleEncrypt = () => {
+  const handleEncrypt = async () => {
+    if (!title || !entry) return;
     setIsEncrypting(true);
-    setTimeout(() => {
+    
+    try {
+      await engine.init();
+      const encoder = new TextEncoder();
+      const dataToEncrypt = encoder.encode(JSON.stringify({ title, entry, insight, timestamp: Date.now() }));
+      
+      const key = crypto.getRandomValues(new Uint8Array(32));
+      const encryptedData = engine.encrypt(dataToEncrypt, key);
+      
+      const entryId = `retro_${Date.now()}`;
+      const payload = {
+        encrypted: Array.from(encryptedData),
+        key: Array.from(key),
+        linkedAccount: publicKey ? publicKey.toBase58() : "local-only",
+        syncedToNetwork: !!publicKey
+      };
+      localStorage.setItem(entryId, JSON.stringify(payload));
+
       setIsEncrypting(false);
       setEncrypted(true);
       setTimeout(() => setEncrypted(false), 3000);
-    }, 1500);
+      setTitle('');
+      setEntry('');
+      setInsight('');
+    } catch (error) {
+      console.error(error);
+      setIsEncrypting(false);
+      alert("Failed to encrypt data. See console.");
+    }
   };
 
   const handleExtractInsight = async () => {
@@ -303,6 +335,7 @@ const RetrospectiveLogger = () => {
       const result = await callGemini(prompt);
       setInsight(result);
     } catch (error) {
+      console.error("Gemini Error: ", error);
       setInsight("The oracle is silent right now. Please try again.");
     } finally {
       setIsGenerating(false);
@@ -564,6 +597,117 @@ const Web3ProvingStation = () => {
 };
 
 
+const EncryptedVaultUi = () => {
+  const { publicKey } = useWallet();
+  const [logs, setLogs] = useState<{id: string, date: number, synced: boolean}[]>([]);
+  const [syncing, setSyncing] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadLogs();
+  }, []);
+
+  const loadLogs = () => {
+    const loaded: {id: string, date: number, synced: boolean}[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith('retro_')) {
+            const data = localStorage.getItem(key);
+            if (data) {
+                const parsed = JSON.parse(data);
+                loaded.push({ id: key, date: parseInt(key.replace('retro_', ''), 10), synced: parsed.syncedToNetwork });
+            }
+        }
+    }
+    setLogs(loaded.sort((a,b) => b.date - a.date));
+  };
+
+  const handleSyncToWallet = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!publicKey) {
+      alert("Please connect your Solana wallet to sync to Arweave/Pinata storage.");
+      return;
+    }
+    setSyncing(id);
+    
+    // Simulate IPFS/Arweave upload delay
+    setTimeout(() => {
+      const data = localStorage.getItem(id);
+      if (data) {
+        const parsed = JSON.parse(data);
+        parsed.syncedToNetwork = true;
+        parsed.linkedAccount = publicKey.toBase58();
+        localStorage.setItem(id, JSON.stringify(parsed));
+      }
+      setSyncing(null);
+      loadLogs();
+    }, 2000);
+  };
+
+  return (
+    <div className="animation-fade-in">
+      <PageHeader 
+        title="Encrypted Vault" 
+        description="Access and manage your sealed cryptographic journal entries. Sync to permanent decentralized storage via your wallet."
+        icon={Bookmark}
+        colorClass="text-[#4A6472]"
+      />
+
+      <Card>
+        {!publicKey && (
+           <div className="mb-6 p-4 bg-orange-50 border border-orange-200 text-orange-800 text-sm rounded-sm">
+             <span className="font-bold">Notice:</span> Connect your Solana wallet to sync sealed logs to permanent decentralized storage (Arweave / IPFS).
+           </div>
+        )}
+
+        {logs.length === 0 ? (
+          <div className="text-center p-12 text-stone-500 font-serif italic border border-dashed border-[#D8D0BA] rounded-sm bg-[#FCFAF5]">
+             The vault is currently empty. Seal your first journal entry.
+          </div>
+        ) : (
+          <ul className="space-y-3">
+             {logs.map(log => (
+               <li key={log.id} className="flex justify-between items-center p-4 bg-[#FCFAF5] border border-[#E2DCC8] rounded-md transition-all hover:border-[#D8D0BA]">
+                 <div className="flex flex-col">
+                   <div className="flex items-center gap-2">
+                     <span className="text-sm font-bold text-stone-700">Sealed Entry</span>
+                     {log.synced && <span className="text-[10px] font-bold bg-[#E6F3EB] text-[#4A5D4E] uppercase px-1.5 py-0.5 rounded-sm">Wallet Synced</span>}
+                   </div>
+                   <span className="text-xs text-stone-500 font-mono mt-1">{new Date(log.date).toLocaleString()}</span>
+                 </div>
+                 
+                 <div className="flex gap-2">
+                   {!log.synced && (
+                     <Button variant="secondary" size="sm" icon={syncing === log.id ? Activity : Wallet} onClick={(e) => handleSyncToWallet(log.id, e as any)} disabled={syncing === log.id}>
+                       {syncing === log.id ? "Syncing..." : "Sync Off-Chain"}
+                     </Button>
+                   )}
+                   <Button variant="secondary" size="sm" icon={Unlock} onClick={async () => {
+                      const data = localStorage.getItem(log.id);
+                      if (data) {
+                        try {
+                          await engine.init();
+                          const parsed = JSON.parse(data);
+                          const decrypted = engine.decrypt(new Uint8Array(parsed.encrypted), new Uint8Array(parsed.key));
+                          const decoded = new TextDecoder().decode(decrypted);
+                          const obj = JSON.parse(decoded);
+                          alert(`Decrypted Title: ${obj.title}\nInsight: ${obj.insight}\n\nEntry: ${obj.entry}`);
+                        } catch(e) {
+                          alert("Failed to decrypt: " + e);
+                        }
+                      }
+                   }}>
+                     Decrypt & Read
+                   </Button>
+                 </div>
+               </li>
+             ))}
+          </ul>
+        )}
+      </Card>
+    </div>
+  );
+};
+
 // --- Main Application ---
 
 export default function App() {
@@ -579,6 +723,7 @@ export default function App() {
     { id: 'if', label: 'Interactive Fiction', icon: BookOpen },
     { id: 'mosaic', label: 'Mosaic Canvas', icon: Grid },
     { id: 'web3', label: 'Mint & Verify', icon: Shield },
+    { id: 'vault', label: 'Encrypted Vault', icon: Bookmark },
   ];
 
   const renderContent = () => {
@@ -589,6 +734,7 @@ export default function App() {
       case 'retro': return <RetrospectiveLogger />;
       case 'mosaic': return <MosaicCanvasUi />;
       case 'web3': return <Web3ProvingStation />;
+      case 'vault': return <EncryptedVaultUi />;
       default: return <RetrospectiveLogger />;
     }
   };

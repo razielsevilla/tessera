@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { engine } from '@tessera/engine';
 import { 
   Activity, BookOpen, Film, Lock, 
   Grid, Shield, Zap, Wallet, 
@@ -9,9 +10,12 @@ import {
 } from 'lucide-react';
 
 // --- API Helper ---
-const callGemini = async (prompt) => {
-  const apiKey = ""; 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+const callGemini = async (prompt: string) => {
+  const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || ""; 
+  if (!apiKey) {
+    throw new Error("Missing NEXT_PUBLIC_GEMINI_API_KEY environment variable. Please add it to your .env.local file.");
+  }
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   
   let retries = 0;
   const maxRetries = 5;
@@ -285,13 +289,35 @@ const RetrospectiveLogger = () => {
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [encrypted, setEncrypted] = useState(false);
 
-  const handleEncrypt = () => {
+  const handleEncrypt = async () => {
+    if (!title || !entry) return;
     setIsEncrypting(true);
-    setTimeout(() => {
+    
+    try {
+      await engine.init();
+      const encoder = new TextEncoder();
+      const dataToEncrypt = encoder.encode(JSON.stringify({ title, entry, insight, timestamp: Date.now() }));
+      
+      const key = crypto.getRandomValues(new Uint8Array(32));
+      const encryptedData = engine.encrypt(dataToEncrypt, key);
+      
+      const entryId = `retro_${Date.now()}`;
+      localStorage.setItem(entryId, JSON.stringify({
+        encrypted: Array.from(encryptedData),
+        key: Array.from(key)
+      }));
+
       setIsEncrypting(false);
       setEncrypted(true);
       setTimeout(() => setEncrypted(false), 3000);
-    }, 1500);
+      setTitle('');
+      setEntry('');
+      setInsight('');
+    } catch (error) {
+      console.error(error);
+      setIsEncrypting(false);
+      alert("Failed to encrypt data. See console.");
+    }
   };
 
   const handleExtractInsight = async () => {
