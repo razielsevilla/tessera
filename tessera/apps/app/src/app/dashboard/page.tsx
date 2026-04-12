@@ -726,19 +726,6 @@ export default function App() {
     { id: 'vault', label: 'Encrypted Vault', icon: Bookmark },
   ];
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'life': return <LifeEconomyTracker />;
-      case 'if': return <InteractiveFictionLogger />;
-      case 'media': return <MediaLogger />;
-      case 'retro': return <RetrospectiveLogger />;
-      case 'mosaic': return <MosaicCanvasUi />;
-      case 'web3': return <Web3ProvingStation />;
-      case 'vault': return <EncryptedVaultUi />;
-      default: return <RetrospectiveLogger />;
-    }
-  };
-
   if (!mounted) return null;
 
   return (
@@ -818,7 +805,13 @@ export default function App() {
         </div>
 
         <div className="max-w-4xl mx-auto p-6 md:p-12 lg:p-16 pb-24">
-          {renderContent()}
+          <div style={{ display: activeTab === 'retro' ? 'block' : 'none' }}><RetrospectiveLogger /></div>
+          <div style={{ display: activeTab === 'life' ? 'block' : 'none' }}><LifeEconomyTracker /></div>
+          <div style={{ display: activeTab === 'media' ? 'block' : 'none' }}><MediaLogger /></div>
+          <div style={{ display: activeTab === 'if' ? 'block' : 'none' }}><InteractiveFictionLogger /></div>
+          <div style={{ display: activeTab === 'mosaic' ? 'block' : 'none' }}><MosaicCanvasUi /></div>
+          <div style={{ display: activeTab === 'web3' ? 'block' : 'none' }}><Web3ProvingStation /></div>
+          {activeTab === 'vault' && <div><EncryptedVaultUi /></div>}
         </div>
       </main>
 

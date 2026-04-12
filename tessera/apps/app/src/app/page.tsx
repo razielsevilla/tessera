@@ -615,19 +615,6 @@ export default function App() {
     { id: 'web3', label: 'Mint & Verify', icon: Shield },
   ];
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'life': return <LifeEconomyTracker />;
-      case 'if': return <InteractiveFictionLogger />;
-      case 'media': return <MediaLogger />;
-      case 'retro': return <RetrospectiveLogger />;
-      case 'mosaic': return <MosaicCanvas />;
-      case 'web3': return <Web3ProvingStation />;
-      default: return <RetrospectiveLogger />;
-    }
-  };
-
-  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-[#F4F1EA] text-stone-800 font-sans flex overflow-hidden selection:bg-[#E2DCC8] selection:text-stone-900">
@@ -709,7 +696,12 @@ export default function App() {
         </div>
 
         <div className="max-w-4xl mx-auto p-6 md:p-12 lg:p-16 pb-24">
-          {renderContent()}
+          <div style={{ display: activeTab === 'retro' ? 'block' : 'none' }}><RetrospectiveLogger /></div>
+          <div style={{ display: activeTab === 'life' ? 'block' : 'none' }}><LifeEconomyTracker /></div>
+          <div style={{ display: activeTab === 'media' ? 'block' : 'none' }}><MediaLogger /></div>
+          <div style={{ display: activeTab === 'if' ? 'block' : 'none' }}><InteractiveFictionLogger /></div>
+          <div style={{ display: activeTab === 'mosaic' ? 'block' : 'none' }}><MosaicCanvas /></div>
+          <div style={{ display: activeTab === 'web3' ? 'block' : 'none' }}><Web3ProvingStation /></div>
         </div>
       </main>
 
