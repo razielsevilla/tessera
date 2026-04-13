@@ -4,7 +4,7 @@ Welcome to the Tessera application! This tutorial outlines the core pages of the
 
 Tessera is built to log your life experiences, media, and interactive fiction, turning them into cryptographic zero-knowledge proofs and visual mosaics on the Solana blockchain.
 
----
+--
 
 ## 1. Landing Page (`/`)
 
