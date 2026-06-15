@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TESSERA // Riso Telemetry</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Archivo Black (Heavy Sans), Space Grotesk (Modernist) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #FDF9F1;
+            color: #1A1A1A;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Archivo Black', sans-serif;
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+
+        /* Risograph Blend Modes */
+        .riso-multiply { mix-blend-mode: multiply; }
+        .riso-screen { mix-blend-mode: screen; }
+
+        /* Heavy Misregistration Shadows */
+        .riso-shadow-pink { box-shadow: 8px 8px 0px 0px #FF007F; }
+        .riso-shadow-blue { box-shadow: 8px 8px 0px 0px #0044FF; }
+        .riso-shadow-orange { box-shadow: 8px 8px 0px 0px #FF5500; }
+        .riso-shadow-ink { box-shadow: 8px 8px 0px 0px #1A1A1A; }
+        
+        .riso-text-shadow-blue { text-shadow: 4px 4px 0px #0044FF; }
+        .riso-text-shadow-pink { text-shadow: 4px 4px 0px #FF007F; }
+
+        /* Patterns */
+        .riso-halftone {
+            background-image: radial-gradient(#1A1A1A 25%, transparent 25%);
+            background-size: 8px 8px;
+        }
+        
+        .riso-halftone-pink {
+            background-image: radial-gradient(#FF007F 30%, transparent 30%);
+            background-size: 10px 10px;
+        }
+
+        .riso-checkerboard {
+            background-image: conic-gradient(#FFD700 90deg, transparent 90deg 180deg, #FFD700 180deg 270deg, transparent 270deg);
+            background-size: 40px 40px;
+        }
+
+        .riso-checkerboard-blue {
+            background-image: conic-gradient(#0044FF 90deg, transparent 90deg 180deg, #0044FF 180deg 270deg, transparent 270deg);
+            background-size: 30px 30px;
+        }
+
+        /* Organic blob animations */
+        @keyframes blobBounce {
+            0%, 100% { border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%; transform: scale(1); }
+            34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; transform: scale(1.05); }
+            67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; transform: scale(0.95); }
+        }
+        .blob-shape {
+            animation: blobBounce 10s infinite alternate ease-in-out;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 12px; height: 12px; }
+        ::-webkit-scrollbar-track { background: #FDF9F1; border-left: 3px solid #1A1A1A; }
+        ::-webkit-scrollbar-thumb { background: #0044FF; border: 3px solid #1A1A1A; }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        riso: {
+                            paper: '#FDF9F1',
+                            ink: '#1A1A1A',
+                            pink: '#FF007F',
+                            blue: '#0044FF',
+                            orange: '#FF5500',
+                            yellow: '#FFE600',
+                            green: '#00C853'
+                        }
+                    },
+                    borderWidth: { '3': '3px', '4': '4px', '6': '6px', '8': '8px' }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="h-full w-full overflow-x-hidden flex flex-col selection:bg-riso-blue selection:text-white relative">
+
+    <!-- INTENSE ANALOG NOISE OVERLAY -->
+    <svg class="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.35] mix-blend-multiply" xmlns="http://www.w3.org/2000/svg">
+        <filter id="riso-noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0   0 1 0 0 0   0 0 1 0 0  0 0 0 0.8 0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#riso-noise)" />
+    </svg>
+
+    <!-- PRINT REGISTRATION MARKS -->
+    <div class="fixed top-6 left-6 z-40 pointer-events-none opacity-80">
+        <div class="w-8 h-1 bg-riso-ink absolute top-3.5 left-0 riso-multiply"></div>
+        <div class="w-1 h-8 bg-riso-ink absolute top-0 left-3.5 riso-multiply"></div>
+        <div class="w-6 h-6 border-4 border-riso-ink rounded-full absolute top-1 left-1 riso-multiply"></div>
+    </div>
+    <div class="fixed top-6 right-6 z-40 pointer-events-none opacity-80">
+        <div class="w-8 h-1 bg-riso-ink absolute top-3.5 right-0 riso-multiply"></div>
+        <div class="w-1 h-8 bg-riso-ink absolute top-0 right-3.5 riso-multiply"></div>
+        <div class="w-6 h-6 border-4 border-riso-ink rounded-full absolute top-1 right-1 riso-multiply"></div>
+    </div>
+    <div class="fixed bottom-6 left-6 z-40 pointer-events-none opacity-80">
+        <div class="w-8 h-1 bg-riso-ink absolute bottom-3.5 left-0 riso-multiply"></div>
+        <div class="w-1 h-8 bg-riso-ink absolute bottom-0 left-3.5 riso-multiply"></div>
+        <div class="w-6 h-6 border-4 border-riso-ink rounded-full absolute bottom-1 left-1 riso-multiply"></div>
+    </div>
+    <div class="fixed bottom-6 right-6 z-40 pointer-events-none opacity-80">
+        <div class="w-8 h-1 bg-riso-ink absolute bottom-3.5 right-0 riso-multiply"></div>
+        <div class="w-1 h-8 bg-riso-ink absolute bottom-0 right-3.5 riso-multiply"></div>
+        <div class="w-6 h-6 border-4 border-riso-ink rounded-full absolute bottom-1 right-1 riso-multiply"></div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="flex-1 w-full max-w-[1400px] mx-auto p-4 sm:p-8 lg:p-12 relative z-10">
+
+        <!-- HEADER POSTER BANNER -->
+        <header class="relative mb-16">
+            <!-- Checkerboard background element -->
+            <div class="absolute -top-4 -left-4 w-full h-full bg-riso-paper riso-checkerboard border-4 border-riso-ink opacity-80 z-0"></div>
+            
+            <div class="relative z-10 border-4 border-riso-ink bg-white flex flex-col md:flex-row justify-between items-stretch riso-shadow-ink">
+                
+                <!-- Huge Typography Block -->
+                <div class="p-8 md:p-12 flex-1 relative overflow-hidden bg-riso-paper">
+                    <!-- Giant blob backdrop -->
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-riso-pink rounded-full blob-shape riso-multiply opacity-80"></div>
+                    <div class="absolute -bottom-10 right-10 w-40 h-40 bg-riso-yellow rounded-full blob-shape riso-multiply opacity-80" style="animation-delay: -2s;"></div>
+                    
+                    <div class="relative z-10">
+                        <h1 class="text-6xl md:text-8xl font-display text-riso-ink uppercase riso-text-shadow-blue break-words">TESSERA</h1>
+                        <div class="inline-block mt-4 px-4 py-2 bg-riso-orange text-white font-bold border-4 border-riso-ink transform -rotate-2">
+                            <span class="text-lg md:text-xl uppercase tracking-wider">Risograph Registry</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Web3 Action -->
+                <div class="flex flex-col justify-center items-center p-8 border-t-4 md:border-t-0 md:border-l-4 border-riso-ink bg-riso-blue shrink-0 w-full md:w-80 relative overflow-hidden">
+                    <div class="absolute inset-0 riso-halftone-pink opacity-50 mix-blend-screen"></div>
+                    <button id="wallet-btn" onclick="toggleWallet()" class="relative z-10 w-full px-6 py-4 bg-riso-yellow text-riso-ink font-display text-xl uppercase border-4 border-riso-ink hover:bg-white hover:-translate-y-1 hover:-translate-x-1 transition-transform riso-shadow-ink active:translate-x-1 active:translate-y-1 active:shadow-none flex flex-col items-center gap-2">
+                        <i data-lucide="scan-line" class="w-8 h-8"></i>
+                        <span id="wallet-text">Load Profile</span>
+                    </button>
+                    <p class="text-white font-bold text-center mt-4 uppercase text-xs tracking-widest relative z-10">MOCK SNAPSHOT <br> Ref: razielsevilla</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- TWO COLUMN LAYOUT -->
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+            <!-- LEFT: ORGANIC CANVAS & HISTORY -->
+            <section class="lg:col-span-7 flex flex-col gap-12">
+
+                <!-- GENERATIVE POSTER CANVAS -->
+                <div class="relative">
+                    <div class="absolute -bottom-6 -right-6 w-full h-full bg-riso-green border-4 border-riso-ink z-0"></div>
+                    
+                    <div class="border-4 border-riso-ink bg-white p-6 relative z-10 flex flex-col items-center">
+                        <div class="w-full flex justify-between items-center mb-6 border-b-4 border-riso-ink pb-4">
+                            <h2 class="text-3xl font-display uppercase text-riso-ink">Active Proof</h2>
+                            <span class="bg-riso-pink text-white px-3 py-1 border-2 border-riso-ink font-bold text-sm transform rotate-3">OVERLAP PASS</span>
+                        </div>
+
+                        <!-- Canvas Art Area -->
+                        <div class="w-full relative flex flex-col md:flex-row gap-8 items-center">
+                            
+                            <!-- Generative Shape Matrix -->
+                            <div id="tile-preview-container" class="w-64 h-64 border-4 border-riso-ink relative flex items-center justify-center overflow-hidden shrink-0">
+                                <!-- Background Color -->
+                                <div id="tile-bg" class="absolute inset-0 transition-colors duration-500 bg-riso-yellow"></div>
+                                
+                                <!-- Halftone texture overlay -->
+                                <div class="absolute inset-0 riso-halftone opacity-30 mix-blend-overlay"></div>
+
+                                <!-- Dynamic Shape 1: Blob (Replaces Battery Bars) -->
+                                <div id="battery-bar-1" class="absolute bg-riso-blue mix-blend-multiply blob-shape transition-all duration-700" style="width: 80%; height: 80%; left: 10%; top: 10%;"></div>
+
+                                <!-- Dynamic Shape 2: Organic SVG -->
+                                <svg id="tile-vector-decor" class="absolute inset-0 w-full h-full pointer-events-none mix-blend-multiply" viewBox="0 0 200 200">
+                                    <circle id="vec-circle" cx="100" cy="100" r="50" fill="#FF007F" class="transition-all duration-500" />
+                                    <rect id="vec-square" x="40" y="40" width="120" height="120" fill="none" stroke="#FF5500" stroke-width="12" class="transition-all duration-500 transform origin-center" transform="rotate(15 100 100)" />
+                                    <polygon id="vec-triangle" points="100,20 20,160 180,160" fill="#00C853" fill-opacity="0.8" class="transition-all duration-500" />
+                                </svg>
+                                
+                                <div class="absolute bottom-3 left-3 bg-white border-2 border-riso-ink px-2 py-1 text-xs font-bold font-display transform -rotate-6">MULT</div>
+                            </div>
+
+                            <!-- Readouts, designed like chunky stickers -->
+                            <div class="flex-1 flex flex-col gap-4 w-full">
+                                <div class="bg-riso-paper border-4 border-riso-ink p-4 transform rotate-1">
+                                    <span class="text-xs font-bold uppercase tracking-widest block mb-1">Pink Saturation</span>
+                                    <span id="label-mood" class="text-xl font-display text-riso-pink uppercase">VIBRANT 80</span>
+                                </div>
+                                <div class="bg-riso-paper border-4 border-riso-ink p-4 transform -rotate-1">
+                                    <span class="text-xs font-bold uppercase tracking-widest block mb-1">Blue Density</span>
+                                    <span id="label-battery" class="text-xl font-display text-riso-blue uppercase">LEVEL 75%</span>
+                                </div>
+                                <div class="bg-riso-paper border-4 border-riso-ink p-4 transform rotate-2">
+                                    <span class="text-xs font-bold uppercase tracking-widest block mb-1">Overlap Spread</span>
+                                    <span id="label-prod" class="text-xl font-display text-riso-green uppercase">0% LOAD</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HISTORY GRID POSTER -->
+                <div class="relative">
+                    <div class="absolute -top-4 -left-4 w-full h-full bg-riso-blue border-4 border-riso-ink z-0 riso-checkerboard-blue opacity-30"></div>
+                    <div class="border-4 border-riso-ink bg-white p-6 relative z-10 riso-shadow-blue">
+                        <h2 class="text-3xl font-display uppercase text-riso-ink mb-6 border-b-4 border-riso-ink pb-4">Contact Sheet</h2>
+                        
+                        <div class="overflow-x-auto border-4 border-riso-ink p-4 bg-riso-paper">
+                            <div class="min-w-[600px] grid grid-cols-10 gap-3">
+                                <div id="mosaic-tiles-grid" class="contents">
+                                    <!-- Tiles injected via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inspector Card -->
+                        <div id="day-inspect-card" class="mt-6 border-4 border-riso-ink bg-white p-4 flex flex-col sm:flex-row gap-4 items-center justify-between transition-colors">
+                            <div>
+                                <span class="bg-riso-ink text-white px-2 py-1 text-xs font-bold uppercase">Inspect</span>
+                                <h3 id="inspect-date" class="text-2xl font-display mt-2 uppercase">Hover Cell</h3>
+                            </div>
+                            <div class="flex flex-col gap-1 text-sm font-bold uppercase text-right">
+                                <span id="inspect-cid" class="text-riso-pink">---</span>
+                                <span id="inspect-poseidon" class="text-riso-blue">---</span>
+                                <span id="inspect-metrics" class="text-riso-orange">---</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- RIGHT: CHUNKY CONTROLS -->
+            <section class="lg:col-span-5 flex flex-col gap-12">
+
+                <!-- CONTROLS TABS -->
+                <div class="border-4 border-riso-ink bg-white riso-shadow-orange">
+                    <!-- Tab Header -->
+                    <div class="flex border-b-4 border-riso-ink">
+                        <button onclick="switchTab('life')" id="tab-life" class="flex-1 py-4 font-display text-lg uppercase bg-riso-orange text-riso-ink border-r-4 border-riso-ink hover:bg-riso-yellow transition-colors">Life</button>
+                        <button onclick="switchTab('social')" id="tab-social" class="flex-1 py-4 font-display text-lg uppercase bg-white text-riso-ink border-r-4 border-riso-ink hover:bg-riso-pink hover:text-white transition-colors">Socio</button>
+                        <button onclick="switchTab('tasks')" id="tab-tasks" class="flex-1 py-4 font-display text-lg uppercase bg-white text-riso-ink hover:bg-riso-blue hover:text-white transition-colors">Tasks</button>
+                    </div>
+
+                    <!-- Tab Content: LIFE -->
+                    <div id="content-life" class="p-6 bg-riso-paper">
+                        <h3 class="text-2xl font-display uppercase mb-6 bg-riso-ink text-white inline-block px-3 py-1 transform -rotate-2">Life Elements</h3>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div onclick="toggleHabit('eco-1')" class="border-4 border-riso-ink p-4 bg-white cursor-pointer hover:-translate-y-1 hover:riso-shadow-pink transition-all group">
+                                <div id="habit-indicator-eco-1" class="w-8 h-8 rounded-full border-4 border-riso-ink mb-2 mx-auto bg-white group-hover:bg-riso-pink transition-colors"></div>
+                                <p class="text-center font-bold uppercase text-sm">Fluid Plate</p>
+                            </div>
+                            <div onclick="toggleHabit('eco-2')" class="border-4 border-riso-ink p-4 bg-white cursor-pointer hover:-translate-y-1 hover:riso-shadow-blue transition-all group">
+                                <div id="habit-indicator-eco-2" class="w-8 h-8 rounded-full border-4 border-riso-ink mb-2 mx-auto bg-white group-hover:bg-riso-blue transition-colors"></div>
+                                <p class="text-center font-bold uppercase text-sm">Mindful Plate</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between font-bold uppercase text-sm mb-2">
+                                    <span>Gold Level</span>
+                                    <span id="val-gold" class="text-riso-orange">50</span>
+                                </div>
+                                <input type="range" id="input-gold" min="0" max="100" value="50" oninput="updateLifeMetrics()" class="w-full h-4 bg-white border-4 border-riso-ink appearance-none outline-none cursor-pointer">
+                            </div>
+                            <div>
+                                <div class="flex justify-between font-bold uppercase text-sm mb-2">
+                                    <span>Physical Load</span>
+                                    <span id="val-chores" class="text-riso-green">2</span>
+                                </div>
+                                <input type="range" id="input-chores" min="0" max="5" value="2" oninput="updateLifeMetrics()" class="w-full h-4 bg-white border-4 border-riso-ink appearance-none outline-none cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: SOCIAL -->
+                    <div id="content-social" class="p-6 bg-riso-paper hidden">
+                        <h3 class="text-2xl font-display uppercase mb-6 bg-riso-pink text-white inline-block px-3 py-1 transform rotate-1">Socio Mood</h3>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <button onclick="setMoodPalette('yellow')" id="palette-yellow" class="border-4 border-riso-ink py-4 bg-riso-yellow font-display uppercase hover:scale-105 transition-transform">Yellow Mix</button>
+                            <button onclick="setMoodPalette('blue')" id="palette-blue" class="border-4 border-riso-ink py-4 bg-riso-blue text-white font-display uppercase hover:scale-105 transition-transform">Blue Base</button>
+                            <button onclick="setMoodPalette('beige')" id="palette-beige" class="border-4 border-riso-ink py-4 bg-riso-paper font-display uppercase hover:scale-105 transition-transform">Raw Paper</button>
+                            <button onclick="setMoodPalette('monochrome')" id="palette-monochrome" class="border-4 border-riso-ink py-4 bg-riso-ink text-white font-display uppercase hover:scale-105 transition-transform">Deep Ink</button>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between font-bold uppercase text-sm mb-2">
+                                    <span>Blue Opacity</span>
+                                    <span id="val-battery" class="text-riso-blue">75%</span>
+                                </div>
+                                <input type="range" id="input-battery" min="10" max="100" value="75" oninput="updateSocialMetrics()" class="w-full h-4 bg-white border-4 border-riso-ink appearance-none outline-none cursor-pointer">
+                            </div>
+                            <div>
+                                <div class="flex justify-between font-bold uppercase text-sm mb-2">
+                                    <span>Pink Scale</span>
+                                    <span id="val-mood" class="text-riso-pink">80%</span>
+                                </div>
+                                <input type="range" id="input-mood" min="0" max="100" value="80" oninput="updateSocialMetrics()" class="w-full h-4 bg-white border-4 border-riso-ink appearance-none outline-none cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: TASKS -->
+                    <div id="content-tasks" class="p-6 bg-riso-paper hidden">
+                        <h3 class="text-2xl font-display uppercase mb-6 bg-riso-blue text-white inline-block px-3 py-1 transform -rotate-1">Task Layers</h3>
+                        
+                        <div class="flex border-4 border-riso-ink mb-6">
+                            <input type="text" id="task-input" placeholder="Add block..." class="flex-1 p-3 outline-none font-bold uppercase text-sm">
+                            <button onclick="addTask()" class="bg-riso-ink text-white px-4 border-l-4 border-riso-ink hover:bg-riso-green transition-colors"><i data-lucide="plus" class="w-6 h-6"></i></button>
+                        </div>
+
+                        <div id="tasks-list-container" class="flex flex-col gap-3 max-h-64 overflow-y-auto pr-2">
+                            <!-- Tasks injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HUGE PRINT BUTTON -->
+                <div class="relative mt-8">
+                    <div class="absolute inset-0 bg-riso-ink translate-x-2 translate-y-2 border-4 border-riso-ink"></div>
+                    <button id="mint-btn" onclick="startMintingProcess()" class="relative z-10 w-full py-6 bg-riso-green text-white font-display text-3xl uppercase border-4 border-riso-ink hover:bg-riso-yellow hover:text-riso-ink transition-colors flex items-center justify-center gap-4 group active:translate-x-2 active:translate-y-2">
+                        <i data-lucide="zap" class="w-10 h-10 group-hover:scale-125 transition-transform"></i>
+                        <span>Press Print</span>
+                    </button>
+                </div>
+                
+                <!-- Terminal Output -->
+                <div class="border-4 border-riso-ink bg-riso-ink p-4 relative overflow-hidden">
+                    <div class="absolute inset-0 riso-halftone opacity-50 mix-blend-screen"></div>
+                    <div id="terminal-content" class="relative z-10 font-bold font-mono text-sm uppercase flex flex-col gap-2">
+                        <p class="text-riso-paper">> AWAITING ACTION</p>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="mint-success-modal" class="fixed inset-0 bg-riso-ink/90 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border-8 border-riso-ink p-8 md:p-12 max-w-2xl w-full relative riso-shadow-pink">
+            <div class="absolute -top-6 -right-6 w-32 h-32 bg-riso-yellow rounded-full border-4 border-riso-ink flex items-center justify-center transform rotate-12">
+                <span class="font-display text-4xl text-riso-ink">SEALED</span>
+            </div>
+            
+            <h2 class="text-5xl md:text-7xl font-display uppercase mb-8 text-riso-blue">Proof<br>Dried</h2>
+            
+            <div class="space-y-4 font-bold uppercase text-lg border-l-8 border-riso-pink pl-6">
+                <p>IPFS: <span class="text-riso-pink">QmZ5Y...H8r2</span></p>
+                <p>Hash: <span class="text-riso-orange">0x7d81...bc09</span></p>
+            </div>
+            
+            <div class="mt-12 flex gap-4">
+                <button onclick="closeSuccessModal()" class="flex-1 py-4 border-4 border-riso-ink bg-riso-paper font-display text-xl uppercase hover:bg-white">Close</button>
+                <button class="flex-1 py-4 border-4 border-riso-ink bg-riso-pink text-white font-display text-xl uppercase hover:bg-riso-ink">Share Print</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC (Adapted from original) -->
+    <script>
+        const state = {
+            walletConnected: false,
+            activeTab: 'life',
+            moodPalette: 'yellow',
+            moodVal: 80,
+            batteryVal: 75,
+            wealthVal: 50,
+            choresVal: 2,
+            productivity: 0,
+            habits: { 'eco-1': false, 'eco-2': false },
+            tasks: [
+                { id: 1, text: 'Calibrate Riso Plates', completed: true },
+                { id: 2, text: 'Review ZK circuit', completed: false }
+            ],
+            mintedHistory: []
+        };
+
+        function writeTerminalLog(text, colorClass = "text-riso-paper") {
+            const container = document.getElementById('terminal-content');
+            const p = document.createElement('p');
+            p.className = colorClass;
+            p.innerText = `> ${text}`;
+            container.appendChild(p);
+            if (container.children.length > 5) container.removeChild(container.firstChild);
+        }
+
+        function toggleWallet() {
+            state.walletConnected = !state.walletConnected;
+            const btnText = document.getElementById('wallet-text');
+            const btn = document.getElementById('wallet-btn');
+            
+            if (state.walletConnected) {
+                btnText.innerText = `READY: 5k89...7zY`;
+                btn.className = btn.className.replace('bg-riso-yellow', 'bg-riso-pink').replace('text-riso-ink', 'text-white');
+                writeTerminalLog("Identity Plate Mounted!", "text-riso-green");
+            } else {
+                btnText.innerText = "Load Profile";
+                btn.className = btn.className.replace('bg-riso-pink', 'bg-riso-yellow').replace('text-white', 'text-riso-ink');
+                writeTerminalLog("Identity Plate Revoked.", "text-riso-pink");
+            }
+        }
+
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            ['life', 'social', 'tasks'].forEach(t => {
+                document.getElementById(`content-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabId) {
+                    btn.classList.add('bg-riso-orange');
+                    btn.classList.remove('bg-white');
+                } else {
+                    btn.classList.add('bg-white');
+                    btn.classList.remove('bg-riso-orange');
+                }
+            });
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+        }
+
+        function toggleHabit(id) {
+            state.habits[id] = !state.habits[id];
+            const indicator = document.getElementById(`habit-indicator-${id}`);
+            if (state.habits[id]) {
+                indicator.classList.remove('bg-white');
+                indicator.classList.add(id === 'eco-1' ? 'bg-riso-pink' : 'bg-riso-blue');
+            } else {
+                indicator.classList.add('bg-white');
+                indicator.classList.remove('bg-riso-pink', 'bg-riso-blue');
+            }
+            updateVisualPreview();
+        }
+
+        function setMoodPalette(palette) {
+            state.moodPalette = palette;
+            updateVisualPreview();
+        }
+
+        function updateLifeMetrics() {
+            state.wealthVal = parseInt(document.getElementById('input-gold').value);
+            state.choresVal = parseInt(document.getElementById('input-chores').value);
+            document.getElementById('val-gold').innerText = state.wealthVal;
+            document.getElementById('val-chores').innerText = state.choresVal;
+            updateVisualPreview();
+        }
+
+        function updateSocialMetrics() {
+            state.batteryVal = parseInt(document.getElementById('input-battery').value);
+            state.moodVal = parseInt(document.getElementById('input-mood').value);
+            document.getElementById('val-battery').innerText = `${state.batteryVal}%`;
+            document.getElementById('val-mood').innerText = `${state.moodVal}%`;
+            updateVisualPreview();
+        }
+
+        function updateVisualPreview() {
+            const tileBg = document.getElementById('tile-bg');
+            const blob = document.getElementById('battery-bar-1');
+            const circle = document.getElementById('vec-circle');
+            const square = document.getElementById('vec-square');
+            const triangle = document.getElementById('vec-triangle');
+
+            let bgHex = '#FFE600'; let blobColor = '#0044FF'; let circleColor = '#FF007F';
+            if (state.moodPalette === 'blue') { bgHex = '#0044FF'; blobColor = '#FF007F'; circleColor = '#FFE600'; }
+            else if (state.moodPalette === 'beige') { bgHex = '#FDF9F1'; blobColor = '#1A1A1A'; circleColor = '#FF007F'; }
+            else if (state.moodPalette === 'monochrome') { bgHex = '#1A1A1A'; blobColor = '#FDF9F1'; circleColor = '#FF5500'; }
+
+            tileBg.style.backgroundColor = bgHex;
+            blob.style.backgroundColor = blobColor;
+            circle.setAttribute('fill', circleColor);
+
+            // Shape mods based on values
+            const scale = 0.5 + (state.batteryVal / 100);
+            blob.style.transform = `scale(${scale})`;
+            circle.setAttribute('r', 30 + (state.moodVal * 0.5));
+
+            const compCount = state.tasks.filter(t => t.completed).length;
+            state.productivity = state.tasks.length ? Math.round((compCount / state.tasks.length) * 100) : 0;
+            
+            square.style.transform = `rotate(${state.wealthVal}deg) scale(${1 + state.choresVal*0.2})`;
+            
+            document.getElementById('label-mood').innerText = `${state.moodPalette} ${state.moodVal}`;
+            document.getElementById('label-battery').innerText = `LEVEL ${state.batteryVal}%`;
+            document.getElementById('label-prod').innerText = `${state.productivity}% LOAD`;
+        }
+
+        function addTask() {
+            const val = document.getElementById('task-input').value.trim();
+            if (!val) return;
+            state.tasks.push({ id: Date.now(), text: val, completed: false });
+            document.getElementById('task-input').value = "";
+            renderTasks(); updateVisualPreview();
+        }
+
+        function toggleTask(id) {
+            const task = state.tasks.find(t => t.id === id);
+            if (task) { task.completed = !task.completed; renderTasks(); updateVisualPreview(); }
+        }
+
+        function deleteTask(id) {
+            state.tasks = state.tasks.filter(t => t.id !== id);
+            renderTasks(); updateVisualPreview();
+        }
+
+        function renderTasks() {
+            const c = document.getElementById('tasks-list-container');
+            c.innerHTML = "";
+            state.tasks.forEach(t => {
+                const div = document.createElement('div');
+                div.className = `border-4 border-riso-ink p-3 flex justify-between bg-white cursor-pointer ${t.completed ? 'opacity-50' : ''}`;
+                div.innerHTML = `
+                    <div class="flex items-center gap-3 w-full" onclick="toggleTask(${t.id})">
+                        <div class="w-6 h-6 border-4 border-riso-ink ${t.completed ? 'bg-riso-green' : 'bg-white'}"></div>
+                        <span class="font-bold uppercase ${t.completed ? 'line-through' : ''}">${t.text}</span>
+                    </div>
+                    <button onclick="deleteTask(${t.id})" class="text-riso-pink hover:text-riso-ink"><i data-lucide="x" class="w-6 h-6"></i></button>
+                `;
+                c.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function populateHistory() {
+            for (let i = 20; i > 0; i--) {
+                state.mintedHistory.push({
+                    day: `E${i}`, cid: `Qm...${i}`, pos: `0x...${i}`, 
+                    color: ['blue', 'yellow', 'pink', 'green'][Math.floor(Math.random()*4)],
+                    fill: Math.floor(Math.random()*100)
+                });
+            }
+        }
+
+        function renderHistory() {
+            const c = document.getElementById('mosaic-tiles-grid');
+            state.mintedHistory.forEach(t => {
+                const div = document.createElement('div');
+                const colors = { blue: 'bg-riso-blue', yellow: 'bg-riso-yellow', pink: 'bg-riso-pink', green: 'bg-riso-green' };
+                div.className = `aspect-square border-4 border-riso-ink relative overflow-hidden group cursor-crosshair ${colors[t.color]}`;
+                div.innerHTML = `
+                    <div class="absolute bottom-0 w-full bg-white opacity-40 mix-blend-overlay" style="height: ${t.fill}%"></div>
+                    <span class="absolute top-1 left-1 text-xs font-display text-white mix-blend-difference">${t.day}</span>
+                `;
+                div.onmouseover = () => {
+                    document.getElementById('inspect-date').innerText = `Batch ${t.day}`;
+                    document.getElementById('inspect-cid').innerText = t.cid;
+                    document.getElementById('inspect-poseidon').innerText = t.pos;
+                    document.getElementById('inspect-metrics').innerText = `Fill: ${t.fill}%`;
+                    document.getElementById('day-inspect-card').className = `mt-6 border-4 border-riso-ink p-4 flex flex-col sm:flex-row gap-4 items-center justify-between transition-colors ${colors[t.color]}`;
+                };
+                c.appendChild(div);
+            });
+        }
+
+        function startMintingProcess() {
+            if (!state.walletConnected) return alert("Load profile first.");
+            const btn = document.getElementById('mint-btn');
+            btn.disabled = true; btn.querySelector('span').innerText = "PRINTING...";
+            writeTerminalLog("Spinning press...", "text-riso-yellow");
+            setTimeout(() => { writeTerminalLog("Applying Spot Pink...", "text-riso-pink"); }, 800);
+            setTimeout(() => { writeTerminalLog("Drying...", "text-riso-blue"); }, 1600);
+            setTimeout(() => {
+                btn.disabled = false; btn.querySelector('span').innerText = "Press Print";
+                document.getElementById('mint-success-modal').classList.remove('hidden');
+            }, 2500);
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('mint-success-modal').classList.add('hidden');
+        }
+
+        window.onload = () => {
+            populateHistory(); renderHistory(); renderTasks(); updateVisualPreview(); lucide.createIcons();
+            writeTerminalLog("Plates aligned. Ready.", "text-riso-green");
+        };
+    </script>
+</body>
+
+</html>
